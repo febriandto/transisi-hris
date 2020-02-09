@@ -56,15 +56,15 @@ class MasterDataBarangController extends Controller
 
     function simpan(Request $request)
     {
-        $barang = new Barang;
+        $barang              = new Barang;
         $barang->kode_barang = $request->kode_barang;
         $barang->nama_barang = $request->nama_barang;
-        $barang->harga_beli = $request->harga_beli;
-        $barang->harga_jual = $request->harga_jual;
-        $barang->satuan = $request->satuan;
-
-        $barang->input_by = Auth::user()->username;
-        $barang->input_date = date('Y-m-d H:i:s');
+        $barang->harga_beli  = $request->harga_beli;
+        $barang->harga_jual  = $request->harga_jual;
+        $barang->satuan      = $request->satuan;
+        
+        $barang->input_by    = Auth::user()->username;
+        $barang->input_date  = date('Y-m-d H:i:s');
         $barang->save();
 
         return response()->json(['status' => 'success', 'barang' => $barang], 200);
@@ -83,10 +83,10 @@ class MasterDataBarangController extends Controller
         
         $barang->kode_barang = $request->kode_barang;
         $barang->nama_barang = $request->nama_barang;
-        $barang->harga_beli = $request->harga_beli;
-        $barang->harga_jual = $request->harga_jual;
-        $barang->satuan = $request->satuan;
-        $barang->update_by = Auth::user()->username;
+        $barang->harga_beli  = $request->harga_beli;
+        $barang->harga_jual  = $request->harga_jual;
+        $barang->satuan      = $request->satuan;
+        $barang->update_by   = Auth::user()->username;
         $barang->update_date = date('Y-m-d H:i:s');
         $barang->update();
 
@@ -96,9 +96,9 @@ class MasterDataBarangController extends Controller
     protected function hapus($id)
     {
         $barang = Barang::findOrFail($id);
-        $barang->delete_by = Auth::user()->username;
+        $barang->delete_by   = Auth::user()->username;
         $barang->delete_date = date('Y-m-d H:i:s');
-        $barang->is_delete = "Y";
+        $barang->is_delete   = "Y";
         $barang->update();
         return response()->json(['status' => 'success'], 200);
     }
@@ -109,7 +109,5 @@ class MasterDataBarangController extends Controller
         $barang->update(['is_delete' => 'N']);
         return response()->json(['status' => 'success', 200]);
     }
-
-
 
 }

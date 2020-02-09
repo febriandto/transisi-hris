@@ -23,6 +23,15 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+<!-- custom css -->
+<style type="text/css">
+  @media (min-width: 992px){
+  .sidebar-mini.sidebar-collapse .main-sidebar, .sidebar-mini.sidebar-collapse .main-sidebar::before {
+      margin-left: 0;
+      width: 4.2rem;
+  }
+}
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -33,16 +42,16 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+{{--       <li class="nav-item d-none d-sm-inline-block">
         <a href="../../index3.html" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
-      </li>
+      </li> --}}
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+{{--     <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
@@ -51,12 +60,12 @@
           </button>
         </div>
       </div>
-    </form>
+    </form> --}}
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
+{{--       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments"></i>
           <span class="badge badge-danger navbar-badge">3</span>
@@ -112,32 +121,17 @@
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
         </div>
-      </li>
+      </li> --}}
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <i class="fas fa-ellipsis-h"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <a href="{{ route('logout') }}" class="dropdown-item">
+            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            <span class="float-right text-muted text-sm">Logout Your Account</span>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
     </ul>
@@ -149,7 +143,7 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
       <img src="{{ asset('images/logo_syncrum_header.png') }}"
-           alt="AdminLTE Logo"
+           alt="Syncrum Logo"
            style="float: none;" 
            class="brand-image">
     </a>
@@ -162,7 +156,7 @@
           <img src="{{ asset('sys/vendor/almasaeed2010/adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Pevita Pierce</a>
+          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -171,41 +165,109 @@
 
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li class="nav-item">
+            <a href="{{ route('beranda.dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item has-treeview {{ request()->is('master/ad/barang') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Master Data
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Barang</p>
+                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Company</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../../index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Item Master</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../../index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Item Branch</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../../index3.html" class="nav-link">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Item Category</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../../index3.html" class="nav-link">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Item Location</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../../index3.html" class="nav-link">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>UOM <small>(Unit Of Measure)</small></p>
                 </a>
               </li>
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a href="../../index.html" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Dashboard v1</p>
+          <li class="nav-item has-treeview 
+            {{ request()->is('binlocation/warehouse') ? 'menu-open' : '' }}
+            {{ request()->is('binlocation/warehousezone') ? 'menu-open' : '' }}
+            {{ request()->is('binlocation/warehouserow') ? 'menu-open' : '' }}
+            {{ request()->is('binlocation/binlocation') ? 'menu-open' : '' }}
+            {{ request()->is('binlocation/warehousearea') ? 'menu-open' : '' }}
+          ">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-map-marker"></i>
+              <p>
+                Bin Location
+                <i class="right fas fa-angle-left"></i>
+              </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('warehouse.index') }}" class="nav-link {{ request()->is('binlocation/warehouse') ? 'active' : '' }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Warehouse Name</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('warehousezone.index') }}" class="nav-link {{ request()->is('binlocation/warehousezone') ? 'active' : '' }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Warehouse Zone</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('warehousearea.index') }}" class="nav-link {{ request()->is('binlocation/warehousearea') ? 'active' : '' }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Warehouse Area</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('warehouserow.index') }}" class="nav-link {{ request()->is('binlocation/warehouserow') ? 'active' : '' }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Warehouse Row</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('binlocation.index') }}" class="nav-link {{ request()->is('binlocation/binlocation') ? 'active' : '' }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Bin Location</p>
+                </a>
+              </li>
+            </ul>
           </li>
 
         </ul>

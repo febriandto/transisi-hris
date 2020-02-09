@@ -14,6 +14,14 @@ class BerandaController extends Controller
     }
 
     public function dashboard(){
-    	return view('dashboard');
+    	return view('dashboard.home');
     }
+
+    public function logout () {
+		  //logout user
+		  auth()->logout();
+		  
+		  // redirect to homepage
+		  return redirect('/');
+		}
 }
