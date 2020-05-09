@@ -1,15 +1,15 @@
 @extends('dashboard')
 
 @section('title')
-Warehouse
+Warehouse Bin
 @stop
 
 @section('content')
 	<div class="card">
 		<div class="card-header d-flex">
-			<i class="fa fa-barcode mr-2 mt-1"></i> <strong>Daftar Warehouse</strong>
+			<i class="fa fa-barcode mr-2 mt-1"></i> <strong>Data Warehouse Bin</strong>
 			<div class="card-header-actions ml-auto">
-				@if (Route::current()->getName() == 'warehouse.index')
+				@if (Route::current()->getName() == 'warehousebin.index')
 					<a href="#" class="card-header-action btn-tambah" title="Tambah"><i class="fa fa-plus"></i> Tambah</a>
 				@endif
 			</div>
@@ -19,9 +19,10 @@ Warehouse
 				<thead>
 					<tr>
 						<th width="30">No.</th>
-						<th>Warehouse ID</th>
-						<th>Warehouse Name</th>
+						<th>Bin Location ID</th>
+						<th>Bin Location Name</th>
 						<th>Description</th>
+						<th>Warehouse Row</th>
 						<th>Input By</th>
 						<th>Input Date</th>
 						<th width="50">Aksi</th>
@@ -45,26 +46,34 @@ Warehouse
 					<div class="modal-body">
 
 						<div class="form-group">
-							<label for="wh_id" class="col-sm-3 col-form-label">Warehouse ID<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('wh_id', null, ['required', 'class' => 'form-control', 'placeholder' => '01']) !!}
-								{!! Form::hidden('wh_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => '01']) !!}
+							<label for="wh_bin_id" class="col-sm-3 col-form-label">Warehouse Bin ID<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_bin_id', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
+								{!! Form::hidden('wh_bin_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="wh_name" class="col-sm-3 col-form-label">Warehouse Name<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('wh_name', null, ['required', 'class' => 'form-control']) !!}
+							<label for="wh_bin_name" class="col-sm-3 col-form-label">Warehouse Bin Name<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_bin_name', null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="wh_description" class="col-sm-3 col-form-label">Description<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('wh_description', null, ['required', 'class' => 'form-control']) !!}
+							<label for="wh_row_id" class="col-sm-3 col-form-label">Warehouse Row<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::select('wh_row_id', $warehouserow, null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
+
+						<div class="form-group">
+							<label for="wh_bin_desc" class="col-sm-3 col-form-label">Description<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_bin_desc', null, ['required', 'class' => 'form-control']) !!}
+							</div>
+						</div>
+
 						
 					</div>
 					<div class="modal-footer">
@@ -85,15 +94,17 @@ Warehouse
 		var modalFormTitle = $(modalForm).find('.modal-title');
 		var form           = $(modalForm).find('form');
 
-		var wh_id          = $(form).find('input[name="wh_id"]');
-		var wh_id_before   = $(form).find('input[name="wh_id_before"]');
-		var wh_name        = $(form).find('input[name="wh_name"]');
-		var wh_description = $(form).find('input[name="wh_description"]');
+		var wh_bin_id        = $(form).find('input[name="wh_bin_id"]');
+		var wh_bin_id_before = $(form).find('input[name="wh_bin_id_before"]');
+		var wh_bin_name      = $(form).find('input[name="wh_bin_name"]');
+		var wh_bin_desc      = $(form).find('input[name="wh_bin_desc"]');
+		var wh_row_id         = $(form).find('select[name="wh_row_id"]');
 
 		function clearForm() {
-			$(wh_id).val('');
-			$(wh_name).val('');
-			$(wh_description).val('');
+			$(wh_bin_id).val('');
+			$(wh_bin_name).val('');
+			$(wh_bin_desc).val('');
+			$(wh_row_id).val('');
 		}
 
 		$(document).ready(function () {
@@ -101,17 +112,18 @@ Warehouse
 				processing: true,
 				serverSide: true,
 				ajax: {
-					url: "{{ route('warehouse.datatables') }}",
+					url: "{{ route('warehousebin.datatables') }}",
 					type: "POST",
 					data: {
-						is_delete: "{{ Route::current()->getName() == 'warehouse.index' ? 'N' : 'Y' }}"
+						is_delete: "{{ Route::current()->getName() == 'warehousebin.index' ? 'N' : 'Y' }}"
 					}
 				},
 				columns: [
 					{'data': 'no'},
-					{'data': 'wh_id'},
-					{'data': 'wh_name'},
-					{'data': 'wh_description'},
+					{'data': 'wh_bin_id'},
+					{'data': 'wh_bin_name'},
+					{'data': 'wh_bin_desc'},
+					{'data': 'wh_row_name'},
 					{'data': 'input_by'},
 					{'data': 'input_date'},
 					{'data': 'aksi'}
@@ -127,7 +139,7 @@ Warehouse
 
 				clearForm();
 
-				$(modalFormTitle).html('Tambah Warehouse');
+				$(modalFormTitle).html('Tambah Warehouse Bin');
 				$(modalForm).modal('show');
 			});
 
@@ -142,15 +154,16 @@ Warehouse
 				clearForm();
 
 				$.ajax({
-					url: "{{ route('warehouse.index') }}/"+id+"/edit",
+					url: "{{ route('warehousebin.index') }}/"+id+"/edit",
 					type: "GET",
 					success: function (data) {
-						$(wh_id).val(data.warehouse.wh_id);
-						$(wh_id_before).val(data.warehouse.wh_id);
-						$(wh_name).val(data.warehouse.wh_name);
-						$(wh_description).val(data.warehouse.wh_description);
+						$(wh_bin_id).val(data.warehousebin.wh_bin_id);
+						$(wh_bin_id_before).val(data.warehousebin.wh_bin_id);
+						$(wh_bin_name).val(data.warehousebin.wh_bin_name);
+						$(wh_bin_desc).val(data.warehousebin.wh_bin_desc);
+						$(wh_row_id).val(data.warehousebin.wh_row_id);
 
-						$(modalFormTitle).html('Edit Barang');
+						$(modalFormTitle).html('Edit Warehouse Bin');
 						$(modalForm).modal('show');
 					}
 				});
@@ -164,7 +177,7 @@ Warehouse
 				if (confirm('Anda yakin ingin menghapus data tersebut?')) {
 
 					$.ajax({
-						url: "{{ route('warehouse.index') }}/"+id+"/hapus",
+						url: "{{ route('warehousebin.index') }}/"+id+"/hapus",
 						type: "DELETE",
 						data: {id},
 						success: function (data) {
@@ -184,13 +197,13 @@ Warehouse
 				if (confirm('Anda yakin ingin mengembalikan data tersebut?')) {
 
 					$.ajax({
-						url: "{{ route('warehouse.index') }}/"+id+"/restore",
+						url: "{{ route('warehousebin.index') }}/"+id+"/restore",
 						type: "PATCH",
 						data: {id},
 						success: function (data) {
 							alert('Data berhasil dikembalikan.');
 
-							document.location = "{{ route('warehouse.index') }}";
+							document.location = "{{ route('warehousebin.index') }}";
 						}
 					});
 				}
@@ -200,12 +213,12 @@ Warehouse
 				e.preventDefault();
 
 				if (action === 'tambah') {
-					url = "{{ route('warehouse.simpan') }}";
+					url = "{{ route('warehousebin.simpan') }}";
 					type = 'POST';
 				} else {
-					var id = $(wh_id).val();
+					var id = $(wh_bin_id).val();
 
-					url = "{{ route('warehouse.index') }}/"+id+"/edit";
+					url = "{{ route('warehousebin.index') }}/"+id+"/edit";
 					type = 'PATCH';
 				}
 
@@ -219,6 +232,9 @@ Warehouse
 					}
 				});
 			});
+			
+			window.location.hash = "master-data";
 		});
+
 	</script>
 @stop

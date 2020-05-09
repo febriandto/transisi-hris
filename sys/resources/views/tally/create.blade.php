@@ -1,15 +1,15 @@
 @extends('dashboard')
 
 @section('title')
-Bin Location
+Warehouse Area
 @stop
 
 @section('content')
 	<div class="card">
 		<div class="card-header d-flex">
-			<i class="fa fa-barcode mr-2 mt-1"></i> <strong>Daftar Bin Location</strong>
+			<i class="fa fa-barcode mr-2 mt-1"></i> <strong>Data Warehouse Area</strong>
 			<div class="card-header-actions ml-auto">
-				@if (Route::current()->getName() == 'binlocation.index')
+				@if (Route::current()->getName() == 'warehousearea.index')
 					<a href="#" class="card-header-action btn-tambah" title="Tambah"><i class="fa fa-plus"></i> Tambah</a>
 				@endif
 			</div>
@@ -19,10 +19,10 @@ Bin Location
 				<thead>
 					<tr>
 						<th width="30">No.</th>
-						<th>Bin Location ID</th>
-						<th>Bin Location Name</th>
+						<th>Warehouse Area ID</th>
+						<th>Warehouse Area Name</th>
+						<th>Warehouse Zone</th>
 						<th>Description</th>
-						<th>Warehouse Row</th>
 						<th>Input By</th>
 						<th>Input Date</th>
 						<th width="50">Aksi</th>
@@ -45,32 +45,32 @@ Bin Location
 				{!! Form::open(['method' => 'POST']) !!}
 					<div class="modal-body">
 
-						<div class="form-group">
-							<label for="bin_loc_id" class="col-sm-3 col-form-label">Bin Location ID<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('bin_loc_id', null, ['required', 'class' => 'form-control', 'placeholder' => '01']) !!}
-								{!! Form::hidden('bin_loc_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => '01']) !!}
+						<div class="form-group area">
+							<label for="wh_area_id" class="col-sm-3 col-form-label">Warehouse Area ID<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_area_id', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
+								{!! Form::hidden('wh_area_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
 							</div>
 						</div>
 						
-						<div class="form-group">
-							<label for="bin_loc_name" class="col-sm-3 col-form-label">Bin Location Name<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('bin_loc_name', null, ['required', 'class' => 'form-control']) !!}
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label for="bin_loc_desc" class="col-sm-3 col-form-label">Description<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('bin_loc_desc', null, ['required', 'class' => 'form-control']) !!}
+						<div class="form-group area">
+							<label for="wh_area_name" class="col-sm-3 col-form-label">Warehouse Area Name<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_area_name', null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label for="wh_row_id" class="col-sm-3 col-form-label">Warehouse Row<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::select('wh_row_id', $warehouserow, null, ['required', 'class' => 'form-control']) !!}
+						<div class="form-group area">
+							<label for="wh_zone_id" class="col-sm-3 col-form-label">Warehouse Zone<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::select('wh_zone_id', $warehousezone, null, ['required', 'class' => 'form-control']) !!}
+							</div>
+						</div>
+						
+						<div class="form-group area">
+							<label for="wh_area_desc" class="col-sm-3 col-form-label">Description<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_area_desc', null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
 						
@@ -89,21 +89,22 @@ Bin Location
 	<script type="text/javascript">
 		var action;
 
-		var modalForm      = $('#modalForm');
+		var modalForm = $('#modalForm');
 		var modalFormTitle = $(modalForm).find('.modal-title');
-		var form           = $(modalForm).find('form');
 
-		var bin_loc_id        = $(form).find('input[name="bin_loc_id"]');
-		var bin_loc_id_before = $(form).find('input[name="bin_loc_id_before"]');
-		var bin_loc_name      = $(form).find('input[name="bin_loc_name"]');
-		var bin_loc_desc      = $(form).find('input[name="bin_loc_desc"]');
-		var wh_row_id         = $(form).find('select[name="wh_row_id"]');
+		var form = $(modalForm).find('form');
+
+		var wh_area_id        = $(form).find('input[name="wh_area_id"]');
+		var wh_area_id_before = $(form).find('input[name="wh_area_id_before"]');
+		var wh_area_name      = $(form).find('input[name="wh_area_name"]');
+		var wh_zone_id        = $(form).find('select[name="wh_zone_id"]');
+		var wh_area_desc      = $(form).find('input[name="wh_area_desc"]');
 
 		function clearForm() {
-			$(bin_loc_id).val('');
-			$(bin_loc_name).val('');
-			$(bin_loc_desc).val('');
-			$(wh_row_id).val('');
+			$(wh_area_id).val('');
+			$(wh_zone_id).val('');
+			$(wh_area_name).val('');
+			$(wh_area_desc).val('');
 		}
 
 		$(document).ready(function () {
@@ -111,18 +112,18 @@ Bin Location
 				processing: true,
 				serverSide: true,
 				ajax: {
-					url: "{{ route('binlocation.datatables') }}",
+					url: "{{ route('warehousearea.datatables') }}",
 					type: "POST",
 					data: {
-						is_delete: "{{ Route::current()->getName() == 'binlocation.index' ? 'N' : 'Y' }}"
+						is_delete: "{{ Route::current()->getName() == 'warehousearea.index' ? 'N' : 'Y' }}"
 					}
 				},
 				columns: [
 					{'data': 'no'},
-					{'data': 'bin_loc_id'},
-					{'data': 'bin_loc_name'},
-					{'data': 'bin_loc_desc'},
-					{'data': 'wh_row_id'},
+					{'data': 'wh_area_id'},
+					{'data': 'wh_area_name'},
+					{'data': 'wh_zone_name'},
+					{'data': 'wh_area_desc'},
 					{'data': 'input_by'},
 					{'data': 'input_date'},
 					{'data': 'aksi'}
@@ -138,7 +139,7 @@ Bin Location
 
 				clearForm();
 
-				$(modalFormTitle).html('Tambah Bin Location');
+				$(modalFormTitle).html('Tambah Warehouse Area');
 				$(modalForm).modal('show');
 			});
 
@@ -153,16 +154,16 @@ Bin Location
 				clearForm();
 
 				$.ajax({
-					url: "{{ route('binlocation.index') }}/"+id+"/edit",
+					url: "{{ route('warehousearea.index') }}/"+id+"/edit",
 					type: "GET",
 					success: function (data) {
-						$(bin_loc_id).val(data.binlocation.bin_loc_id);
-						$(bin_loc_id_before).val(data.binlocation.bin_loc_id);
-						$(bin_loc_name).val(data.binlocation.bin_loc_name);
-						$(bin_loc_desc).val(data.binlocation.bin_loc_desc);
-						$(wh_row_id).val(data.binlocation.wh_row_id);
+						$(wh_area_id).val(data.warehousearea.wh_area_id);
+						$(wh_area_id_before).val(data.warehousearea.wh_area_id);
+						$(wh_zone_id).val(data.warehousearea.wh_zone_id);
+						$(wh_area_name).val(data.warehousearea.wh_area_name);
+						$(wh_area_desc).val(data.warehousearea.wh_area_desc);
 
-						$(modalFormTitle).html('Edit Barang');
+						$(modalFormTitle).html('Edit Warehouse Area');
 						$(modalForm).modal('show');
 					}
 				});
@@ -176,7 +177,7 @@ Bin Location
 				if (confirm('Anda yakin ingin menghapus data tersebut?')) {
 
 					$.ajax({
-						url: "{{ route('binlocation.index') }}/"+id+"/hapus",
+						url: "{{ route('warehousearea.index') }}/"+id+"/hapus",
 						type: "DELETE",
 						data: {id},
 						success: function (data) {
@@ -196,13 +197,13 @@ Bin Location
 				if (confirm('Anda yakin ingin mengembalikan data tersebut?')) {
 
 					$.ajax({
-						url: "{{ route('binlocation.index') }}/"+id+"/restore",
+						url: "{{ route('warehousearea.index') }}/"+id+"/restore",
 						type: "PATCH",
 						data: {id},
 						success: function (data) {
 							alert('Data berhasil dikembalikan.');
 
-							document.location = "{{ route('binlocation.index') }}";
+							document.location = "{{ route('warehousearea.index') }}";
 						}
 					});
 				}
@@ -212,12 +213,12 @@ Bin Location
 				e.preventDefault();
 
 				if (action === 'tambah') {
-					url = "{{ route('binlocation.simpan') }}";
+					url = "{{ route('warehousearea.simpan') }}";
 					type = 'POST';
 				} else {
-					var id = $(bin_loc_id).val();
+					var id = $(wh_area_id).val();
 
-					url = "{{ route('binlocation.index') }}/"+id+"/edit";
+					url = "{{ route('warehousearea.index') }}/"+id+"/edit";
 					type = 'PATCH';
 				}
 
@@ -231,6 +232,8 @@ Bin Location
 					}
 				});
 			});
+
+			window.location.hash = "master-data";
 		});
 	</script>
 @stop

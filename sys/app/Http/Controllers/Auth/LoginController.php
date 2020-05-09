@@ -25,8 +25,8 @@ class LoginController extends Controller
     {
         // return Hash::make($request->password);
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            echo "Loading. . . ";
             return redirect('/dashboard');
-            // echo "Betul";
         } else {
             Session::flash('flash_danger', 'Username atau Password salah.');
             // echo "Salah";

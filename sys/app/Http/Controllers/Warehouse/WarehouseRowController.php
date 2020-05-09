@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Warehouse;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
 
-use App\Model\Warehouserow;
+use App\Model\Warehouse\Warehouserow;
+use App\Model\Warehouse\Warehousearea;
 
 class WarehouseRowController extends Controller
 {
     public function index()
     {
-    	return view('binlocation.warehouserow');
+      $warehousearea = Warehousearea::where('is_delete', 'N')->pluck('wh_area_name', 'wh_area_id');
+
+    	return view('warehouse.row', compact('warehousearea'));
     }
 
     function datatables(Request $request)
@@ -39,6 +43,12 @@ class WarehouseRowController extends Controller
             {
                 $wh_row->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh_row->wh_row_id. '"> <i class="fa fa-undo"></i> </a>';
             }
+
+            // change date format to day month year
+            $wh_row->input_date = date("d/m/Y", strtotime($wh_row->input_date));
+            
+            // relation to table wms_m_warehousezone
+            $wh_row->wh_area_name = $wh_row->warehousearea->wh_area_name;
 
             $data[] = $wh_row;
         }
@@ -94,8 +104,8 @@ class WarehouseRowController extends Controller
   {
     $warehouserow = Warehouserow::findOrFail($id);
         
-    $warehouserow->delete_by   = Auth::user()->username;
-    $warehouserow->delete_date = date('Y-m-d H:i:s');
+    $warehouserow->del_by   = Auth::user()->username;
+    $warehouserow->del_date = date('Y-m-d H:i:s');
     $warehouserow->is_delete   = "Y";
     $warehouserow->update();
 

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Warehouse;
 
-use App\Model\Warehouse;
+use App\Model\Warehouse\Warehouse;
+
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
@@ -13,7 +15,7 @@ class WarehouseController extends Controller
 
     public function index()
     {
-        return view('binlocation.warehouse');
+        return view('warehouse.name');
     }
 
     function datatables(Request $request)
@@ -39,6 +41,9 @@ class WarehouseController extends Controller
             {
                 $wh->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh->wh_id. '"> <i class="fa fa-undo"></i> </a>';
             }
+
+            // change date format to day month year
+            $wh->input_date = date("d/m/Y", strtotime($wh->input_date));
 
             $data[] = $wh;
         }
@@ -91,8 +96,8 @@ class WarehouseController extends Controller
   {
         $warehouse = Warehouse::findOrFail($id);
             
-        $warehouse->delete_by   = Auth::user()->username;
-        $warehouse->delete_date = date('Y-m-d H:i:s');
+        $warehouse->del_by   = Auth::user()->username;
+        $warehouse->del_date = date('Y-m-d H:i:s');
         $warehouse->is_delete   = "Y";
         $warehouse->update();
 

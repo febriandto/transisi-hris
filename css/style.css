@@ -1,0 +1,67 @@
+.icon_left { margin-right: 10px; }
+
+.box-header { border-bottom: 1px solid rgba(1,1,1,0.1) }
+
+.tbl_form { width: 100%; }
+
+.tbl_form tr td label { margin-top: 10px; }
+
+
+
+.tbl_form2 { width: 100%; }
+
+.tbl_form2 tr td label { margin-top: 10px; }
+
+#input_form{ width: 100%; margin-bottom: 10px; }
+
+.box_main { padding: 20px; background-color: white;
+
+	border-radius: 0px; box-shadow: 1px 1px 2px 2px rgba(1,1,1,0.1);
+
+}
+
+
+.box_main:hover {box-shadow: 1px 1px 4px 4px rgba(1,1,1,0.1);}
+
+
+
+.bold { font-weight: bold; }
+
+.table_detail_pr { width: 100% }
+
+.table_detail_pr tr {}
+
+.table_detail_pr tr td { padding: 10px; }
+
+.table_detail_pr tr td label { font-style: ; color: grey; margin-bottom: -8	px; }
+
+
+
+.danger_text {color: #f6590e;}
+
+.primary_text {color: #1389d5;}
+
+.warning_text {color: #fb9923;}
+
+.success_text {color: #39b54a;}
+
+
+
+.link_area { width: 100%; border-bottom: 1px solid rgba(1,1,1,0.1); padding: 10px; margin-bottom: 10px;  }
+
+.link_area p { margin-bottom: 0px; }
+
+
+
+.draft_icon { color: grey; padding: 15px; border:3px solid orange; background-color: rgba(1,1,1,0.05); font-weight: bold; border-radius: 0px; text-align: center }
+#add_new {}
+#add_new tr {}
+#add_new tr td {}
+#add_new tr td label {margin-top: 10px;}
+
+#example1 {}
+#example1 tbody tr td { font-size: 13px; }
+
+.hover-pointer:hover{
+	cursor: pointer;
+}

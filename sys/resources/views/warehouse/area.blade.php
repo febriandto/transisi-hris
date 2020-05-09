@@ -1,15 +1,15 @@
 @extends('dashboard')
 
 @section('title')
-Warehouse Row
+Warehouse Area
 @stop
 
 @section('content')
 	<div class="card">
 		<div class="card-header d-flex">
-			<i class="fa fa-barcode mr-2 mt-1"></i> <strong>Daftar Warehouse Row</strong>
+			<i class="fa fa-barcode mr-2 mt-1"></i> <strong>Data Warehouse Area</strong>
 			<div class="card-header-actions ml-auto">
-				@if (Route::current()->getName() == 'warehouserow.index')
+				@if (Route::current()->getName() == 'warehousearea.index')
 					<a href="#" class="card-header-action btn-tambah" title="Tambah"><i class="fa fa-plus"></i> Tambah</a>
 				@endif
 			</div>
@@ -19,9 +19,9 @@ Warehouse Row
 				<thead>
 					<tr>
 						<th width="30">No.</th>
-						<th>Warehouse Row ID</th>
-						<th>Warehouse Area</th>
-						<th>Warehouse Row</th>
+						<th>Warehouse Area ID</th>
+						<th>Warehouse Area Name</th>
+						<th>Warehouse Zone</th>
 						<th>Description</th>
 						<th>Input By</th>
 						<th>Input Date</th>
@@ -45,32 +45,32 @@ Warehouse Row
 				{!! Form::open(['method' => 'POST']) !!}
 					<div class="modal-body">
 
-						<div class="form-group row">
-							<label for="wh_row_id" class="col-sm-3 col-form-label">Warehouse Row ID<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('wh_row_id', null, ['required', 'class' => 'form-control', 'placeholder' => '01']) !!}
-								{!! Form::hidden('wh_row_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => '01']) !!}
+						<div class="form-group area">
+							<label for="wh_area_id" class="col-sm-3 col-form-label">Warehouse Area ID<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_area_id', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
+								{!! Form::hidden('wh_area_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
 							</div>
 						</div>
 						
-						<div class="form-group row">
-							<label for="wh_row_name" class="col-sm-3 col-form-label">Warehouse Row Name<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('wh_row_name', null, ['required', 'class' => 'form-control']) !!}
+						<div class="form-group area">
+							<label for="wh_area_name" class="col-sm-3 col-form-label">Warehouse Area Name<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_area_name', null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label for="wh_area_id" class="col-sm-3 col-form-label">Warehouse Area<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::select('wh_area_id', array('test1' => 1, 'test2' => 2), null, ['required', 'class' => 'form-control']) !!}
+						<div class="form-group area">
+							<label for="wh_zone_id" class="col-sm-3 col-form-label">Warehouse Zone<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::select('wh_zone_id', $warehousezone, null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
 						
-						<div class="form-group row">
-							<label for="wh_row_desc" class="col-sm-3 col-form-label">Description<span class="text-danger">*</span></label>
-							<div class="col-sm-9">
-								{!! Form::text('wh_row_desc', null, ['required', 'class' => 'form-control']) !!}
+						<div class="form-group area">
+							<label for="wh_area_desc" class="col-sm-3 col-form-label">Description<span class="text-danger">*</span></label>
+							<div class="col-sm-12">
+								{!! Form::text('wh_area_desc', null, ['required', 'class' => 'form-control']) !!}
 							</div>
 						</div>
 						
@@ -94,17 +94,17 @@ Warehouse Row
 
 		var form = $(modalForm).find('form');
 
-		var wh_row_id        = $(form).find('input[name="wh_row_id"]');
-		var wh_row_id_before = $(form).find('input[name="wh_row_id_before"]');
-		var wh_row_name      = $(form).find('input[name="wh_row_name"]');
-		var wh_area_id       = $(form).find('select[name="wh_area_id"]');
-		var wh_row_desc      = $(form).find('input[name="wh_row_desc"]');
+		var wh_area_id        = $(form).find('input[name="wh_area_id"]');
+		var wh_area_id_before = $(form).find('input[name="wh_area_id_before"]');
+		var wh_area_name      = $(form).find('input[name="wh_area_name"]');
+		var wh_zone_id        = $(form).find('select[name="wh_zone_id"]');
+		var wh_area_desc      = $(form).find('input[name="wh_area_desc"]');
 
 		function clearForm() {
-			$(wh_row_id).val('');
 			$(wh_area_id).val('');
-			$(wh_row_name).val('');
-			$(wh_row_desc).val('');
+			$(wh_zone_id).val('');
+			$(wh_area_name).val('');
+			$(wh_area_desc).val('');
 		}
 
 		$(document).ready(function () {
@@ -112,18 +112,18 @@ Warehouse Row
 				processing: true,
 				serverSide: true,
 				ajax: {
-					url: "{{ route('warehouserow.datatables') }}",
+					url: "{{ route('warehousearea.datatables') }}",
 					type: "POST",
 					data: {
-						is_delete: "{{ Route::current()->getName() == 'warehouserow.index' ? 'N' : 'Y' }}"
+						is_delete: "{{ Route::current()->getName() == 'warehousearea.index' ? 'N' : 'Y' }}"
 					}
 				},
 				columns: [
 					{'data': 'no'},
-					{'data': 'wh_row_id'},
-					{'data': 'wh_row_name'},
 					{'data': 'wh_area_id'},
-					{'data': 'wh_row_desc'},
+					{'data': 'wh_area_name'},
+					{'data': 'wh_zone_name'},
+					{'data': 'wh_area_desc'},
 					{'data': 'input_by'},
 					{'data': 'input_date'},
 					{'data': 'aksi'}
@@ -139,7 +139,7 @@ Warehouse Row
 
 				clearForm();
 
-				$(modalFormTitle).html('Tambah Warehouse Row');
+				$(modalFormTitle).html('Tambah Warehouse Area');
 				$(modalForm).modal('show');
 			});
 
@@ -154,16 +154,16 @@ Warehouse Row
 				clearForm();
 
 				$.ajax({
-					url: "{{ route('warehouserow.index') }}/"+id+"/edit",
+					url: "{{ route('warehousearea.index') }}/"+id+"/edit",
 					type: "GET",
 					success: function (data) {
-						$(wh_row_id).val(data.warehouserow.wh_row_id);
-						$(wh_row_id_before).val(data.warehouserow.wh_row_id);
-						$(wh_area_id).val(data.warehouserow.wh_area_id);
-						$(wh_row_name).val(data.warehouserow.wh_row_name);
-						$(wh_row_desc).val(data.warehouserow.wh_row_desc);
+						$(wh_area_id).val(data.warehousearea.wh_area_id);
+						$(wh_area_id_before).val(data.warehousearea.wh_area_id);
+						$(wh_zone_id).val(data.warehousearea.wh_zone_id);
+						$(wh_area_name).val(data.warehousearea.wh_area_name);
+						$(wh_area_desc).val(data.warehousearea.wh_area_desc);
 
-						$(modalFormTitle).html('Edit Barang');
+						$(modalFormTitle).html('Edit Warehouse Area');
 						$(modalForm).modal('show');
 					}
 				});
@@ -177,7 +177,7 @@ Warehouse Row
 				if (confirm('Anda yakin ingin menghapus data tersebut?')) {
 
 					$.ajax({
-						url: "{{ route('warehouserow.index') }}/"+id+"/hapus",
+						url: "{{ route('warehousearea.index') }}/"+id+"/hapus",
 						type: "DELETE",
 						data: {id},
 						success: function (data) {
@@ -197,13 +197,13 @@ Warehouse Row
 				if (confirm('Anda yakin ingin mengembalikan data tersebut?')) {
 
 					$.ajax({
-						url: "{{ route('warehouserow.index') }}/"+id+"/restore",
+						url: "{{ route('warehousearea.index') }}/"+id+"/restore",
 						type: "PATCH",
 						data: {id},
 						success: function (data) {
 							alert('Data berhasil dikembalikan.');
 
-							document.location = "{{ route('warehouserow.index') }}";
+							document.location = "{{ route('warehousearea.index') }}";
 						}
 					});
 				}
@@ -213,12 +213,12 @@ Warehouse Row
 				e.preventDefault();
 
 				if (action === 'tambah') {
-					url = "{{ route('warehouserow.simpan') }}";
+					url = "{{ route('warehousearea.simpan') }}";
 					type = 'POST';
 				} else {
-					var id = $(wh_row_id).val();
+					var id = $(wh_area_id).val();
 
-					url = "{{ route('warehouserow.index') }}/"+id+"/edit";
+					url = "{{ route('warehousearea.index') }}/"+id+"/edit";
 					type = 'PATCH';
 				}
 
@@ -232,6 +232,8 @@ Warehouse Row
 					}
 				});
 			});
+
+			window.location.hash = "master-data";
 		});
 	</script>
 @stop

@@ -2,7 +2,81 @@
 
 @section('content')
 
-<div class="limiter">
+<br>
+<br>
+<br>
+<br>
+
+@error('password')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+@enderror
+
+<div class="row">  
+  <div class="col-md-3">&nbsp;</div>
+  <div class="col-md-6">
+    @if(Session::has('flash_danger'))
+      <div class="alert alert-danger text-center">Username/Password salah</div>
+    @endif
+    <div class="login_area">
+    <div class="row">
+      <div class="col-md-7" style="border-right: 1px solid rgba(1,1,1,0.1)">
+        <div>
+          <img src="/wms_update/dist/img/login.svg" alt="" width="80%" >
+        </div>
+      </div>
+      <div class="col-md-5">
+        <br><br>
+        <h2 style="font-weight: bold;">  
+          <img src="/wms_update/dist/img/logo_sincrum2.png" style="width: 100%">
+         
+        </h2> 
+        <h5> Loging in to your account.</h5><hr>
+          <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="form-group has-feedback">
+              <input type="text" name="username" class="form-control" placeholder="Username">
+              <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+              <input type="password" name="password" class="form-control" placeholder="Password">
+              <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="checkbox icheck">
+                  <!-- <label>
+                    <input type="checkbox"> Remember Me
+                  </label> -->
+                </div>
+              </div>
+
+              <!-- /.col -->
+              <div class="col-xs-6">
+                <button type="submit" name="login" class="btn btn-primary btn-block btn-flat">
+                  <i class="fa fa-lock"></i> &nbsp; Sign In</button>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- <a href="#"> Forgot Password? </a> -->
+
+          </form>
+      </div>
+
+      <div class="col-md-3"></div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  <div class="col-md-2">&nbsp;</div>
+
+</div>
+
+<!-- <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
             <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
@@ -53,6 +127,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 @endsection
