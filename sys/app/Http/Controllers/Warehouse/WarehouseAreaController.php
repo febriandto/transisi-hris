@@ -10,119 +10,89 @@ use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
+use DB;
 
 class WarehouseAreaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {   
-        //get value of table wms_warehouse_zone to use in selectoption 
-        $warehousezone = Warehousezone::where('is_delete', 'N')->pluck('wh_zone_name', 'wh_zone_id');
+  public function index()
+  {   
 
-        return view('warehouse.area', compact('warehousezone'));
-    }
+    $warehouse_area = DB::select(" 
+      SELECT * FROM wms_m_area 
+      LEFT JOIN wms_m_zone ON wms_m_area.wh_zone_id = wms_m_zone.zone_id
+      WHERE wms_m_area.is_delete = 'N' 
+    ");
 
-    function datatables(Request $request)
-    {   
-        $data = array();
-
-        $is_delete = $request->is_delete;
-
-        $wh_area = Warehousearea::where(['is_delete'=> $is_delete])->get();
-
-        $no = 1;
-        foreach($wh_area as $wh_area)
-        {
-            $wh_area->no = $no++;
-            if($is_delete == 'N')
-            {
-                $wh_area->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$wh_area->wh_area_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$wh_area->wh_area_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $wh_area->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh_area->wh_area_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
-
-            // change date format to day month year
-            $wh_area->input_date = date("d/m/Y", strtotime($wh_area->input_date));
-            
-            // relation to table wms_m_warehousezone
-            $wh_area->wh_zone_name = $wh_area->warehousezone->wh_zone_name;
-
-            $data[] = $wh_area;
-        }
-
-        return datatables::of($data)->escapecolumns([])->make(true);
-    
+    return view('warehouse_area.all', compact('warehouse_area'));
   }
 
-      function simpan(Request $request)
-      {
-        $Warehousearea = new Warehousearea;
+  public function add()
+  { 
 
-        $Warehousearea->wh_area_id   = $request->wh_area_id;
-        $Warehousearea->wh_area_name = $request->wh_area_name;
-        $Warehousearea->wh_area_desc = $request->wh_area_desc;
-        $Warehousearea->wh_zone_id   = $request->wh_zone_id;
-        
-        $Warehousearea->input_by     = Auth::user()->username;
-        $Warehousearea->input_date   = date('Y-m-d H:i:s');
-        $Warehousearea->save();
+    $warehouse_zone = DB::select(" SELECT * FROM wms_m_zone WHERE is_delete = 'N' ");
 
-        return response()->json(['status' => 'success', 'warehousearea' => $Warehousearea], 200);
-      }
+    return view('warehouse_area.add', compact('warehouse_zone'));
 
-      protected function edit($id)
-      {
-        $Warehousearea = Warehousearea::findOrFail($id);
-        return response()->json(['status' => 'success', 'warehousearea' => $Warehousearea], 200);
-      }
+  }
 
-      protected function perbarui($id, Request $request)
-      {
-            
-        $Warehousearea = Warehousearea::findOrFail($request->wh_area_id_before);
+  protected function save(Request $request){
 
-        $Warehousearea->wh_area_id   = $request->wh_area_id;  
-        $Warehousearea->wh_area_name = $request->wh_area_name;
-        $Warehousearea->wh_zone_id   = $request->wh_zone_id;
-        $Warehousearea->wh_area_desc = $request->wh_area_desc;
-            
-        $Warehousearea->input_by    = Auth::user()->username;
-        $Warehousearea->input_date  = date('Y-m-d H:i:s');
-            
-        $Warehousearea->edit_by     = Auth::user()->username;
-        $Warehousearea->edit_date   = date('Y-m-d H:i:s');
+    $Warehousearea = new Warehousearea;
 
-        $Warehousearea->update();
+    $Warehousearea->wh_zone_id      = $request->wh_zone_id;
+    $Warehousearea->wh_area_name    = $request->wh_area_name;
+    $Warehousearea->wh_area_desc    = $request->wh_area_desc;
 
-        return response()->json(['status' => 'success'], 200);
-      }
+    $Warehousearea->input_by   = Auth::user()->username;
+    $Warehousearea->input_date = date('Y-m-d H:i:s');
+    $Warehousearea->save();
 
-      protected function hapus($id)
-      {
-        $warehousearea = Warehousearea::findOrFail($id);
-            
-        $warehousearea->del_by    = Auth::user()->username;
-        $warehousearea->del_date  = date('Y-m-d H:i:s');
-        $warehousearea->is_delete = "Y";
-        $warehousearea->update();
+    toastr()->success('Warehouse Area created successfully');
 
-        return response()->json(['status' => 'success'], 200);
-      }
+    return redirect( route('warehousearea.index') );
 
-      protected function restore($id)
-      {
-        $warehousearea = Warehousearea::findOrFail($id);
-        $warehousearea->update(['is_delete' => 'N']);
-        return response()->json(['status' => 'success', 200]);
-      }
+  }
+
+  public function edit(Warehousearea $warehousearea)
+  {
+    $warehouse_zone = DB::select(" SELECT * FROM wms_m_zone WHERE is_delete = 'N' ");
+
+    return view('warehouse_area.edit', compact('warehousearea', 'warehouse_zone'));
+  }
+
+  protected function update(Request $request){
+
+    DB::table('wms_m_area')->where('wh_area_id', $request->wh_area_id)->update([
+
+      'wh_zone_id'     => $request->wh_zone_id,
+      'wh_area_name'   => $request->wh_area_name,
+      'wh_area_desc'   => $request->wh_area_desc,
+
+      'edit_by'   => Auth::user()->username,
+      'edit_date' => date('Y-m-d H:i:s')
+
+    ]);
+
+    toastr()->success('Edit successfully');
+
+    return redirect( route('warehousearea.index') );
+
+  }
+
+  protected function delete(Request $request){
+
+    DB::table('wms_m_area')->where('wh_area_id', $request->wh_area_id)->update([
+
+      'is_delete' => 'Y',
+      'del_by'    => Auth::user()->username,
+      'del_date'  => date('Y-m-d H:i:s')
+
+    ]);
+
+    toastr()->success('Delete Success');
+
+    return redirect( route('warehousearea.index') );
+
+  }
 
 }

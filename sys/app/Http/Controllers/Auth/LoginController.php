@@ -14,8 +14,18 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = '/';
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/dashboard';
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -24,11 +34,13 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // return Hash::make($request->password);
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        if ( Auth::attempt(['username' => $request->username, 'password' => $request->password]) ) {
+            
             echo "Loading. . . ";
             return redirect('/dashboard');
+
         } else {
-            Session::flash('flash_danger', 'Username atau Password salah.');
+            Session::flash('flash_danger');
             // echo "Salah";
             return redirect()->back();
         }

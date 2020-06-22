@@ -6,129 +6,123 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DataTables;
 use Auth;
+use DB;
 
 use App\Model\Customer\Customermaster;
 
 class CustomerMasterController extends Controller
 {
-    
-    //
-	
-	function datatables(Request $request)
-    {   
-        $data = array();
-
-        $is_delete = $request->is_delete;
-
-        $customers = Customermaster::where(['is_delete'=> $is_delete])->get();
-
-        $no = 1;
-        foreach($customers as $customer)
-        {
-            $customer->no = $no++;
-
-            if($is_delete == 'N')
-            {
-                $customer->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$customer->cust_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$customer->cust_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $customer->aksi = '<a href="#" class="btn-restore" data-id = "' .$customer->cust_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
-
-            $data[] = $customer;
-        }
-
-        return datatables::of($data)->escapecolumns([])->make(true);
-    
-    }
 
 
-    function index()
-    {
-        return view('customer.customermaster');
-    }
+  function index()
+  {
+    $customers = Customermaster::where(['is_delete'=> 'N'])->get();
+    $no = 1;
 
+    return view('customer.all', compact('customers', 'no'));
+  }
 
-    function simpan(Request $request)
-    {
-        $customer = new Customermaster;
+  public function add(){
 
-        $customer->cust_id             = $request->cust_id;
-        $customer->cust_name           = $request->cust_name;
-        $customer->cust_address        = $request->cust_address;
-        $customer->cust_phone          = $request->cust_phone;
-        $customer->cust_email          = $request->cust_email;
-        $customer->cust_fax            = $request->cust_fax;
-        $customer->cust_person         = $request->cust_person;
-        $customer->cust_contact_person = $request->cust_contact_person;
-        $customer->cust_remarks        = $request->cust_remarks;
+    $customer = Customermaster::where(['is_delete' => 'N'])->get();
 
-        
-        $customer->input_by    = Auth::user()->username;
-        $customer->input_date  = date('Y-m-d H:i:s');
-        $customer->save();
+    $cust_id = DB::select(" SELECT count(*)+1 as 'a' FROM wms_m_customer ");
+    $cust_id = sprintf('%04s', $cust_id[0]->a);
 
-        toastr()->success('Customer saved successfully');
+    return view('customer.add', compact('customer', 'cust_id'));
 
-        return response()->json(['status' => 'success', 'customer' => $customer], 200);
-    }
+  }
 
-    protected function edit($id)
-    {
-        $customer = Customermaster::findOrFail($id);
+  public function save(Request $request){
 
-        return response()->json(['status' => 'success', 'customer' => $customer], 200);
-    }
+    $Customermaster = new Customermaster;
 
-    protected function perbarui($id, Request $request)
-    {
-        
-        $customer = Customermaster::findOrFail($id);
-        
-        $customer->cust_id             = $request->cust_id;
-        $customer->cust_name           = $request->cust_name;
-        $customer->cust_address        = $request->cust_address;
-        $customer->cust_phone          = $request->cust_phone;
-        $customer->cust_email          = $request->cust_email;
-        $customer->cust_fax            = $request->cust_fax;
-        $customer->cust_person         = $request->cust_person;
-        $customer->cust_contact_person = $request->cust_contact_person;
-        $customer->cust_remarks        = $request->cust_remarks;
+    $Customermaster->cust_id             = $request->cust_id;
+    $Customermaster->cust_name           = $request->cust_name;
+    $Customermaster->cust_phone          = $request->cust_phone;
+    $Customermaster->cust_email          = $request->cust_email;
+    $Customermaster->cust_fax            = $request->cust_fax;
+    $Customermaster->cust_person         = $request->cust_person;
+    $Customermaster->cust_contact_person = $request->cust_contact_person;
+    $Customermaster->cust_remarks        = $request->cust_remarks;
+    $Customermaster->npwp_no             = $request->npwp_no;
 
-        $customer->edit_by   = Auth::user()->username;
-        $customer->edit_date = date('Y-m-d H:i:s');
-        $customer->update();
+    $Customermaster->input_by   = Auth::user()->username;
+    $Customermaster->input_date = date('Y-m-d H:i:s');
+    $Customermaster->save();
 
-        toastr()->success('Customer edit successfully');
+    toastr()->success('Customer created successfully');
 
-        return response()->json(['status' => 'success'], 200);
-    }
+    return redirect( route('customermaster.index') );
 
-    protected function hapus($id)
-    {
-        $customer = Customermaster::findOrFail($id);
+  }
 
-        $customer->del_by    = Auth::user()->username;
-        $customer->del_date  = date('Y-m-d H:i:s');
-        $customer->is_delete = "Y";
-        $customer->update();
+  public function edit(Customermaster $customermaster){
 
-        toastr()->success('Deleted success');
-        return response()->json(['status' => 'success'], 200);
-    }
+    return view('customer.edit', compact('customermaster'));
 
-    protected function restore($id)
-    {
-        $customer = Customermaster::findOrFail($id);
+  }
 
-        $customer->update(['is_delete' => 'N']);
+  public function update(Request $request){
 
-        toastr()->success('Resored success');
-        return response()->json(['status' => 'success', 200]);
-    }
+    $insert = DB::table('wms_m_customer')->where('cust_id', $request->cust_id)->update([
+
+    'cust_id'             => $request->cust_id,
+    'cust_name'           => $request->cust_name,
+    'cust_phone'          => $request->cust_phone,
+    'cust_email'          => $request->cust_email,
+    'cust_fax'            => $request->cust_fax,
+    'cust_person'         => $request->cust_person,
+    'cust_contact_person' => $request->cust_contact_person,
+    'cust_remarks'        => $request->cust_remarks,
+    'npwp_no'             => $request->npwp_no,
+
+      'edit_by'   => Auth::user()->username,
+      'edit_date' => date('Y-m-d H:i:s')
+
+    ]);
+
+    toastr()->success('Edit successfully');
+
+    return redirect( route('customermaster.index') );
+  }
+
+  // public function inventory_monitor(Customermaster $customermaster){
+
+  //   $cust_id = $customermaster->cust_id;
+
+  //   $inventory_monitor = DB::select("
+  //     SELECT
+  //     wms_m_item.item_number,
+  //     wms_m_item.item_name,
+  //     wms_m_item.item_description,
+  //     wms_m_uom.uom_code,
+  //     wms_m_uom.uom_id,
+  //     wms_m_item_cat.item_cat_id,
+  //     wms_m_item_cat.item_cat_name,
+  //     wms_m_customer.cust_id,
+  //     wms_m_customer.cust_name,
+  //     wms_m_item.begining_stock,
+  //     wms_m_item.ending_stock,
+  //     wms_m_item.item_rmk,
+  //     wms_m_item.spq_item,
+  //     wms_m_item.spq_item*wms_t_loading_detail.loading_qty as 'b',
+  //     wms_m_item.item_status,
+  //     sum(wms_t_putaway_detail.putaway_qty) as 'a',
+  //     wms_t_loading_detail.loading_qty
+  //     FROM wms_m_item 
+  //     INNER JOIN wms_m_item_cat USING (item_cat_id)
+  //     INNER JOIN wms_m_customer USING (cust_id)
+  //     INNER JOIN wms_m_uom USING (uom_id)
+  //     LEFT JOIN wms_t_putaway_detail USING (item_number)
+  //     LEFT JOIN wms_t_loading_detail USING (item_number)
+  //     where wms_m_item.is_delete = 'N'
+  //     and wms_m_item.cust_id = '$cust_id'
+  //     group by wms_m_item.item_number
+  //   ");
+
+  //   return view('customer.inventory_monitor', compact('customermaster','inventory_monitor'));
+
+  // }
 
 }

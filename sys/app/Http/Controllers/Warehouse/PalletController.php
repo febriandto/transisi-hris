@@ -9,103 +9,79 @@ use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
+use DB;
 
 class PalletController extends Controller
 {
 
     public function index()
     {
-        return view('warehouse.pallet');
+        $pallet = Pallet::where('is_delete', 'N')->get();
+
+        return view('pallet.all', compact('pallet'));
     }
 
-    function datatables(Request $request)
-    {   
-        $data = array();
+    public function add()
+    { 
 
-        $is_delete = $request->is_delete;
+        return view('pallet.add');
 
-        $pallets = Pallet::where(['is_delete'=> $is_delete])->get();
-
-        $no = 1;
-        foreach($pallets as $pallet)
-        {
-            $pallet->no = $no++;
-            if($is_delete == 'N')
-            {
-                $pallet->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$pallet->pallet_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$pallet->pallet_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $pallet->aksi = '<a href="#" class="btn-restore" data-id = "' .$pallet->pallet_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
-
-            // change date format to day month year
-            $pallet->input_date = date("d/m/Y", strtotime($pallet->input_date));
-
-            $data[] = $pallet;
-        }
-
-        return datatables::of($data)->escapecolumns([])->make(true);
     }
 
-    function simpan(Request $request)
-    {
+    protected function save(Request $request){
+
         $pallet = new Pallet;
 
-        $pallet->pallet_id   = $request->pallet_id;
         $pallet->pallet_name = $request->pallet_name;
         $pallet->pallet_desc = $request->pallet_desc;
-        
+
         $pallet->input_by   = Auth::user()->username;
         $pallet->input_date = date('Y-m-d H:i:s');
         $pallet->save();
 
-        return response()->json(['status' => 'success', 'pallet' => $pallet], 200);
+        toastr()->success('Pallet created successfully');
+
+        return redirect( route('pallet.index') );
+
     }
 
-  protected function edit($id)
-  {
-        $pallet = Pallet::findOrFail($id);
-        return response()->json(['status' => 'success', 'pallet' => $pallet], 200);
-  }
+    public function edit(pallet $pallet)
+    {
+        return view('pallet.edit', compact('pallet'));
+    }
 
-  protected function perbarui($id, Request $request)
-  {
-        
-        $pallet = Pallet::findOrFail($request->pallet_id_before);
+    protected function update(Request $request){
 
-        $pallet->pallet_id   = $request->pallet_id;
-        $pallet->pallet_name = $request->pallet_name;
-        $pallet->pallet_desc = $request->pallet_desc;
-        
-        $pallet->edit_by   = Auth::user()->username;
-        $pallet->edit_date = date('Y-m-d H:i:s');
+        DB::table('wms_m_pallet')->where('pallet_id', $request->pallet_id)->update([
 
-        $pallet->update();
+          'pallet_name' => $request->pallet_name,
+          'pallet_desc' => $request->pallet_desc,
 
-        return response()->json(['status' => 'success'], 200);
-  }
+          'edit_by'   => Auth::user()->username,
+          'edit_date' => date('Y-m-d H:i:s')
 
-  protected function hapus($id)
-  {
-        $pallet = Pallet::findOrFail($id);
-            
-        $pallet->del_by   = Auth::user()->username;
-        $pallet->del_date = date('Y-m-d H:i:s');
-        $pallet->is_delete   = "Y";
-        $pallet->update();
+      ]);
 
-        return response()->json(['status' => 'success'], 200);
-  }
+        toastr()->success('Edit successfully');
 
-  protected function restore($id)
-  {
-        $pallet = Pallet::findOrFail($id);
-        $pallet->update(['is_delete' => 'N']);
-        return response()->json(['status' => 'success', 200]);
-  }
+        return redirect( route('pallet.index') );
+
+    }
+
+    protected function delete(Request $request){
+
+        DB::table('wms_m_pallet')->where('pallet_id', $request->pallet_id)->update([
+
+          'is_delete' => 'Y',
+          'del_by'    => Auth::user()->username,
+          'del_date'  => date('Y-m-d H:i:s')
+
+      ]);
+
+        toastr()->success('Delete Success');
+
+        return redirect( route('pallet.index') );
+
+    }
 
 }

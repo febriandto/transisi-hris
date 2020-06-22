@@ -9,105 +9,86 @@ use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
+use DB;
 
 class WarehousePlantController extends Controller
 {
 
     public function index()
     {
-        return view('warehouse.plant');
+        $warehouse_plant = DB::select(" SELECT * FROM wms_m_plant WHERE is_delete = 'N' ");
+
+        return view('warehouse_plant.all', compact('warehouse_plant'));
     }
 
-    function datatables(Request $request)
-    {   
-        $data = array();
+    public function add(){ 
 
-        $is_delete = $request->is_delete;
+        $plant_id = DB::select(" SELECT count(*)+1 as 'a' FROM wms_m_plant ");
+        $plant_id = sprintf('%04s', $plant_id[0]->a);
 
-        $wh_plants = Warehouseplant::where(['is_delete'=> $is_delete])->get();
+        return view('warehouse_plant.add', compact('plant_id'));
 
-        $no = 1;
-        foreach($wh_plants as $wh_plant)
-        {
-            $wh_plant->no = $no++;
-            if($is_delete == 'N')
-            {
-                $wh_plant->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$wh_plant->plant_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$wh_plant->plant_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $wh_plant->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh_plant->plant_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
-
-            // change date format to day month year
-            $wh_plant->input_date = date("d/m/Y", strtotime($wh_plant->input_date));
-
-            $data[] = $wh_plant;
-        }
-
-        return datatables::of($data)->escapecolumns([])->make(true);
     }
 
-    function simpan(Request $request)
-    {
+    protected function save(Request $request){
+
         $Warehouseplant = new Warehouseplant;
 
         $Warehouseplant->plant_id          = $request->plant_id;
         $Warehouseplant->plant_name        = $request->plant_name;
         $Warehouseplant->plant_description = $request->plant_description;
         $Warehouseplant->plant_rmk         = $request->plant_rmk;
-        
-        $Warehouseplant->input_by       = Auth::user()->username;
-        $Warehouseplant->input_date     = date('Y-m-d H:i:s');
+
+        $Warehouseplant->input_by   = Auth::user()->username;
+        $Warehouseplant->input_date = date('Y-m-d H:i:s');
         $Warehouseplant->save();
 
-        return response()->json(['status' => 'success', 'warehouseplant' => $Warehouseplant], 200);
+        toastr()->success('Warehouse Plant created successfully');
+
+        return redirect( route('warehouseplant.index') );
+
     }
 
-  protected function edit($id)
-  {
-        $Warehouseplant = Warehouseplant::findOrFail($id);
-        return response()->json(['status' => 'success', 'warehouseplant' => $Warehouseplant], 200);
-  }
+    public function edit(Warehouseplant $warehouseplant){
 
-  protected function perbarui($id, Request $request)
-  {
+        return view('warehouse_plant.edit', compact('warehouseplant'));
+
+    }
+
+    protected function update(Request $request){
+
+        DB::table('wms_m_plant')->where('plant_id', $request->plant_id)->update([
+
+        'plant_name'        => $request->plant_name,
+        'plant_description' => $request->plant_description,
+        'plant_rmk'         => $request->plant_rmk,
         
-        $Warehouseplant = Warehouseplant::findOrFail($request->plant_id_before);
+        'edit_by'   => Auth::user()->username,
+        'edit_date' => date('Y-m-d H:i:s')
 
-        $Warehouseplant->plant_id          = $request->plant_id;  
-        $Warehouseplant->plant_name        = $request->plant_name;
-        $Warehouseplant->plant_description = $request->plant_description;
-        $Warehouseplant->plant_rmk         = $request->plant_rmk;
-        
-        $Warehouseplant->edit_by        = Auth::user()->username;
-        $Warehouseplant->edit_date      = date('Y-m-d H:i:s');
+    ]);
 
-        $Warehouseplant->update();
+        toastr()->success('Edit successfully');
 
-        return response()->json(['status' => 'success'], 200);
-  }
+        return redirect( route('warehouseplant.index') );
 
-  protected function hapus($id)
-  {
-        $warehouseplant = Warehouseplant::findOrFail($id);
-            
-        $warehouseplant->del_by   = Auth::user()->username;
-        $warehouseplant->del_date = date('Y-m-d H:i:s');
-        $warehouseplant->is_delete   = "Y";
-        $warehouseplant->update();
+    }
 
-        return response()->json(['status' => 'success'], 200);
-  }
+    protected function delete(Request $request){
 
-  protected function restore($id)
-  {
-        $warehouseplant = Warehouseplant::findOrFail($id);
-        $warehouseplant->update(['is_delete' => 'N']);
-        return response()->json(['status' => 'success', 200]);
-  }
+        DB::table('wms_m_plant')->where('plant_id', $request->plant_id)->update([
+
+            'is_delete' => 'Y',
+            'del_by'    => Auth::user()->username,
+            'del_date'  => date('Y-m-d H:i:s')
+
+        ]);
+
+        toastr()->success('Delete Success');
+
+        return redirect( route('warehouseplant.index') );
+
+    }
+
 
 }

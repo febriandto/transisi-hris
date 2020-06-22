@@ -1,4 +1,3 @@
-{{-- <?php use App\Model\Barang; ?> --}}
 @extends('dashboard')
 
 @section('title')

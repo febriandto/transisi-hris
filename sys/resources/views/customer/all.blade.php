@@ -4,120 +4,71 @@
 Customer Master
 @stop
 
+@section('breadcrumb')
+<span class="small">Customer Master</span>
+@stop
+
 @section('content')
 <div class="card">
   <div class="card-header d-flex">
-    <i class="fa fa-barcode mr-2 mt-1"></i> <strong>Data Customer Master</strong>
-    <div class="card-header-actions ml-auto">
-      @if (Route::current()->getName() == 'customermaster.index')
-      <a href="#" class="card-header-action btn-tambah" title="Tambah"><i class="fa fa-plus"></i> Tambah</a>
-      @endif
+    <div class="card-header-actions">
+      <a href="{{ route('customermaster.add') }}" class="card-header-action btn-tambah btn-primary btn btn-sm btn" title="Tambah">
+      	<i class="fa fa-plus mr-2"></i> Add New
+      </a>
     </div>
   </div>
   <div class="card-body">
-    <table class="table table-striped table-bordered display nowrap" width="100%">
+    <table class="table table-bordered table-hover table-striped table-sm" width="100%" id="dataTables" id="dataTables">
+      
       <thead>
         <tr>
-          <th width="30">No.</th>
+          <th width="5%">No.</th>
           <th>ID</th>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Phone</th>
+          <th>Cust Name</th>
           <th>Email</th>
+          <th>Phone</th>
           <th>Fax</th>
-          <th>Person</th>
-          <th>Contact Person</th>
           <th>Remarks</th>
-          <th>Input By</th>
-          <th>Input Date</th>
-          <th width="50">Aksi</th>
+          <th width="50">Action</th>
         </tr>
       </thead>
-      <tbody></tbody>
+
+      <tbody>
+      	@foreach ($customers as $customer)
+      	<tr>
+      		<td class="text-center">{{ $no++ }}</td>
+      		<td>{{ $customer['cust_id'] }}</td>
+      		<td>{{ $customer['cust_name'] }}</td>
+      		<td>{{ $customer['cust_email'] }}</td>
+      		<td>{{ $customer['cust_phone'] }}</td>
+      		<td>{{ $customer['cust_fax'] }}</td>
+      		<td>{{ $customer['cust_remarks'] }}</td>
+      		<td>
+						<button type="button" style="font-size: small;" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Action</button>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="{{ route('customermaster.edit', $customer['cust_id']) }}">
+									<i class="fa fa-edit mr-2"></i> Edit
+								</a>
+							</li>
+							<li>
+{{-- 								<a href="{{ route('customermaster.inventory_monitor', $customer['cust_id']) }}">
+									<i class="fa fa-pallet mr-2"></i>Inventory Monitori
+								</a> --}}
+							</li>
+						</ul>
+					</td>
+      	</tr>
+      	@endforeach
+      </tbody>
     </table>
   </div>
 </div>
 
-<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      {!! Form::open(['method' => 'POST']) !!}
-      <div class="modal-body">
-
-        <div class="form-group row area">
-          <div class="col-6">
-            <label for="cust_id">Customer ID<span class="text-danger">*</span></label>
-              {!! Form::text('cust_id', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-              {!! Form::hidden('cust_id_before', null, ['required', 'class' => 'form-control', 'placeholder' => ''])
-              !!}
-          </div>
-          <div class="col-6">
-            <label for="cust_name">Name<span class="text-danger">*</span></label>
-              {!! Form::text('cust_name', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-        </div>
-
-        <div class="form-group row area">
-          <div class="col-12">
-            <label for="cust_address">Address<span class="text-danger">*</span></label>
-            {!! Form::text('cust_address', null, ['required', 'class' => 'form-control']) !!}
-          </div>
-        </div>
-
-        <div class="form-group row area">
-          <div class="col-4">
-            <label for="cust_phone">Phone<span class="text-danger">*</span></label>
-            {!! Form::text('cust_phone', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-
-          <div class="col-4">
-            <label for="cust_email">Email<span class="text-danger">*</span></label>
-            {!! Form::text('cust_email', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-
-          <div class="col-4">
-            <label for="cust_fax">Fax<span class="text-danger">*</span></label>
-            {!! Form::text('cust_fax', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-        </div>
-
-        <div class="form-group row area">
-          <div class="col-6">
-            <label for="cust_person">Customer Person<span class="text-danger">*</span></label>
-            {!! Form::text('cust_person', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-          <div class="col-6">
-            <label for="cust_contact_person">Contact Person<span class="text-danger">*</span></label>
-            {!! Form::text('cust_contact_person', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-        </div>
-
-        <div class="form-group row area">
-          <div class="col-12">
-            <label for="cust_remarks">Customer Remarks<span class="text-danger">*</span></label>
-            {!! Form::text('cust_remarks', null, ['required', 'class' => 'form-control', 'placeholder' => '']) !!}
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
-      </div>
-      {!! Form::close() !!}
-    </div>
-  </div>
-</div>
 @stop
 
 @section('script')
-<script type="text/javascript">
+{{-- <script type="text/javascript">
   var action;
 
 		var modalForm = $('#modalForm');
@@ -155,15 +106,10 @@ Customer Master
 					{'data': 'no'},
 					{'data': 'cust_id'},
 					{'data': 'cust_name'},
-					{'data': 'cust_address'},
-					{'data': 'cust_phone'},
           {'data': 'cust_email'},
+					{'data': 'cust_phone'},
           {'data': 'cust_fax'},
-          {'data': 'cust_person'},
-          {'data': 'cust_contact_person'},
           {'data': 'cust_remarks'},
-					{'data': 'input_by'},
-					{'data': 'input_date'},
 					{'data': 'aksi'}
 				],
 				responsive: true
@@ -279,5 +225,5 @@ Customer Master
 
 			window.location.hash = "master-data";
 		});
-</script>
+</script> --}}
 @stop

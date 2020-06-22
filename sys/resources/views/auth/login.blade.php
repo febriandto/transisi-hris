@@ -17,12 +17,12 @@
   <div class="col-md-3">&nbsp;</div>
   <div class="col-md-6">
     @if(Session::has('flash_danger'))
-      <div class="alert alert-danger text-center">Username/Password salah</div>
+      <div class="alert alert-danger text-center" style="position: absolute;width: 96%;">Username dan Password tidak cocok</div>
     @endif
     <div class="login_area">
     <div class="row">
       <div class="col-md-7" style="border-right: 1px solid rgba(1,1,1,0.1)">
-        <div>
+        <div style="margin-top: 10%;">
           <img src="/wms_update/dist/img/login.svg" alt="" width="80%" >
         </div>
       </div>
@@ -32,7 +32,7 @@
           <img src="/wms_update/dist/img/logo_sincrum2.png" style="width: 100%">
          
         </h2> 
-        <h5> Loging in to your account.</h5><hr>
+        <h6 class="mt-2"> Loging in to your account.</h6><hr>
           <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="form-group has-feedback">
@@ -43,28 +43,15 @@
               <input type="password" name="password" class="form-control" placeholder="Password">
               <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="checkbox icheck">
-                  <!-- <label>
-                    <input type="checkbox"> Remember Me
-                  </label> -->
-                </div>
-              </div>
 
-              <!-- /.col -->
-              <div class="col-xs-6">
-                <button type="submit" name="login" class="btn btn-primary btn-block btn-flat">
-                  <i class="fa fa-lock"></i> &nbsp; Sign In</button>
-              </div>
-              <!-- /.col -->
+            <div class="float-right">
+              <button type="submit" name="login" class="btn btn-primary btn-block btn-flat btn-sm">
+                <i class="fa fa-lock"></i> &nbsp; Sign In
+              </button>
             </div>
-            <!-- <a href="#"> Forgot Password? </a> -->
 
           </form>
       </div>
-
-      <div class="col-md-3"></div>
 
     </div>
 

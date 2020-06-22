@@ -10,7 +10,7 @@
     <title>WELCOME BOARD | PLEASE LOGIN</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/AdminLTE.min.css') }} ">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }} ">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/animate.css') }}">

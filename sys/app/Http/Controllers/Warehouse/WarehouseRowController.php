@@ -7,117 +7,83 @@ use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
+use DB;
 
 use App\Model\Warehouse\Warehouserow;
-use App\Model\Warehouse\Warehousearea;
 
 class WarehouseRowController extends Controller
 {
-    public function index()
-    {
-      $warehousearea = Warehousearea::where('is_delete', 'N')->pluck('wh_area_name', 'wh_area_id');
+  public function index(){
 
-    	return view('warehouse.row', compact('warehousearea'));
-    }
+    $warehouse_row = DB::select(" SELECT * FROM wms_m_row WHERE is_delete = 'N' ");
 
-    function datatables(Request $request)
-    {   
-        $data = array();
+    return view('warehouse_row.all', compact('warehouse_row'));
 
-        $is_delete = $request->is_delete;
+  }
 
-        $wh_row = Warehouserow::where(['is_delete'=> $is_delete])->get();
+ public function add(){ 
 
-        $no = 1;
-        foreach($wh_row as $wh_row)
-        {
-            $wh_row->no = $no++;
-            if($is_delete == 'N')
-            {
-                $wh_row->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$wh_row->wh_row_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$wh_row->wh_row_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $wh_row->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh_row->wh_row_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
+  return view('warehouse_row.add');
 
-            // change date format to day month year
-            $wh_row->input_date = date("d/m/Y", strtotime($wh_row->input_date));
-            
-            // relation to table wms_m_warehousezone
-            $wh_row->wh_area_name = $wh_row->warehousearea->wh_area_name;
+}
 
-            $data[] = $wh_row;
-        }
+protected function save(Request $request){
 
-        return datatables::of($data)->escapecolumns([])->make(true);
+  $Warehouserow = new Warehouserow;
+
+  $Warehouserow->wh_row_id   = $request->wh_row_id;
+  $Warehouserow->wh_row_name = $request->wh_row_name;
+  $Warehouserow->wh_row_desc = $request->wh_row_desc;
+  
+  $Warehouserow->input_by    = Auth::user()->username;
+  $Warehouserow->input_date  = date('Y-m-d H:i:s');
+  $Warehouserow->save();
+
+  toastr()->success('Warehouse Row created successfully');
+
+  return redirect( route('warehouserow.index') );
+
+}
+
+public function edit(Warehouserow $warehouserow){
+
+  return view('warehouse_row.edit', compact('warehouserow'));
+
+}
+
+protected function update(Request $request){
+
+  DB::table('wms_m_row')->where('wh_row_id', $request->wh_row_id)->update([
     
-  }
+    'wh_row_name' => $request->wh_row_name,
+    'wh_row_desc' => $request->wh_row_desc,
 
-  function simpan(Request $request)
-  {
-		$Warehouserow = new Warehouserow;
+    'edit_by'   => Auth::user()->username,
+    'edit_date' => date('Y-m-d H:i:s')
 
-		$Warehouserow->wh_row_id 	 = $request->wh_row_id;
-		$Warehouserow->wh_row_name = $request->wh_row_name;
-		$Warehouserow->wh_row_desc = $request->wh_row_desc;
-		$Warehouserow->wh_area_id  = $request->wh_area_id;
+  ]);
 
-		$Warehouserow->input_by   = Auth::user()->username;
-		$Warehouserow->input_date = date('Y-m-d H:i:s');
-    $Warehouserow->save();
+  toastr()->success('Edit successfully');
 
-    return response()->json(['status' => 'success', 'warehouserow' => $Warehouserow], 200);
-  }
+  return redirect( route('warehouserow.index') );
 
-  protected function edit($id)
-  {
-    $Warehouserow = Warehouserow::findOrFail($id);
-    return response()->json(['status' => 'success', 'warehouserow' => $Warehouserow], 200);
-  }
+}
 
-  protected function perbarui($id, Request $request)
-  {
-        
-  	$Warehouserow = Warehouserow::findOrFail($request->wh_row_id_before);
+protected function delete(Request $request){
 
-		$Warehouserow->wh_row_id   = $request->wh_row_id;  
-		$Warehouserow->wh_row_name = $request->wh_row_name;
-		$Warehouserow->wh_area_id  = $request->wh_area_id;
-		$Warehouserow->wh_row_desc = $request->wh_row_desc;
-		
-		$Warehouserow->input_by    = Auth::user()->username;
-		$Warehouserow->input_date  = date('Y-m-d H:i:s');
-		
-		$Warehouserow->edit_by     = Auth::user()->username;
-		$Warehouserow->edit_date   = date('Y-m-d H:i:s');
+  DB::table('wms_m_row')->where('wh_row_id', $request->wh_row_id)->update([
 
-    $Warehouserow->update();
+    'is_delete' => 'Y',
+    'del_by'    => Auth::user()->username,
+    'del_date'  => date('Y-m-d H:i:s')
 
-    return response()->json(['status' => 'success'], 200);
-  }
+  ]);
 
-  protected function hapus($id)
-  {
-    $warehouserow = Warehouserow::findOrFail($id);
-        
-    $warehouserow->del_by   = Auth::user()->username;
-    $warehouserow->del_date = date('Y-m-d H:i:s');
-    $warehouserow->is_delete   = "Y";
-    $warehouserow->update();
+  toastr()->success('Delete Success');
 
-    return response()->json(['status' => 'success'], 200);
-  }
+  return redirect( route('warehouserow.index') );
 
-  protected function restore($id)
-  {
-    $warehouserow = Warehouserow::findOrFail($id);
-    $warehouserow->update(['is_delete' => 'N']);
-    return response()->json(['status' => 'success', 200]);
-  }
+}
 
 
 }

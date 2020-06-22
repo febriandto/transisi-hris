@@ -2,121 +2,90 @@
 
 namespace App\Http\Controllers\Warehouse;
 
+use App\Model\Warehouse\Warehousezone;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
-
-use App\Model\Warehouse\Warehousezone;
-use App\Model\Warehouse\Warehouse;
+use DB;
 
 class WarehouseZoneController extends Controller
 {
+
     public function index()
-    {   
-        $warehouse = Warehouse::where('is_delete', 'N')->pluck('wh_name', 'wh_id');
-
-    	return view('warehouse.zone', compact('warehouse'));
-    }
-
-    function datatables(Request $request)
-    {   
-        $data = array();
-
-        $is_delete = $request->is_delete;
-
-        $wh_zone2 = Warehousezone::where(['is_delete'=> $is_delete])->get();
-
-        $no = 1;
-        foreach($wh_zone2 as $wh_zone)
-        {
-            $wh_zone->no = $no++;
-            
-            if($is_delete == 'N')
-            {
-                $wh_zone->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$wh_zone->wh_zone_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$wh_zone->wh_zone_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $wh_zone->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh_zone->wh_zone_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
-
-            // change date format to day month year
-            $wh_zone->input_date = date("d/m/Y", strtotime($wh_zone->input_date));
-
-            // relation to table wms_m_warehouse
-            $wh_zone->wh_name = $wh_zone->warehouse->wh_name;
-
-            $data[] = $wh_zone;
-        }
-
-        return datatables::of($data)->escapecolumns([])->make(true);
-    
-    }
-
-    function simpan(Request $request)
     {
+        $warehouse_zone = DB::select(" SELECT * FROM wms_m_zone where is_delete = 'N' ");
+
+        return view('warehouse_zone.all', compact('warehouse_zone'));
+    }
+
+    public function add()
+    { 
+
+        return view('warehouse_zone.add');
+
+    }
+
+    protected function save(Request $request)
+    {
+
         $Warehousezone = new Warehousezone;
         
-        $Warehousezone->wh_zone_id   = $request->wh_zone_id;
-        $Warehousezone->wh_zone_name = $request->wh_zone_name;
-        $Warehousezone->wh_id        = $request->wh_id;
-        $Warehousezone->wh_zone_desc = $request->wh_zone_desc;
-
-		$Warehousezone->input_by   = Auth::user()->username;
-		$Warehousezone->input_date = date('Y-m-d H:i:s');
+        $Warehousezone->zone_id      = $request->zone_id;
+        $Warehousezone->zone_name    = $request->zone_name;
+        $Warehousezone->zone_desc    = $request->zone_desc;
+        
+        $Warehousezone->input_by   = Auth::user()->username;
+        $Warehousezone->input_date = date('Y-m-d H:i:s');
         $Warehousezone->save();
 
-        return response()->json(['status' => 'success', 'warehousezone' => $Warehousezone], 200);
+        toastr()->success('Warehouse Zone created successfully');
+
+        return redirect( route('warehousezone.index') );
+
     }
 
-    protected function hapus($id)
+    public function edit(Warehousezone $warehousezone)
     {
-        $warehousezone = Warehousezone::findOrFail($id);
+        return view('warehouse_zone.edit', compact('warehousezone'));
+    }
+
+    protected function update(Request $request){
+
+        DB::table('wms_m_zone')->where('zone_id', $request->zone_id)->update([
+
+        'zone_id'     => $request->zone_id,
+        'zone_name'   => $request->zone_name,
+        'zone_desc'   => $request->zone_desc,
         
-        $warehousezone->del_by    = Auth::user()->username;
-        $warehousezone->del_date  = date('Y-m-d H:i:s');
-        $warehousezone->is_delete = "Y";
-        $warehousezone->update();
+        'edit_by'   => Auth::user()->username,
+        'edit_date' => date('Y-m-d H:i:s')
 
-        return response()->json(['status' => 'success'], 200);
+    ]);
+
+        toastr()->success('Edit successfully');
+
+        return redirect( route('warehousezone.index') );
+
     }
 
-    protected function edit($id)
-    {
-        $Warehousezone = Warehousezone::findOrFail($id);
-        return response()->json(['status' => 'success', 'warehousezone' => $Warehousezone], 200);
+    protected function delete(Request $request){
+
+        DB::table('wms_m_zone')->where('zone_id', $request->zone_id)->update([
+
+            'is_delete' => 'Y',
+            'del_by'    => Auth::user()->username,
+            'del_date'  => date('Y-m-d H:i:s')
+
+        ]);
+
+        toastr()->success('Delete Success');
+
+        return redirect( route('warehousezone.index') );
+
     }
 
-    protected function perbarui($id, Request $request)
-    {
-        
-        $Warehousezone = Warehousezone::findOrFail($request->wh_zone_id_before);
 
-        $Warehousezone->wh_zone_id   = $request->wh_zone_id;
-        $Warehousezone->wh_zone_name = $request->wh_zone_name;
-        $Warehousezone->wh_id        = $request->wh_id;
-        $Warehousezone->wh_zone_desc = $request->wh_zone_desc;
-
-		$Warehousezone->input_by   = Auth::user()->username;
-		$Warehousezone->input_date = date('Y-m-d H:i:s');
-
-		$Warehousezone->edit_by   = Auth::user()->username;
-		$Warehousezone->edit_date = date('Y-m-d H:i:s');
-
-        $Warehousezone->update();
-
-        return response()->json(['status' => 'success'], 200);
-    }
-
-    protected function restore($id)
-    {
-        $warehousezone = Warehousezone::findOrFail($id);
-        $warehousezone->update(['is_delete' => 'N']);
-        return response()->json(['status' => 'success', 200]);
-    }
 }

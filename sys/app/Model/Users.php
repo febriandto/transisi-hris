@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Users extends Model
 {
 
- protected $table = 'users';
+ protected $table = 'wms_m_user';
 
- protected $primaryKey = 'id';
+ protected $primaryKey = 'id_user';
 
  public $timestamps = false;
 
- protected $guarded = ['id'];
+ protected $guarded = ['id_user'];
 
 }
 

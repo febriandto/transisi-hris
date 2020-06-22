@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tally extends Model
 {
-		protected $table      = 	'wms_t_tally';
+		protected $table      = 'wms_t_tally';
 		
-		protected $primaryKey = 'tally_id';
+		protected $primaryKey = 'tally_no';
 		
 		protected $keyType    = 'string';
 		
 		public $timestamps    = false;
 		
-		protected $guarded    = ['tally_id'];
+		protected $guarded    = [];
 }

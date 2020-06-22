@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Model\Tally\Tally;
 use App\Http\Controllers\Controller;
 

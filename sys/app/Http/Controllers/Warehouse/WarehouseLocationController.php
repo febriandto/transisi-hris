@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers\Warehouse;
 
-use App\Model\Warehouse\Warehouse;
-use App\Model\Warehouse\Warehouserow;
-use App\Model\Warehouse\Warehousearea;
-use App\Model\Warehouse\Warehousezone;
-use App\Model\Warehouse\Warehouseplant;
-
 use App\Model\Warehouse\Warehouselocation;
 
 use Illuminate\Http\Request;
@@ -15,132 +9,148 @@ use App\Http\Controllers\Controller;
 
 use DataTables;
 use Auth;
+use DB;
 
 class WarehouseLocationController extends Controller
 {
 
     public function index()
     {   
-        $warehousename  = Warehouse::where('is_delete', 'N')->pluck('wh_name', 'wh_id');
-        $warehouserow   = Warehouserow::where('is_delete', 'N')->pluck('wh_row_name', 'wh_row_id');
-        $warehouseplant = Warehouseplant::where('is_delete', 'N')->pluck('plant_name', 'plant_id');
-        $warehousezone  = Warehousezone::where('is_delete', 'N')->pluck('wh_zone_name', 'wh_zone_id');
-        $warehousearea  = Warehousearea::where('is_delete', 'N')->pluck('wh_area_name', 'wh_area_id');
+        $location  = Warehouselocation::where('is_delete', 'N')->get();
 
-        return view('warehouse.location', compact('warehousename', 'warehouserow', 'warehouseplant', 'warehousezone', 'warehousearea'));
+        return view('location.all', compact('location'));
     }
 
-    function datatables(Request $request)
-    {   
-        $data = array();
+    public function add()
+    { 
+        $warehouse_plant  = DB::select(" SELECT * FROM wms_m_plant WHERE is_delete = 'N' ");
+        $warehouse_name   = DB::select(" SELECT * FROM wms_m_warehouse WHERE is_delete = 'N' ");
+        $warehouse_bin    = DB::select(" SELECT * FROM wms_m_bin WHERE is_delete = 'N' ");
+        $warehouse_row    = DB::select(" SELECT * FROM wms_m_row WHERE is_delete = 'N' ");
+        $warehouse_column = DB::select(" SELECT * FROM wms_m_column WHERE is_delete = 'N' ");
+        $warehouse_level  = DB::select(" SELECT * FROM wms_m_level WHERE is_delete = 'N' ");
+        $warehouse_zone   = DB::select(" SELECT * FROM wms_m_zone WHERE is_delete = 'N' ");
 
-        $is_delete = $request->is_delete;
+        $location_id = DB::select(" SELECT count(*)+1 as 'a' FROM wms_m_location ");
+        $location_id = sprintf('%04s', $location_id[0]->a);
 
-        $wh_locations = Warehouselocation::where(['is_delete'=> $is_delete])->get();
+        return view('location.add', 
+            compact(
+                'warehouse_plant',
+                'warehouse_name',
+                'warehouse_bin',
+                'warehouse_row',
+                'warehouse_column',
+                'warehouse_level',
+                'warehouse_zone',
+                'location_id'
+            )
+        );
 
-        $no = 1;
-        foreach($wh_locations as $wh_location)
-        {
-            $wh_location->no = $no++;
-            if($is_delete == 'N')
-            {
-                $wh_location->aksi = '
-                    <a href="#" class="btn-edit" data-id ="'.$wh_location->location_id.'"><i class="fa fa-edit"></i></a>&nbsp;
-                    <a href="#" class="btn-hapus" data-id = "'.$wh_location->location_id.'"><i class="fa fa-trash"></i></a>
-                ';
-            }
-            else
-            {
-                $wh_location->aksi = '<a href="#" class="btn-restore" data-id = "' .$wh_location->location_id. '"> <i class="fa fa-undo"></i> </a>';
-            }
-
-            // warehouse plant
-            $wh_location->plant_name   = $wh_location->warehouseplant->plant_name;
-            // warehouse name
-            $wh_location->wh_name      = $wh_location->warehouse->wh_name;
-            // warehouse zone
-            $wh_location->wh_zone_name = $wh_location->warehousezone->wh_zone_name;
-            // warehouse area
-            $wh_location->wh_area_name = $wh_location->warehousearea->wh_area_name;
-            // warehouse row
-            $wh_location->wh_row_name  = $wh_location->warehouserow->wh_row_name;
-
-            // change date format to day month year
-            $wh_location->input_date = date("d/m/Y", strtotime($wh_location->input_date));
-
-            $data[] = $wh_location;
-        }
-
-        return datatables::of($data)->escapecolumns([])->make(true);
     }
 
-    function simpan(Request $request)
+    protected function save(Request $request){
+
+        $Location = new Warehouselocation;
+
+        $Location->location_id   = $request->location_id;
+        $Location->location_code = $request->location_code;
+        $Location->location_name = $request->location_name;
+        $Location->location_desc = $request->location_desc;
+        $Location->wh_area_id    = $request->wh_area_id;
+        $Location->zone_id       = $request->zone_id;
+        $Location->plant_id      = $request->plant_id;
+        $Location->wh_row_id     = $request->wh_row_id;
+        $Location->bin_loc_id    = $request->bin_loc_id;
+        $Location->level_id      = $request->level_id;
+        $Location->col_id        = $request->col_id;
+        $Location->location_rmk  = $request->location_rmk;
+        $Location->pallet_id     = $request->pallet_id;
+        $Location->location_fill = $request->location_fill;
+
+        $Location->input_by   = Auth::user()->username;
+        $Location->input_date = date('Y-m-d H:i:s');
+        $Location->save();
+
+        toastr()->success('Location created successfully');
+
+        return redirect( route('location.index') );
+
+    }
+
+    public function edit(Warehouselocation $location)
     {
-        $wh_location = new Warehouselocation;
 
-        $wh_location->location_id   = $request->location_id;
-        $wh_location->location_name = $request->location_name;
-        $wh_location->location_rmk  = $request->location_rmk;
-
-        $wh_location->wh_id      = $request->wh_id;
-        $wh_location->wh_zone_id = $request->wh_zone_id;
-        $wh_location->wh_row_id  = $request->wh_row_id;
-        $wh_location->wh_area_id = $request->wh_area_id;
-        $wh_location->plant_id   = $request->plant_id;
+        $warehouse_plant  = DB::select(" SELECT * FROM wms_m_plant WHERE is_delete = 'N' ");
         
-        $wh_location->input_by   = Auth::user()->username;
-        $wh_location->input_date = date('Y-m-d H:i:s');
-        $wh_location->save();
+        $warehouse_area   = DB::select(" SELECT * FROM wms_m_area WHERE is_delete = 'N' ");
 
-        return response()->json(['status' => 'success', 'warehouselocation' => $wh_location], 200);
+        $warehouse_bin    = DB::select(" SELECT * FROM wms_m_bin WHERE is_delete = 'N' ");
+        $warehouse_row    = DB::select(" SELECT * FROM wms_m_row WHERE is_delete = 'N' ");
+        $warehouse_column = DB::select(" SELECT * FROM wms_m_column WHERE is_delete = 'N' ");
+        $warehouse_level  = DB::select(" SELECT * FROM wms_m_level WHERE is_delete = 'N' ");
+        $warehouse_zone   = DB::select(" SELECT * FROM wms_m_zone WHERE is_delete = 'N' ");
+
+        return view('location.edit', 
+            compact(
+                'location',
+                'warehouse_plant',
+                'warehouse_area',
+                'warehouse_bin',
+                'warehouse_row',
+                'warehouse_column',
+                'warehouse_level',
+                'warehouse_zone'
+            )
+        );
+
     }
 
-  protected function edit($id)
-  {
-        $wh_location = Warehouselocation::findOrFail($id);
-        return response()->json(['status' => 'success', 'warehouselocation' => $wh_location], 200);
-  }
+    protected function update(Request $request){
 
-  protected function perbarui($id, Request $request)
-  {
-        
-        $wh_location = Warehouselocation::findOrFail($request->location_id_before);
+        DB::table('wms_m_location')->where('location_id', $request->location_id)->update([
 
-        $wh_location->location_id   = $request->location_id;
-        $wh_location->location_name = $request->location_name;
-        $wh_location->location_rmk  = $request->location_rmk;
+            'location_code' => $request->location_code,
+            'location_name' => $request->location_name,
+            'location_desc' => $request->location_desc,
+            'wh_area_id'    => $request->wh_area_id,
+            'zone_id'       => $request->zone_id,
+            'plant_id'      => $request->plant_id,
+            'wh_row_id'     => $request->wh_row_id,
+            'bin_loc_id'    => $request->bin_loc_id,
+            'level_id'      => $request->level_id,
+            'col_id'        => $request->col_id,
+            'location_rmk'  => $request->location_rmk,
+            'pallet_id'     => $request->pallet_id,
+            'location_fill' => $request->location_fill,
 
-        $wh_location->wh_id      = $request->wh_id;
-        $wh_location->wh_zone_id = $request->wh_zone_id;
-        $wh_location->wh_row_id  = $request->wh_row_id;
-        $wh_location->wh_area_id = $request->wh_area_id;
-        $wh_location->plant_id   = $request->plant_id;
-        
-        $wh_location->edit_by        = Auth::user()->username;
-        $wh_location->edit_date      = date('Y-m-d H:i:s');
+            'edit_by'    => Auth::user()->username,
+            'edit_date'  => date('Y-m-d H:i:s')
 
-        $wh_location->update();
+        ]);
 
-        return response()->json(['status' => 'success'], 200);
-  }
+        toastr()->success('Edit successfully');
 
-  protected function hapus($id)
-  {
-        $wh_location = Warehouselocation::findOrFail($id);
-            
-        $wh_location->del_by   = Auth::user()->username;
-        $wh_location->del_date = date('Y-m-d H:i:s');
-        $wh_location->is_delete   = "Y";
-        $wh_location->update();
+        return redirect( route('location.index') );
 
-        return response()->json(['status' => 'success'], 200);
-  }
+    }
 
-  protected function restore($id)
-  {
-        $wh_location = Warehouselocation::findOrFail($id);
-        $wh_location->update(['is_delete' => 'N']);
-        return response()->json(['status' => 'success', 200]);
-  }
+    protected function delete(Request $request){
+
+        DB::table('wms_m_location')->where('location_id', $request->location_id)->update([
+
+          'is_delete' => 'Y',
+          'del_by'    => Auth::user()->username,
+          'del_date'  => date('Y-m-d H:i:s')
+
+      ]);
+
+        toastr()->success('Delete Success');
+
+        return redirect( route('location.index') );
+
+    }
+
+
 
 }

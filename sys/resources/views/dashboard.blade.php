@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
@@ -8,7 +8,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Syncrum Warehouse | V.001 Alpha</title>
+  <title>Syncrum Warehouse | V.002 Alpha</title>
 
   <!-- Tell the browser to be responsive to screen width -->
 
@@ -22,7 +22,7 @@
 
   <!-- Font Awesome -->
 
-  <link rel="stylesheet" href="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.css') }}">
 
   <!-- Ionicons -->
 
@@ -99,25 +99,21 @@
 
         <a class="nav-link" data-toggle="dropdown" href="#">
 
-          <i class="fas fa-ellipsis-h"></i>
+          {{ Auth::user()->level }}
 
         </a>
 
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="transform: translate3d(-65%, 0px, 0px) !important;">
 
         <a href="{{ route('profile.index') }}" class="dropdown-item">
 
             <i class="fas fa-user mr-2"></i> Profile 
-
-          <span class="float-right text-muted text-sm">{{ Auth::user()->name }}</span>
 
           </a>
 
           <a href="{{ route('logout') }}" class="dropdown-item">
 
             <i class="fas fa-sign-out-alt mr-2"></i> Logout
-
-            <span class="float-right text-muted text-sm">Logout Your Account</span>
 
           </a>
 
@@ -135,7 +131,7 @@
 
   <!-- Main Sidebar Container -->
 
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="overflow-x: hidden;">
 
     <!-- Brand Logo -->
 
@@ -150,25 +146,6 @@
     <!-- Sidebar -->
 
     <div class="sidebar" style="overflow-y: hidden;padding: 0 !important;background:#222d32;">
-
-      <!-- Sidebar user (optional) -->
-
-      <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-
-        <div class="image">
-
-          <img src="{{ asset('sys/vendor/almasaeed2010/adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
-
-        </div>
-
-        <div class="info">
-
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
-
-        </div>
-
-      </div> -->
-
 
 
       <!-- Sidebar Menu -->
@@ -187,95 +164,59 @@
 
               <i class="nav-icon fas fa-tachometer-alt"></i>
 
-              <p>DASHBOARD </p>
+              <p>Dashboard </p>
 
             </a>
 
           </li>
 
           <li class="nav-header">INBOUND </li>
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-clipboard-check nav-icon"></i>
+          <li class="nav-item 
+          {{ request()->is('tally') ? 'menu-open' : '' }}
+          {{ request()->is('tally/*') ? 'menu-open' : '' }}
+          ">
+            <a href="#" class="nav-link">
+              <i class="fas fa fa-industry nav-icon"></i>
               <p>Tally<i class="right fas fa-angle-left"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('tally.index') }}" class="nav-link {{ request()->is('tally') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>All Tally Data</p>
+                  <p>All Tally</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('tally.add') }}" class="nav-link {{ request()->is('tally/add') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Create Tally</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Upload Tally</p>
+                  <p>Add New Tally</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
+          <li class="nav-item
+            {{ request()->is('putaway') ? 'menu-open' : '' }}
+            {{ request()->is('putaway/*') ? 'menu-open' : '' }}
+          ">
+            <a href="#" class="nav-link">
               <i class="fas fa-dolly nav-icon"></i>
               <p>Put Away<i class="right fas fa-angle-left"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('putaway.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Do PutAway</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Monitoring</p>
+                  <p>Put Away Data</p>
                 </a>
               </li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-file nav-icon"></i>
-              <p>Report<i class="right fas fa-angle-left"></i></p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format A</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format B</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format C</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
 
           <li class="nav-header">INVENTORY</li>
           <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="fas fa-clipboard-list nav-icon"></i>
               <p>Inventory Transaction<i class="right fas fa-angle-left"></i></p>
             </a>
@@ -304,156 +245,80 @@
             </ul>
           </li>
 
-
-
-
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-file nav-icon"></i>
-              <p>Report<i class="right fas fa-angle-left"></i></p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format A</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format B</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format C</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-
           <li class="nav-header">OUTBOUND</li>
-          <!-- <li class="nav-item">
-            <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-              <i class="fas fa-tachometer-alt nav-icon"></i>
-              <p>Dashboard</p>
-            </a>
-          </li> -->
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-clipboard-check nav-icon"></i>
+
+          <li class="nav-item
+            {{ request()->is('picking') ? 'menu-open' : '' }}
+            {{ request()->is('picking/*') ? 'menu-open' : '' }}
+          ">
+            <a href="#" class="nav-link">
+              <i class="fas fa-bookmark nav-icon"></i>
               <p>Picking<i class="right fas fa-angle-left"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('picking.index') }}" class="nav-link {{ request()->is('picking') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>All Picking Data</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('picking.add') }}" class="nav-link {{ request()->is('picking/add') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Create Picking</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Upload Picking</p>
                 </a>
               </li>
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-dolly nav-icon"></i>
+          <li class="nav-item
+            {{ request()->is('loading') ? 'menu-open' : '' }}
+            {{ request()->is('loading/*') ? 'menu-open' : '' }}
+          ">
+            <a href="#" class="nav-link">
+              <i class="fa fa-cart-arrow-down nav-icon"></i>
               <p>Loading<i class="right fas fa-angle-left"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('loading.index') }}" class="nav-link {{ request()->is('loading') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Do Loading</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Monitoring</p>
+                  <p>Loading Data</p>
                 </a>
               </li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-file nav-icon"></i>
-              <p>Report<i class="right fas fa-angle-left"></i></p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format A</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format B</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Report Format C</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
 
           <li class="nav-header" id="master-data">MASTER DATA</li>
-          <li class="nav-item">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-pallet nav-icon"></i>
+          <li class="nav-item
+            {{ request()->is('item') ? 'menu-open' : '' }}
+            {{ request()->is('item/category') ? 'menu-open' : '' }}
+            {{ request()->is('uom') ? 'menu-open' : '' }}
+          ">
+            <a href="#" class="nav-link">
+              <i class="fas fa-server nav-icon"></i>
               <p>Item Master<i class="right fas fa-angle-left"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/barang') ? 'active' : '' }}">
+                <a href="{{ route('itemmaster.index') }}" class="nav-link {{ request()->is('item') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Item Master</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Item Branch</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('itemcategory.index') }}" class="nav-link {{ request()->is('item/category') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Item Categories</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('uom.index') }}" class="nav-link {{ request()->is('uom') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>UOM (Unit of Measure)</p>
+                  <p>UOM (Unit)</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -467,9 +332,10 @@
 
           <li class="nav-item
           {{ request()->is('customer/master') ? 'menu-open' : '' }}
+          {{ request()->is('customer/address') ? 'menu-open' : '' }}
           ">
-            <a href="../../index2.html" class="nav-link">
-              <i class="fas fa-user nav-icon"></i>
+            <a href="#" class="nav-link">
+              <i class="fas fa-users nav-icon"></i>
               <p>Customer<i class="right fas fa-angle-left"></i></p>
             </a>
 
@@ -481,9 +347,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('barang.index') }}" class="nav-link {{ request()->is('master/ad/barang') ? 'active' : '' }}">
+                <a href="{{ route('customeraddress.index') }}" class="nav-link {{ request()->is('customer/address') ? 'active' : '' }}">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>User Customer</p>
+                  <p>Customer Address</p>
                 </a>
               </li>
             </ul>
@@ -491,69 +357,151 @@
 
           {{-- menuopen effect --}}
           <li class="nav-item 
+            
             {{ request()->is('warehouse/name') ? 'menu-open' : '' }}
-            {{ request()->is('warehouse/zone') ? 'menu-open' : '' }}
-            {{ request()->is('warehouse/area') ? 'menu-open' : '' }}
-            {{ request()->is('warehouse/row') ? 'menu-open' : '' }}
-            {{ request()->is('warehouse/bin') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/name/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/name/edit') ? 'menu-open' : '' }}
+
             {{ request()->is('warehouse/plant') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/plant/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/plant/edit') ? 'menu-open' : '' }}
+
+            {{ request()->is('warehouse/zone') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/zone/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/zone/edit') ? 'menu-open' : '' }}
+
+            {{ request()->is('warehouse/area') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/area/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/area/edit') ? 'menu-open' : '' }}
+
+            {{ request()->is('warehouse/row') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/row/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/row/edit') ? 'menu-open' : '' }}
+
+            {{ request()->is('warehouse/bin') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/bin/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/bin/edit') ? 'menu-open' : '' }}
+
             {{ request()->is('warehouse/location') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/location/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/location/edit') ? 'menu-open' : '' }}
+
             {{ request()->is('warehouse/pallet') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/pallet/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/pallet/edit') ? 'menu-open' : '' }}
+
           ">
-            <a href="../../index2.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="fas fa-warehouse nav-icon"></i>
               <p>Warehouse Master<i class="right fas fa-angle-left"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('warehouseplant.index') }}" class="nav-link {{ request()->is('warehouse/plant') ? 'active' : '' }}">
+                <a href="{{ route('warehouseplant.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/plant') ? 'active' : '' }}
+                  {{ request()->is('warehouse/plant/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/plant/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Warehouse Plant</p>
                 </a>
               </li>
               <li class="nav-item ">
-                <a href="{{ route('warehouse.index') }}" class="nav-link {{ request()->is('warehouse/name') ? 'active' : '' }}">
+                <a href="{{ route('warehousename.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/name') ? 'active' : '' }}
+                  {{ request()->is('warehouse/name/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/name/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Warehouse Name</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('warehousezone.index') }}" class="nav-link {{ request()->is('warehouse/zone') ? 'active' : '' }}">
+                <a href="{{ route('warehousezone.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/zone') ? 'active' : '' }}
+                  {{ request()->is('warehouse/zone/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/zone/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Warehouse Zone</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('warehousearea.index') }}" class="nav-link {{ request()->is('warehouse/area') ? 'active' : '' }}">
+                <a href="{{ route('warehousearea.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/area') ? 'active' : '' }}
+                  {{ request()->is('warehouse/area/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/area/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Warehouse Area</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('warehouserow.index') }}" class="nav-link {{ request()->is('warehouse/row') ? 'active' : '' }}">
+                <a href="{{ route('warehouserow.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/row') ? 'active' : '' }}
+                  {{ request()->is('warehouse/row/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/row/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Warehouse Row</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('warehousebin.index') }}" class="nav-link {{ request()->is('warehouse/bin') ? 'active' : '' }}">
+                <a href="{{ route('warehousebin.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/bin') ? 'active' : '' }}
+                  {{ request()->is('warehouse/bin/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/bin/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Warehouse Bin</p>
                 </a>
               </li>
+              
               <li class="nav-item">
-                <a href="{{ route('warehouselocation.index') }}" class="nav-link {{ request()->is('warehouse/location') ? 'active' : '' }}">
-                  <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Location</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('pallet.index') }}" class="nav-link {{ request()->is('warehouse/pallet') ? 'active' : '' }}">
+                <a href="{{ route('pallet.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/pallet') ? 'active' : '' }}
+                  {{ request()->is('warehouse/pallet/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/pallet/edit') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Pallet ID</p>
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a href="{{ route('level.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/level') ? 'active' : '' }}
+                  {{ request()->is('warehouse/level/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/level/edit') ? 'active' : '' }}
+                ">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Row Level ID</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('column.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/column') ? 'active' : '' }}
+                  {{ request()->is('warehouse/column/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/column/edit') ? 'active' : '' }}
+                ">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Row Column ID</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('location.index') }}" class="nav-link 
+                  {{ request()->is('warehouse/location') ? 'active' : '' }}
+                  {{ request()->is('warehouse/location/add') ? 'active' : '' }}
+                  {{ request()->is('warehouse/location/edit') ? 'active' : '' }}
+                ">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Warehouse Location</p>
+                </a>
+              </li>
+
             </ul>
           </li>
 
@@ -595,13 +543,20 @@
 
           <div class="col-sm-6">
 
-            <h1>@yield('title')</h1>
+            <h1 style="font-size: 16px;font-weight: 400;">@yield('title')</h1>
 
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-6 text-right align-self-center">
 
-            @yield('breadcrumb')
+            <span class="small">
+              <a href="{{ route('beranda.index') }}"> Beranda </a>
+              <span class="text-muted mx-1"> > </span>
+            </span>
+
+            <span class="small">
+              @yield('breadcrumb')
+            </span>
 
           </div>
 
@@ -718,6 +673,12 @@
       }
 
     });
+
+    $(document).ready( function () {
+      
+      $('#dataTables').DataTable();
+
+    } );
   </script>
 
 
