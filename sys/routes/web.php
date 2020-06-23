@@ -205,14 +205,33 @@ Route::group(['middlewareGroup' => ['web']], function () {
 					Route::post('/save', 'Loading\LoadingController@save')->name('loading.save');
 
 					// Loading Detail
-					Route::get('/detail', 'Loading\LoadingController@detail')->name('loading.detail');
+					Route::get('/detail/{loading}', 'Loading\LoadingController@detail')->name('loading.detail');
 
 					// Edit
 					Route::get('/edit/{loading}', 'Loading\LoadingController@edit')->name('loading.edit');
 
 					// Update
-					Route::post('/detail', 'Loading\LoadingController@update')->name('loading.update');
+					Route::post('/edit', 'Loading\LoadingController@update')->name('loading.update');
 
+					// Finish Loading
+					Route::post('/finish_loading', 'Loading\LoadingController@finish_loading')->name('loading.finish_loading');
+
+					// edit item
+					Route::get('/edit_item/{loading_detail}', 'Loading\LoadingController@edit_item')->name('loading.edit_item');
+
+					// update item
+					Route::post('/edit_item', 'Loading\LoadingController@update_item')->name('loading.update_item');
+
+					// delete item
+					Route::post('/delete_item', 'Loading\LoadingController@delete_item')->name('loading.delete_item');
+
+					// Do Loading
+					Route::get('/do_loading/{picking_detail}/{loading}', 'Loading\LoadingController@do_loading')->name('loading.do_loading');
+
+					// Do loading save
+					Route::post('/do_loading', 'Loading\LoadingController@do_loading_save')->name('loading.do_loading_save');
+
+					// Finish Loading
 				});
 
 

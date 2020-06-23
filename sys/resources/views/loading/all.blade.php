@@ -32,7 +32,7 @@ Loading Documents
 				<tr>
 					<td class="text-center">{{ $no+1 }}</td>
 					<td>
-						<a href="#">
+						<a href="{{ route('loading.detail', $data->loading_no) }}">
 							{{ $data->loading_no }}
 						</a>
 					</td>
