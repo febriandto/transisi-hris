@@ -130,7 +130,7 @@ Work With Loading Detail | View Data
 									<td>{{ $items->uom_code }}</td>
 									<td>{{ $items->loading_qty }}</td>
 									<td>
-										<button type="button" style="font-size: small;width: 100%; <?php if($items->loading_status=='finish_loading'){echo 'none';}?>" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Option</button>
+										<button @if($data->loading_status == "finish_loading") {{"disabled"}} @endif type="button" style="font-size: small;width: 100%; <?php if($items->loading_status=='finish_loading'){echo 'none';}?>" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Option</button>
 										<ul class="dropdown-menu">
 											<li>
 												<a href="{{ route('loading.edit_item', $items->loading_detail_id) }}"><i class="fa fa-edit mr-2 text-info"></i> Edit</a>
@@ -153,58 +153,60 @@ Work With Loading Detail | View Data
 					</div>
 				</div>
 
-				<br>
-				<div class="row mt-5" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px 0px;">
-						<div class="col-md-6 align-self-center">
-							<span>List Picking Number untuk Loading sheet Nomor : <b>{{ $data->picking_no }}</b> </span>
+				<div class="@if($data->loading_status == "finish_loading") {{"d-none"}} @endif">
+					<br>
+					<div class="row mt-5" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px 0px;">
+							<div class="col-md-6 align-self-center">
+								<span>List Picking Number untuk Loading sheet Nomor : <b>{{ $data->picking_no }}</b> </span>
+							</div>
+							<div class="col-md-6">
 						</div>
-						<div class="col-md-6">
 					</div>
-				</div>
 
-				<table class="table table-sm table-bordered table-striped table-hover mt-2">
+					<table class="table table-sm table-bordered table-striped table-hover mt-2">
 
-					<thead>
-						<tr>
-							<th width="6%">No</th>
-							<th>Item Number</th>
-							<th>Item Name</th>
-							<th>Unit</th>
-							<th>Qty</th>
-							<th>Open Qty</th>
-							<th>SPQ Item</th>
-							<th>Detail Qty</th>
-							<th>Status</th>
-							<th>Option</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						@foreach( $picking_items as $no => $items )
+						<thead>
 							<tr>
-								<td align="center"><?php echo $no+1; ?></td>
-								<td><?php echo $items->item_number?></td>
-								<td><?php echo $items->item_name?></td>
-								<td><?php echo $items->uom_code?></td>               
-								<td><?php echo $items->picking_qty?></td>                   
-								<td><?php echo $items->picking_open_qty?></td>                   
-								<td><?php echo $items->spq_item?></td>                   
-								<td><?php echo $items->picking_open_detail_qty?></td>                   
-								<td>
-									<?php echo $items->picking_detail_status?> <br>
-									<span style="font-style: italic;">
-										<?php echo date('d F Y',strtotime($items->picking_detail_status_date));?>
-									</span>
-								</td>                                 
-								<td align="center">
-									<a class="btn btn-default btn-xs flat" 
-									href="{{ route('loading.do_loading', ['picking_detail' => $items->picking_detail_id, 'loading' => $data->loading_no]) }}"> 
-									<i class="fa fa-check"></i> &nbsp; Loading</a>
-								</td>
+								<th width="6%">No</th>
+								<th>Item Number</th>
+								<th>Item Name</th>
+								<th>Unit</th>
+								<th>Qty</th>
+								<th>Open Qty</th>
+								<th>SPQ Item</th>
+								<th>Detail Qty</th>
+								<th>Status</th>
+								<th>Option</th>
 							</tr>
-							@endforeach
-						</tbody>
-					</table>
+						</thead>
+
+						<tbody>
+							@foreach( $picking_items as $no => $items )
+								<tr>
+									<td align="center"><?php echo $no+1; ?></td>
+									<td><?php echo $items->item_number?></td>
+									<td><?php echo $items->item_name?></td>
+									<td><?php echo $items->uom_code?></td>               
+									<td><?php echo $items->picking_qty?></td>                   
+									<td><?php echo $items->picking_open_qty?></td>                   
+									<td><?php echo $items->spq_item?></td>                   
+									<td><?php echo $items->picking_open_detail_qty?></td>                   
+									<td>
+										<?php echo $items->picking_detail_status?> <br>
+										<span style="font-style: italic;">
+											<?php echo date('d F Y',strtotime($items->picking_detail_status_date));?>
+										</span>
+									</td>                                 
+									<td align="center">
+										<a class="btn btn-default btn-xs flat" 
+										href="{{ route('loading.do_loading', ['picking_detail' => $items->picking_detail_id, 'loading' => $data->loading_no]) }}"> 
+										<i class="fa fa-check"></i> &nbsp; Loading</a>
+									</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+				</div>
 
 			</div>
 		</div>

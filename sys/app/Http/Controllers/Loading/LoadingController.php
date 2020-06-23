@@ -390,6 +390,25 @@ class LoadingController extends Controller
 
 	}
 
+	protected function finish_loading( Request $request )
+	{
+
+		DB::table("wms_t_loading")->where("loading_no", $request->loading_no)->update([
+
+			'loading_status' => 'finish_loading',
+
+			'edit_by'   => Auth::user()->username,
+			'edit_date' => date('Y-m-d H:i:s')
+
+
+		]);
+
+		toastr()->success("Loading Finished");
+
+		return redirect()->back();
+
+	}
+
 }
 
 ?>
