@@ -377,7 +377,7 @@ Route::group(['middlewareGroup' => ['web']], function () {
 					Route::group(['prefix' => 'level'], function(){
 	        	Route::get('/', 'Warehouse\LevelController@index')->name('level.index');
 	        	Route::get('/add', 'Warehouse\LevelController@add')->name('level.add');
-	        	Route::post('/add', 'Warehouse\LevelController@save')->name('level.save');
+	        	Route::post('/save', 'Warehouse\LevelController@save')->name('level.save');
 	        	Route::get('/edit/{level}', 'Warehouse\LevelController@edit')->name('level.edit');
 	        	Route::post('/edit', 'Warehouse\LevelController@update')->name('level.update');
 	        	Route::post('/', 'Warehouse\LevelController@delete')->name('level.delete');

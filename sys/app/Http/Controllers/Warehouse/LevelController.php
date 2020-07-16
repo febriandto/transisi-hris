@@ -31,7 +31,7 @@ class LevelController extends Controller
     protected function save(Request $request){
 
         $Level = new Level;
-
+        
         $Level->level_name = $request->level_name;
 
         $Level->input_by   = Auth::user()->username;

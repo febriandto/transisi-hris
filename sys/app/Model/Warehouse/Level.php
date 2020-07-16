@@ -13,5 +13,7 @@ class Level extends Model
 
     public $timestamps = false;
 
-    protected $guarded = ['level_id'];
+    protected $keyType = "string";
+
+    protected $guarded = [];
 }
