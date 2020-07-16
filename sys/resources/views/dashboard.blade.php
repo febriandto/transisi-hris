@@ -390,6 +390,10 @@
             {{ request()->is('warehouse/pallet/add') ? 'menu-open' : '' }}
             {{ request()->is('warehouse/pallet/edit') ? 'menu-open' : '' }}
 
+            {{ request()->is('warehouse/column') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/column/add') ? 'menu-open' : '' }}
+            {{ request()->is('warehouse/column/edit') ? 'menu-open' : '' }}
+
           ">
             <a href="#" class="nav-link">
               <i class="fas fa-warehouse nav-icon"></i>
@@ -550,7 +554,7 @@
           <div class="col-sm-6 text-right align-self-center">
 
             <span class="small">
-              <a href="{{ route('beranda.index') }}"> Beranda </a>
+              <a href="{{ route('beranda.dashboard') }}"> Beranda </a>
               <span class="text-muted mx-1"> > </span>
             </span>
 

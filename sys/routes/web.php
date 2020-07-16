@@ -41,8 +41,8 @@ Route::group(['middlewareGroup' => ['web']], function () {
 		// sukses login goes here
     Route::group(['middleware' => 'auth'], function () {
 
-        Route::get('/', 'BerandaController@index')->name('beranda.index');
-        Route::get('/home', 'BerandaController@index')->name('beranda.index');
+        Route::get('/', 'BerandaController@dashboard')->name('beranda.dashboard');
+        Route::get('/home', 'BerandaController@dashboard')->name('beranda.dashboard');
         Route::get('/dashboard', 'BerandaController@dashboard')->name('beranda.dashboard');
 
         // master

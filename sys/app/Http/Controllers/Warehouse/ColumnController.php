@@ -71,8 +71,8 @@ class ColumnController extends Controller
         DB::table('wms_m_column')->where('col_id', $request->col_id)->update([
 
           'is_delete' => 'Y',
-          'del_by'    => Auth::user()->username,
-          'del_date'  => date('Y-m-d H:i:s')
+          'delete_by'    => Auth::user()->username,
+          'delete_date'  => date('Y-m-d H:i:s')
 
       ]);
 

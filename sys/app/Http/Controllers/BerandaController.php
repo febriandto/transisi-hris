@@ -11,12 +11,6 @@ use DB;
 class BerandaController extends Controller
 {
 
-    public function index(){
-    	
-        return view('dashboard.home');
-
-    }
-
     public function dashboard(){
 
         $all_tally_sheet      = DB::select(" SELECT COUNT(*) AS 'a' FROM wms_t_tally WHERE is_delete = 'N' ");
