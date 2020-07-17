@@ -87,6 +87,31 @@ class CustomerMasterController extends Controller
     return redirect( route('customermaster.index') );
   }
 
+  protected function delete(Request $request){
+
+    DB::table('wms_m_customer')->where('cust_id', $request->cust_id)->update([
+
+      'is_delete' => 'Y',
+
+      'del_by'   => Auth::user()->username,
+      'del_date' => date('Y-m-d H:i:s')
+
+    ]);
+
+    toastr()->success('Delete success');
+
+    return redirect( route('customermaster.index') );
+
+  }
+
+  public function detail(Customermaster $customermaster){
+
+    $customer_address = DB::table('wms_m_customer_add')->where('cust_id', $customermaster['cust_id'])->get();
+
+    return view('customer.detail', compact('customermaster', 'customer_address'));
+
+  }
+
   // public function inventory_monitor(Customermaster $customermaster){
 
   //   $cust_id = $customermaster->cust_id;

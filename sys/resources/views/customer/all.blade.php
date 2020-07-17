@@ -52,9 +52,18 @@ Customer Master
 								</a>
 							</li>
 							<li>
-{{-- 								<a href="{{ route('customermaster.inventory_monitor', $customer['cust_id']) }}">
-									<i class="fa fa-pallet mr-2"></i>Inventory Monitori
-								</a> --}}
+								<a href="{{ route('customermaster.detail', $customer['cust_id']) }}">
+									<i class="fa fa-search mr-2"></i> Detail
+								</a>
+							</li>
+							<li>
+								<form role="form" method="POST" action="{{ route('customermaster.delete') }}">
+									{{ csrf_field() }}
+									<input type="hidden" name="cust_id" value="{{ $customer['cust_id'] }}">
+									<button type="submit" style="border: none;width: 65%;background: none;color: #777;" onclick="return confirm('Delete??');">
+										<i class="fa fa-times mr-2"></i> Delete
+									</button>
+								</form>
 							</li>
 						</ul>
 					</td>

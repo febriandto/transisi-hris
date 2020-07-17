@@ -246,6 +246,10 @@ Route::group(['middlewareGroup' => ['web']], function () {
 	            Route::get('/edit/{customermaster}', 'Customer\CustomerMasterController@edit')->name('customermaster.edit');
 	            Route::post('/edit', 'Customer\CustomerMasterController@update')->name('customermaster.update');
 
+	            Route::post('/delete', 'Customer\CustomerMasterController@delete')->name('customermaster.delete');
+
+	            Route::get('/detail/{customermaster}', 'Customer\CustomerMasterController@detail')->name('customermaster.detail');
+
 	            // Route::get('/inventory_monitor/{customermaster}', 'Customer\CustomerMasterController@inventory_monitor')->name('customermaster.inventory_monitor');
 
 	            // Customer Address

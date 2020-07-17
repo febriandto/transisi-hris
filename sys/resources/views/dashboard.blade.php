@@ -332,7 +332,9 @@
 
           <li class="nav-item
           {{ request()->is('customer/master') ? 'menu-open' : '' }}
+          {{ request()->is('customer/master/*') ? 'menu-open' : '' }}
           {{ request()->is('customer/address') ? 'menu-open' : '' }}
+          {{ request()->is('customer/address/*') ? 'menu-open' : '' }}
           ">
             <a href="#" class="nav-link">
               <i class="fas fa-users nav-icon"></i>
@@ -341,13 +343,19 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('customermaster.index') }}" class="nav-link {{ request()->is('customer/master') ? 'active' : '' }}">
+                <a href="{{ route('customermaster.index') }}" class="nav-link 
+                  {{ request()->is('customer/master') ? 'active' : '' }}
+                  {{ request()->is('customer/master') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Customer Master</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('customeraddress.index') }}" class="nav-link {{ request()->is('customer/address') ? 'active' : '' }}">
+                <a href="{{ route('customeraddress.index') }}" class="nav-link 
+                  {{ request()->is('customer/master/address') ? 'active' : '' }}
+                  {{ request()->is('customer/master/address/*') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Customer Address</p>
                 </a>
