@@ -75,7 +75,7 @@
 						<p class="font-weight-bold mb-0">Customer Address:</p>
 					</div>
 					<div class="col-md-6 text-right">
-						<a href="#" class="btn btn-primary btn-sm"> <i class="fa fa-plus mr-1"></i> Add New</a>
+						<a href="{{ route('customeraddress.add', ['cust_id' => $customermaster['cust_id']] ) }}" class="btn btn-primary btn-sm"> <i class="fa fa-plus mr-1"></i> Add New</a>
 					</div>
 				</div>
 			</div>
@@ -86,7 +86,7 @@
 						<tr>
 							<th>No</th>
 							<th>Address Name</th>
-							<th>Detail</th>
+							<th>Description</th>
 							<th>Option</th>
 						</tr>
 					</thead>
@@ -100,7 +100,7 @@
 									<button type="button" style="font-size: small;" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Action</button>
 									<ul class="dropdown-menu">
 										<li>
-											<a href="{{ route('customeraddress.edit', $address->cust_id) }}">
+											<a href="{{ route('customeraddress.edit', $address->cust_add_id) }}">
 												<i class="fa fa-edit mr-2"></i> Edit
 											</a>
 										</li>

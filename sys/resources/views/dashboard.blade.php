@@ -5,46 +5,29 @@
 <head>
 
   <meta charset="utf-8">
-
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
   <title>Syncrum Warehouse | V.002 Alpha</title>
-
   <!-- Tell the browser to be responsive to screen width -->
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
-
-
   <link rel="icon" href="{{ asset('images/icon.png') }}">
-
   <!-- Font Awesome -->
-
   <link rel="stylesheet" href="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.css') }}">
-
   <!-- Ionicons -->
-
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-
   <!-- overlayScrollbars -->
-
   <link rel="stylesheet" href="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 
   <!-- Theme style -->
-
   <link rel="stylesheet" href="{{ asset('sys/vendor/almasaeed2010/adminlte/dist/css/adminlte.css') }}">
-
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-
   <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.5/css/rowReorder.dataTables.min.css">
-
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 
   <!-- Google Font: Source Sans Pro -->
-
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Select2js -->
+  <link rel="stylesheet" href="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/select2/css/select2.css') }}">
 
   @toastr_css
 
@@ -638,36 +621,26 @@
 
   <!-- ./wrapper -->
 
-
-
   <!-- jQuery -->
-
   <script src="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/jquery/jquery.min.js') }}"></script>
 
   <!-- Bootstrap 4 -->
-
   <script src="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
   <!-- overlayScrollbars -->
-
   <script src="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 
   <!-- AdminLTE App -->
-
   <script src="{{ asset('sys/vendor/almasaeed2010/adminlte/dist/js/adminlte.min.js') }}"></script>
 
-
+  <!-- Select2js  -->
+  <script src="{{ asset('sys/vendor/almasaeed2010/adminlte/plugins/select2/js/select2.min.js') }}"></script>
 
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-
   <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
   <script src="https://cdn.datatables.net/rowreorder/1.2.5/js/dataTables.rowReorder.min.js"></script>
-
   <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-
   <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-
   <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
   
   @toastr_js
@@ -687,8 +660,14 @@
     });
 
     $(document).ready( function () {
-      
+
+      // DataTables 
       $('#dataTables').DataTable();
+
+      // Select2
+      $('.select2').select2({
+        theme: "classic"
+      });
 
     } );
   </script>

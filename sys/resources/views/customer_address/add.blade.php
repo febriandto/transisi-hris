@@ -17,10 +17,10 @@ Add New Data Customer Address
 					{{ csrf_field() }}
 					
 					<label for="item_cat_name">Customer</label>
-					<select class="form-control form-control-sm" name="cust_id">
+					<select class="form-control form-control-sm select2" name="cust_id">
 						<option> - Select -</option>
 						@foreach( $customer as $data )
-						<option value="{{ $data->cust_id }}"> {{ $data->cust_name }} </option>
+						<option value="{{ $data->cust_id }}" @if( @$_GET['cust_id'] == $data->cust_id ) {{'selected'}} @endif> {{ $data->cust_name }} </option>
 						@endforeach
 					</select>
 

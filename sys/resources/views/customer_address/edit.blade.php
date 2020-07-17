@@ -19,7 +19,7 @@ Edit Data Customer Address
 					<input type="hidden" name="cust_add_id" value="{{ $customeraddress->cust_add_id }}">
 
 					<label for="item_cat_name">Customer</label>
-					<select class="form-control form-control-sm" name="cust_id">
+					<select class="form-control form-control-sm select2" name="cust_id">
 						<option> - Select -</option>
 						@foreach( $customer as $data )
 						<option @if( $data->cust_id == $customeraddress->cust_id ) {{ 'selected' }} @endif value="{{ $data->cust_id }}"> {{ $data->cust_name }} </option>
