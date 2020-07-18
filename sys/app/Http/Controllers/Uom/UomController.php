@@ -30,30 +30,40 @@ class UomController extends Controller
 
 	public function save(Request $request){
 
-		$Uom = new Uom;
+		$findSameValue = DB::select("SELECT * FROM wms_m_uom WHERE uom_code = '$request->uom_code' ");
 
-		$Uom->uom_code  = $request->uom_code;
-		$Uom->uom_desc  = $request->uom_desc;
-		
-		$Uom->input_by   = Auth::user()->username;
-		$Uom->input_date = date('Y-m-d H:i:s');
-		$Uom->save();
+		if( $findSameValue == NULL ){
 
-		toastr()->success('UOM (Unit of Measurement) created successfully');
+			$Uom = new Uom;
+			$Uom->uom_code   = $request->uom_code;
+			$Uom->uom_desc   = $request->uom_desc;
+			$Uom->input_by   = Auth::user()->username;
+			$Uom->input_date = date('Y-m-d H:i:s');
+			$Uom->save();
 
-		return redirect( route('uom.index') );
+			toastr()->success('UOM (Unit of Measurement) created successfully');
 
-  }
+			return redirect( route('uom.index') );
 
-  public function edit(Uom $uom){
+		}else{
 
-  	return view('uom.edit', compact('uom'));
+			toastr()->error('UOM Code sudah ada!');
 
-  }
+			return redirect( route('uom.add') );
 
-  public function update(Request $request){
+		}
 
-  	$insert = DB::table('wms_m_uom')->where('uom_id', $request->uom_id)->update([
+	}
+
+	public function edit(Uom $uom){
+
+		return view('uom.edit', compact('uom'));
+
+	}
+
+	public function update(Request $request){
+
+		$insert = DB::table('wms_m_uom')->where('uom_id', $request->uom_id)->update([
 
 		'uom_code' => $request->uom_code,
 		'uom_desc' => $request->uom_desc,
@@ -61,30 +71,30 @@ class UomController extends Controller
 		'edit_by'   => Auth::user()->username,
 		'edit_date' => date('Y-m-d H:i:s')
 
-  	]);
+		]);
 
 		toastr()->success('Edit successfully');
 
 		return redirect( route('uom.index') );
 
-  }
+	}
 
-  public function delete(Request $request){
+	public function delete(Request $request){
 
-  	DB::table('wms_m_uom')->where('uom_id', $request->uom_id)->update([
+		DB::table('wms_m_uom')->where('uom_id', $request->uom_id)->update([
 
 		'is_delete' => 'Y',
 		
 		'del_by'   => Auth::user()->username,
 		'del_date' => date('Y-m-d H:i:s')
 
-  	]);
+		]);
 
 		toastr()->success('Delete successfully');
 
 		return redirect( route('uom.index') );
 
-  }
+	}
 
 }
 

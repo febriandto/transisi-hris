@@ -12,44 +12,44 @@ Add New Item Master
 
 @section('content')
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-8">
 		<div class="card">
 			<div class="card-body">
 				<form role="form" method="POST" action="{{ route('itemmaster.save') }}">
 					{{ csrf_field() }}
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label for="item_number">Item Number</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="item_number">Item Number</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="text" name="item_number" class="form-control form-control-sm" placeholder="Item Number">
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="item_name">Item Name</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="item_name">Item Name</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="text" name="item_name" class="form-control form-control-sm" placeholder="Item Name">
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="item_description">Item Description</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="item_description">Item Description</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="text" name="item_description" class="form-control form-control-sm" placeholder="Item Description">
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label for="uom_id" class="mt-2">Unit of Measurement (UOM)</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="uom_id">Unit of Measurement (UOM)</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<select class="form-control form-control-sm select2" name="uom_id">
 								<option> - Select - </option>
 								@foreach( $uom as $data )
@@ -59,11 +59,20 @@ Add New Item Master
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="item_cat_id">Item Category</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="second_uom">Second UOM</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
+							<input type="text" name="second_uom" class="form-control form-control-sm" placeholder="Second UOM">
+						</div>
+					</div>
+
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="item_cat_id">Item Category</label>
+						</div>
+						<div class="col-md-6 align-self-center">
 							<select class="form-control form-control-sm select2" name="item_cat_id">
 								<option> - Select - </option>
 								@foreach( $item_cat as $data )
@@ -73,11 +82,11 @@ Add New Item Master
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="cust_id">Customer</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="cust_id">Customer</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<select class="form-control form-control-sm select2" name="cust_id">
 								<option> - Select - </option>
 								@foreach( $customer as $data )
@@ -87,38 +96,38 @@ Add New Item Master
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label for="begining_stock">Begining Stock</label>					
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="begining_stock">Begining Stock</label>					
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="number" name="begining_stock" class="form-control form-control-sm" placeholder="0">
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="spq_item">SPQ Item</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="spq_item">SPQ Item</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="number" name="spq_item" class="form-control form-control-sm" placeholder="0">
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="spq_pallet">SPQ Pallet</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="spq_pallet">SPQ Pallet</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="number" name="spq_pallet" class="form-control form-control-sm" placeholder="0">
 						</div>
 					</div>
 
-					<div class="row mb-2 border-bottom">
-						<div class="col-md-6">
-							<label class="mt-2" for="item_rmk">Remarks</label>
+					<div class="row border-bottom">
+						<div class="col-md-6 my-3">
+							<label class="mb-0" for="item_rmk">Remarks</label>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 align-self-center">
 							<input type="text" name="item_rmk" class="form-control form-control-sm" placeholder="Remarks">
 						</div>
 					</div>

@@ -667,7 +667,9 @@
     $(document).ready( function () {
 
       // DataTables 
-      $('#dataTables').DataTable();
+      $('#dataTables').DataTable({
+        "pageLength": 25
+      });
 
       // Select2
       $('.select2').select2({

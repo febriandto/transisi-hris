@@ -76,6 +76,7 @@ class ItemMasterController extends Controller
 		$ItemMaster->item_name        = $request->item_name;
 		$ItemMaster->item_description = $request->item_description;
 		$ItemMaster->uom_id           = $request->uom_id;
+		$ItemMaster->second_uom       = $request->second_uom;
 		$ItemMaster->item_cat_id      = $request->item_cat_id;
 		$ItemMaster->cust_id          = $request->cust_id;
 		$ItemMaster->begining_stock   = $request->begining_stock;
@@ -123,6 +124,7 @@ class ItemMasterController extends Controller
 		'item_name'        => $request->item_name,
 		'item_description' => $request->item_description,
 		'uom_id'           => $request->uom_id,
+		'second_uom'       => $request->second_uom,
 		'item_cat_id'      => $request->item_cat_id,
 		'cust_id'          => $request->cust_id,
 		'begining_stock'   => $request->begining_stock,
@@ -161,7 +163,32 @@ class ItemMasterController extends Controller
 	public function detail($item_number){
 
 		$item = DB::select("
-			SELECT * FROM `wms_m_item` WHERE wms_m_item.is_delete = 'N' AND wms_m_item.item_number = '$item_number'
+			SELECT
+				`wms_m_item`.`item_number`,
+				`wms_m_item`.`item_name`,
+				`wms_m_item`.`item_description`,
+				`wms_m_uom`.`uom_code`,
+				`wms_m_uom`.`uom_id`,
+				`wms_m_item_cat`.`item_cat_id`,
+				`wms_m_item_cat`.`item_cat_name`,
+				`wms_m_customer`.`cust_id`,
+				`wms_m_customer`.`cust_name`,
+				`wms_m_item`.`begining_stock`,
+				`wms_m_item`.`ending_stock`,
+				`wms_m_item`.`item_rmk`,
+				`wms_m_item`.`spq_item`,
+				`wms_m_item`.`spq_pallet`,
+				`wms_m_item`.`item_status`,
+				`wms_m_item`.`second_uom`
+			FROM
+				`wms_m_item`
+			LEFT JOIN `wms_m_item_cat` 
+				ON (`wms_m_item`.`item_cat_id` = `wms_m_item_cat`.`item_cat_id`)
+			LEFT JOIN `wms_m_uom` 
+				ON (`wms_m_item`.`uom_id` = `wms_m_uom`.`uom_id`)
+			LEFT JOIN `wms_m_customer` 
+				ON (`wms_m_item`.`cust_id` = `wms_m_customer`.`cust_id`)
+			WHERE wms_m_item.is_delete = 'N' AND wms_m_item.item_number = '$item_number'
 		");
 
 		$item = $item[0];
