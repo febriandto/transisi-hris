@@ -24,7 +24,7 @@ Item Master
 					<th>SPQ Item</th>
 					<th>SPQ Pallet</th>
 					<th>Customer</th>
-					<th>Option</th>
+					<th width="5%">Option</th>
 				</tr>
 			</thead>
 
@@ -32,7 +32,9 @@ Item Master
 				@foreach( $item_master as $no => $item )
 				<tr>
 					<td class="text-center">{{ $no+1 }}</td>
-					<td>{{ $item->item_number }}</td>
+					<td>
+						<a href="{{ route('itemmaster.detail', $item->item_number) }}"> {{ $item->item_number }} </a>
+					</td>
 					<td>{{ $item->item_name }}</td>
 					<td>{{ $item->uom_code }}</td>
 					<td>{{ $item->spq_item }}</td>

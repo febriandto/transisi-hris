@@ -116,7 +116,14 @@
 	<div class="col-md-6">
 		<div class="card">
 			<div class="card-header">
-				<p class="font-weight-bold mb-0">List Item / Produk milik Customer :</p>
+				<div class="row">
+					<div class="col-md-6 align-self-center">
+						<p class="font-weight-bold mb-0">List Item / Produk milik Customer :</p>
+					</div>
+					<div class="col-md-6 text-right">
+						<a href="{{ route('itemmaster.add', ['cust_id' => $customermaster['cust_id']] ) }}" class="btn btn-primary btn-sm"> <i class="fa fa-plus mr-1"></i> Add New</a>
+					</div>
+				</div>
 			</div>
 			<div class="card-body">
 				<table class="table table-sm table-striped">

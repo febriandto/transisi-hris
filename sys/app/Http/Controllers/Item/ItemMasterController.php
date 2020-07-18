@@ -158,6 +158,18 @@ class ItemMasterController extends Controller
 
   }
 
+  public function detail($item_number){
+
+  	$item = DB::select("
+			SELECT * FROM `wms_m_item` WHERE wms_m_item.is_delete = 'N' AND wms_m_item.item_number = '$item_number'
+		");
+
+		$item = $item[0];
+
+  	return view( "item_master.detail", compact("item") );
+
+  }
+
 }
 
 ?>

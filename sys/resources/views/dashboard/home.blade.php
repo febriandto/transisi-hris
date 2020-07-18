@@ -26,7 +26,7 @@
 								<h2>{{ $all_tally_sheet[0]->a }}</h2>
 								<p>All Tally Sheet</p>
 							</div>
-							<a href="#">
+							<a href="{{route('tally.index')}}">
 								<div class="text-center box-dashboard-1-footer">View Detail <i class="fa fa-arrow-circle-right ml-2"></i></div>
 							</a>
 						</div>
@@ -36,7 +36,7 @@
 								<h2>{{ $entry_tally_sheet[0]->a }}</h2>
 								<p>Entry Tally Sheet</p>
 							</div>
-							<a href="#">
+							<a href="{{route('tally.index', ['filter_by_status' => 'entry'])}}">
 								<div class="text-center box-dashboard-1-footer">View Detail <i class="fa fa-arrow-circle-right ml-2"></i></div>
 							</a>
 						</div>
@@ -46,7 +46,7 @@
 								<h2>{{ $finished_tally_sheet[0]->a }}</h2>
 								<p>Finished Tally Sheet</p>
 							</div>
-							<a href="#">
+							<a href="{{route('tally.index', ['filter_by_status' => 'finish_tally'])}}">
 								<div class="text-center box-dashboard-1-footer">View Detail <i class="fa fa-arrow-circle-right ml-2"></i></div>
 							</a>
 						</div>
@@ -56,7 +56,7 @@
 								<h2>{{ $tally_sheet_closed[0]->a }}</h2>
 								<p>Tally Sheet Closed</p>
 							</div>
-							<a href="#">
+							<a href="{{route('tally.index', ['filter_by_status' => 'tally_close'])}}">
 								<div class="text-center box-dashboard-1-footer">View Detail <i class="fa fa-arrow-circle-right ml-2"></i></div>
 							</a>
 						</div>
@@ -78,7 +78,7 @@
 								<h2>{{ $all_putaway[0]->a }}</h2>
 								<p>All Putaway</p>
 							</div>
-							<a href="#">
+							<a href="{{route('putaway.index')}}">
 								<div class="text-center box-dashboard-2-footer">View Detail <i class="fa fa-arrow-circle-right ml-2"></i></div>
 							</a>
 						</div>

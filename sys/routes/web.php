@@ -277,6 +277,7 @@ Route::group(['middlewareGroup' => ['web']], function () {
 	        Route::get('/edit/{ItemMaster}', 'Item\ItemMasterController@edit')->name('itemmaster.edit');
 	        Route::post('/edit', 'Item\ItemMasterController@update')->name('itemmaster.update');
 	        Route::post('/', 'Item\ItemMasterController@delete')->name('itemmaster.delete');
+	        Route::get('/detail/{item_number}', 'Item\ItemMasterController@detail')->name('itemmaster.detail');
 
 	        // Item Category
 					Route::group(['prefix' => 'category'], function () {
@@ -289,6 +290,7 @@ Route::group(['middlewareGroup' => ['web']], function () {
 			        Route::post('/edit', 'Item\ItemCategoryController@update')->name('itemcategory.update');
 			        Route::post('/', 'Item\ItemCategoryController@delete')->name('itemcategory.delete');
 					});
+
 				});
 
 				// UOM

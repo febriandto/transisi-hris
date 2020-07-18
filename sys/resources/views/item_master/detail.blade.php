@@ -1,7 +1,7 @@
 @extends("dashboard")
 
 @section('title')
-Add New Item Master
+Item Detail
 @stop
 
 @section('breadcrumb')
@@ -15,15 +15,13 @@ Add New Item Master
 	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
-				<form role="form" method="POST" action="{{ route('itemmaster.save') }}">
-					{{ csrf_field() }}
 
 					<div class="row mb-2 border-bottom">
 						<div class="col-md-6">
 							<label for="item_number">Item Number</label>
 						</div>
 						<div class="col-md-6">
-							<input type="text" name="item_number" class="form-control form-control-sm" placeholder="Item Number">
+							<input type="text" name="item_number" class="form-control form-control-sm" value="{{$item->item_number}}" readonly>
 						</div>
 					</div>
 
@@ -32,7 +30,7 @@ Add New Item Master
 							<label class="mt-2" for="item_name">Item Name</label>
 						</div>
 						<div class="col-md-6">
-							<input type="text" name="item_name" class="form-control form-control-sm" placeholder="Item Name">
+							<input type="text" class="form-control form-control-sm" value="{{$item->item_name}}" readonly>
 						</div>
 					</div>
 
@@ -41,7 +39,7 @@ Add New Item Master
 							<label class="mt-2" for="item_description">Item Description</label>
 						</div>
 						<div class="col-md-6">
-							<input type="text" name="item_description" class="form-control form-control-sm" placeholder="Item Description">
+							<input type="text" class="form-control form-control-sm" value="{{$item->item_description}}" readonly>
 						</div>
 					</div>
 
@@ -50,12 +48,7 @@ Add New Item Master
 							<label for="uom_id" class="mt-2">Unit of Measurement (UOM)</label>
 						</div>
 						<div class="col-md-6">
-							<select class="form-control form-control-sm select2" name="uom_id">
-								<option> - Select - </option>
-								@foreach( $uom as $data )
-									<option value="{{ $data->uom_id }}">{{ $data->uom_code }}</option>
-								@endforeach
-							</select>
+							<input type="text" class="form-control form-control-sm" value="{{$item->uom_id}}" readonly>
 						</div>
 					</div>
 
@@ -64,12 +57,7 @@ Add New Item Master
 							<label class="mt-2" for="item_cat_id">Item Category</label>
 						</div>
 						<div class="col-md-6">
-							<select class="form-control form-control-sm select2" name="item_cat_id">
-								<option> - Select - </option>
-								@foreach( $item_cat as $data )
-									<option value="{{ $data->item_cat_id }}">{{ $data->item_cat_name }}</option>
-								@endforeach
-							</select>
+							<input type="text" class="form-control form-control-sm" value="{{$item->item_cat_id}}" readonly>
 						</div>
 					</div>
 
@@ -78,12 +66,7 @@ Add New Item Master
 							<label class="mt-2" for="cust_id">Customer</label>
 						</div>
 						<div class="col-md-6">
-							<select class="form-control form-control-sm select2" name="cust_id">
-								<option> - Select - </option>
-								@foreach( $customer as $data )
-									<option value="{{ $data->cust_id }}" @if( @$_GET['cust_id'] == $data->cust_id ) {{"selected"}} @endif> {{ $data->cust_name }} </option>
-								@endforeach
-							</select>
+							<input type="text" class="form-control form-control-sm" value="{{$item->cust_id}}" readonly>
 						</div>
 					</div>
 
@@ -92,7 +75,7 @@ Add New Item Master
 							<label for="begining_stock">Begining Stock</label>					
 						</div>
 						<div class="col-md-6">
-							<input type="number" name="begining_stock" class="form-control form-control-sm" placeholder="0">
+							<input type="number" class="form-control form-control-sm" value="{{$item->begining_stock}}" readonly>
 						</div>
 					</div>
 
@@ -101,7 +84,7 @@ Add New Item Master
 							<label class="mt-2" for="spq_item">SPQ Item</label>
 						</div>
 						<div class="col-md-6">
-							<input type="number" name="spq_item" class="form-control form-control-sm" placeholder="0">
+							<input type="number" class="form-control form-control-sm" value="{{$item->spq_item}}" readonly>
 						</div>
 					</div>
 
@@ -110,7 +93,7 @@ Add New Item Master
 							<label class="mt-2" for="spq_pallet">SPQ Pallet</label>
 						</div>
 						<div class="col-md-6">
-							<input type="number" name="spq_pallet" class="form-control form-control-sm" placeholder="0">
+							<input type="number" class="form-control form-control-sm" value="{{$item->spq_pallet}}" readonly>
 						</div>
 					</div>
 
@@ -119,20 +102,16 @@ Add New Item Master
 							<label class="mt-2" for="item_rmk">Remarks</label>
 						</div>
 						<div class="col-md-6">
-							<input type="text" name="item_rmk" class="form-control form-control-sm" placeholder="Remarks">
+							<input type="text" class="form-control form-control-sm" value="{{$item->item_rmk}}" readonly>
 						</div>
 					</div>
 
 					<div class="float-right">
-						<a href="{{ route('itemmaster.index') }}" class="btn btn-sm btn-outline-secondary ">
-							<i class="fa fa-times"></i> Cancel
+						<a href="{{URL::previous()}}" class="btn btn-sm btn-outline-secondary ">
+							<i class="fa fa-chevron-left mr-1"></i> Back
 						</a>
-						<button class="btn btn-sm btn-success">
-							<i class="fa fa-check"></i> Save
-						</button>
 					</div>
 
-				</form>
 			</div>
 		</div>
 	</div>

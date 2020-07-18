@@ -23,13 +23,13 @@
     <div class="row">
       <div class="col-md-7" style="border-right: 1px solid rgba(1,1,1,0.1)">
         <div style="margin-top: 10%;">
-          <img src="/wms_update/dist/img/login.svg" alt="" width="80%" >
+          <img src="{{ asset('images/login.svg') }}" alt="" width="80%" >
         </div>
       </div>
       <div class="col-md-5">
         <br><br>
         <h2 style="font-weight: bold;">  
-          <img src="/wms_update/dist/img/logo_sincrum2.png" style="width: 100%">
+          <img src="{{ asset('images/logo_sincrum2.png') }}" style="width: 100%">
          
         </h2> 
         <h6 class="mt-2"> Loging in to your account.</h6><hr>
