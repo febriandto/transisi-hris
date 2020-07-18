@@ -12,6 +12,7 @@ Item Master
 <div class="card">
 	<div class="card-header">
 		<a href="{{ route('itemmaster.add') }}" class="btn btn-primary btn-sm"> <i class="fa fa-plus mr-2"></i> Add New</a>
+		<a href="#" class="btn btn-success btn-sm"> <i class="fa fa-file-excel mr-2"></i> Export to Excel</a>
 	</div>
 	<div class="card-body">
 		<table class="table table-bordered table-hover table-striped table-sm" id="dataTables" id="dataTables">
