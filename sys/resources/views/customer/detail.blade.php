@@ -30,14 +30,10 @@
 			</div>
 
 			<div class="card-body">
-				<table class="table table-sm table-striped table-bordered">
+				<table class="table table-sm table-striped table-bordered table-hover">
 						<tr>
 							<th>Customer Name</th>
 							<td>{{ $customermaster['cust_name'] }}</td>
-						</tr>
-						<tr>
-							<th>No NPWP</th>
-							<td>{{ $customermaster['npwp_no'] }}</td>
 						</tr>
 						<tr>
 							<th>Customer Phone</th>
@@ -50,6 +46,14 @@
 						<tr>
 							<th>Customer Email</th>
 							<td>{{ $customermaster['cust_email'] }}</td>
+						</tr>
+						<tr>
+							<th>Customer Address</th>
+							<td>{{ $customermaster['cust_address'] }}</td>
+						</tr>
+						<tr>
+							<th>No NPWP</th>
+							<td>{{ $customermaster['npwp_no'] }}</td>
 						</tr>
 						<tr>
 							<th>Person in Charge (PIC)</th>
@@ -67,6 +71,10 @@
 			</div>
 		</div>
 
+	</div>
+
+
+	<div class="col-md-6">
 		{{-- Customer Address --}}
 		<div class="card">
 			<div class="card-header">
@@ -111,9 +119,11 @@
 					</tbody>
 				</table>
 			</div>
+
 		</div>
 	</div>
-	<div class="col-md-6">
+
+	<div class="col-md-12">
 		<div class="card">
 			<div class="card-header">
 				<div class="row">
@@ -126,11 +136,31 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<table class="table table-sm table-striped">
-					
+				<table class="table table-sm table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Item Number</th>
+							<th>Item Name</th>
+							<th>Unit</th>
+							<th>Stock</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach( $items as $no => $item )
+						<tr>
+							<td>{{ $no+1 }}</td>
+							<td>{{ $item->item_number }}</td>
+							<td>{{ $item->item_name }}</td>
+							<td>{{ $item->uom_code }}</td>
+							<td>{{ $item->ending_stock }}</td>
+						</tr>
+						@endforeach
+					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
+
 </div>
 @stop

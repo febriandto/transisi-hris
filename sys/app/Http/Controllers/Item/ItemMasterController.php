@@ -16,30 +16,30 @@ class ItemMasterController extends Controller
 
 		$item_master = DB::select("
 			SELECT
-			`wms_m_item`.`item_number`,
-			`wms_m_item`.`item_name`,
-			`wms_m_item`.`item_description`,
-			`wms_m_uom`.`uom_code`,
-			`wms_m_uom`.`uom_id`,
-			`wms_m_item_cat`.`item_cat_id`,
-			`wms_m_item_cat`.`item_cat_name`,
-			`wms_m_customer`.`cust_id`,
-			`wms_m_customer`.`cust_name`,
-			`wms_m_item`.`begining_stock`,
-			`wms_m_item`.`ending_stock`,
-			`wms_m_item`.`item_rmk`,
-			`wms_m_item`.`spq_item`,
-			`wms_m_item`.`spq_pallet`,
-			`wms_m_item`.`item_status`
+				`wms_m_item`.`item_number`,
+				`wms_m_item`.`item_name`,
+				`wms_m_item`.`item_description`,
+				`wms_m_uom`.`uom_code`,
+				`wms_m_uom`.`uom_id`,
+				`wms_m_item_cat`.`item_cat_id`,
+				`wms_m_item_cat`.`item_cat_name`,
+				`wms_m_customer`.`cust_id`,
+				`wms_m_customer`.`cust_name`,
+				`wms_m_item`.`begining_stock`,
+				`wms_m_item`.`ending_stock`,
+				`wms_m_item`.`item_rmk`,
+				`wms_m_item`.`spq_item`,
+				`wms_m_item`.`spq_pallet`,
+				`wms_m_item`.`item_status`
 			FROM
-			`wms_m_item`
-			INNER JOIN `wms_m_item_cat` 
-			ON (`wms_m_item`.`item_cat_id` = `wms_m_item_cat`.`item_cat_id`)
-			INNER JOIN `wms_m_uom` 
-			ON (`wms_m_item`.`uom_id` = `wms_m_uom`.`uom_id`)
-			INNER JOIN `wms_m_customer` 
-			ON (`wms_m_item`.`cust_id` = `wms_m_customer`.`cust_id`)
-			where wms_m_item.is_delete = 'N'
+				`wms_m_item`
+			LEFT JOIN `wms_m_item_cat` 
+				ON (`wms_m_item`.`item_cat_id` = `wms_m_item_cat`.`item_cat_id`)
+			LEFT JOIN `wms_m_uom` 
+				ON (`wms_m_item`.`uom_id` = `wms_m_uom`.`uom_id`)
+			LEFT JOIN `wms_m_customer` 
+				ON (`wms_m_item`.`cust_id` = `wms_m_customer`.`cust_id`)
+			WHERE wms_m_item.is_delete = 'N'
 		");
 
 		return view('item_master.all', compact('item_master'));
@@ -56,12 +56,12 @@ class ItemMasterController extends Controller
 
 		$item_cat = DB::select("
 			SELECT * FROM wms_m_item_cat
-      WHERE is_delete = 'N'
+			WHERE is_delete = 'N'
 		");
 
 		$customer = DB::select("
 			SELECT * FROM wms_m_customer
-      WHERE is_delete = 'N'
+			WHERE is_delete = 'N'
 		");
 
 		return view('item_master.add', compact('uom', 'item_cat', 'customer') );
@@ -91,11 +91,11 @@ class ItemMasterController extends Controller
 
 		return redirect( route('itemmaster.index') );
 
-  }
+	}
 
-  public function edit(ItemMaster $ItemMaster){
+	public function edit(ItemMaster $ItemMaster){
 
-  	$uom = DB::select("
+		$uom = DB::select("
 			SELECT * FROM wms_m_uom
 			WHERE is_delete = 'N' 
 			ORDER BY uom_code ASC
@@ -103,21 +103,21 @@ class ItemMasterController extends Controller
 
 		$item_cat = DB::select("
 			SELECT * FROM wms_m_item_cat
-      WHERE is_delete = 'N'
+			WHERE is_delete = 'N'
 		");
 
 		$customer = DB::select("
 			SELECT * FROM wms_m_customer
-      WHERE is_delete = 'N'
+			WHERE is_delete = 'N'
 		");
 
-  	return view('item_master.edit', compact('ItemMaster', 'uom', 'item_cat', 'customer' ));
+		return view('item_master.edit', compact('ItemMaster', 'uom', 'item_cat', 'customer' ));
 
-  }
+	}
 
-  public function update(Request $request){
+	public function update(Request $request){
 
-  	DB::table('wms_m_item')->where('item_number', $request->item_number)->update([
+		DB::table('wms_m_item')->where('item_number', $request->item_number)->update([
 
 		'item_number'      => $request->item_number,
 		'item_name'        => $request->item_name,
@@ -133,42 +133,42 @@ class ItemMasterController extends Controller
 		'edit_by'   => Auth::user()->username,
 		'edit_date' => date('Y-m-d H:i:s')
 
-  	]);
+		]);
 
 		toastr()->success('Edit successfully');
 
 		return redirect( route('itemmaster.index') );
 
-  }
+	}
 
-  public function delete(Request $request){
+	public function delete(Request $request){
 
-  	DB::table('wms_m_item')->where('item_number', $request->item_number)->update([
+		DB::table('wms_m_item')->where('item_number', $request->item_number)->update([
 
 		'is_delete'      => 'Y',
 		
 		'del_by'   => Auth::user()->username,
 		'del_date' => date('Y-m-d H:i:s')
 
-  	]);
+		]);
 
 		toastr()->success('Delete successfully');
 
 		return redirect( route('itemmaster.index') );
 
-  }
+	}
 
-  public function detail($item_number){
+	public function detail($item_number){
 
-  	$item = DB::select("
+		$item = DB::select("
 			SELECT * FROM `wms_m_item` WHERE wms_m_item.is_delete = 'N' AND wms_m_item.item_number = '$item_number'
 		");
 
 		$item = $item[0];
 
-  	return view( "item_master.detail", compact("item") );
+		return view( "item_master.detail", compact("item") );
 
-  }
+	}
 
 }
 

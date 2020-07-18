@@ -277,8 +277,10 @@
           <li class="nav-header" id="master-data">MASTER DATA</li>
           <li class="nav-item
             {{ request()->is('item') ? 'menu-open' : '' }}
+            {{ request()->is('item/*') ? 'menu-open' : '' }}
             {{ request()->is('item/category') ? 'menu-open' : '' }}
             {{ request()->is('uom') ? 'menu-open' : '' }}
+            {{ request()->is('item/category') ? 'menu-open' : '' }}
           ">
             <a href="#" class="nav-link">
               <i class="fas fa-server nav-icon"></i>
@@ -293,7 +295,10 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('itemcategory.index') }}" class="nav-link {{ request()->is('item/category') ? 'active' : '' }}">
+                <a href="{{ route('itemcategory.index') }}" class="nav-link 
+                  {{ request()->is('item/category') ? 'active' : '' }}
+                  {{ request()->is('item/category/*') ? 'active' : '' }}
+                ">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Item Categories</p>
                 </a>
