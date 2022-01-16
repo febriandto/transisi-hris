@@ -259,10 +259,10 @@
 
 
 	<!-- Jquery Library -->
+	<script src="{{asset('js/hris/jquery-3.1.1.min.js')}}"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="{{asset('js/hris/bootstrap.min.js')}}"></script>
 	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
-	<script src="{{asset('js/hris/jquery-3.1.1.min.js')}}"></script>
 	<script src="{{asset('js/hris/highcharts.js')}}"></script>
 	<script src="{{asset('js/hris/highcharts-more.js')}}"></script>
 	<script src="{{asset('js/hris/modules/exporting.js')}}"></script>

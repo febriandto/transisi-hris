@@ -32,7 +32,9 @@
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px; ">
                                 <a href="../employee/emp">
                                     <div class="shortcut_list" style="padding: 5px !important;">
-                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;"> <?php echo @$data['a'];?></h1> 
+                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
+                                            {{ $CountEmploye }}
+                                        </h1> 
                                         <p style="font-size: 14px; font-style: italic;"> &nbsp;Semua Karyawan </p>
 
                                     </div>
@@ -42,7 +44,9 @@
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px;">
                                 <a href="../employee/emp?bod=true">
                                     <div class="shortcut_list" style="padding: 5px !important">
-                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;"> <?php echo @$data['a'];?></h1> 
+                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
+                                            {{ $CountBOD }}
+                                        </h1> 
                                         <p style="font-size: 14px; font-style: italic;"> &nbsp; BOD </p>
 
                                     </div>
@@ -52,7 +56,9 @@
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px;">
                                 <a href="../employee/emp?karyawan_lokal=true">
                                     <div class="shortcut_list" style="padding: 5px !important">
-                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;"> <?php echo @$data['a'];?></h1> 
+                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
+                                            {{ $CountLocalEmploye }}
+                                        </h1> 
                                         <p style="font-size: 14px; font-style: italic;"> &nbsp;Karyawan Lokal </p>
 
                                     </div>
@@ -62,7 +68,9 @@
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px;">
                                 <a href="../employee/emp?karyawan_asing=true">
                                     <div class="shortcut_list" style="padding: 5px !important">
-                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;"> <?php echo @$data['a'];?></h1> 
+                                        <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
+                                            {{ $CountForeignEmploye }}
+                                        </h1> 
                                         <p style="font-size: 14px; font-style: italic;"> &nbsp; Karyawan Asing </p>
 
                                     </div>
@@ -250,4 +258,53 @@
     </div>
     
 </section>
+@stop
+
+@section('script')
+<script>
+
+    Highcharts.chart('container3', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+    title: {
+        text: 'Employment Status Chart',
+        align: 'center',
+        verticalAlign: '',
+        y: 40
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            dataLabels: {
+                enabled: true,
+                distance: -50,
+                style: {
+                    fontWeight: 'bold',
+                    color: 'white'
+                }
+            },
+            startAngle: -90,
+            endAngle: 90,
+            center: ['50%', '75%']
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Percentage',
+        innerSize: '50%',
+        data: [
+                ['Probation',       {{ $CountProbation }}],
+                ['Kontrak',         {{ $CountContract }}],
+                ['Permanent',       {{ $CountPermanent }}],
+                ['Outsourching',    {{ $CountOutsourching }}],
+        ]
+    }]
+});
+
+</script>
 @stop
