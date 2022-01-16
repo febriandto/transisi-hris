@@ -1,2 +1,1 @@
-# syncrum
-Project Warehouse System Syncrum
+# TRANSISI - HRIS
