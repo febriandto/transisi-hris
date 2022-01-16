@@ -1,0 +1,52 @@
+[28-Jul-2020 04:39:21 UTC] PHP Fatal error:  Interface 'JsonSerializable' not found in /home/synf5718/public_html/wms/sys/vendor/laravel/framework/src/Illuminate/Support/Enumerable.php on line 11
+[28-Jul-2020 04:39:25 UTC] PHP Fatal error:  Interface 'JsonSerializable' not found in /home/synf5718/public_html/wms/sys/vendor/laravel/framework/src/Illuminate/Support/Enumerable.php on line 11
+[30-Aug-2020 00:18:54 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:18:54 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:19:07 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:19:07 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:19:09 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:19:09 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:14 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:14 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:18 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:18 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:23 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:23 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:24 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:24 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:59 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:21:59 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:23:08 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:23:08 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:23:14 Asia/Jakarta] PHP Warning:  require(/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): failed to open stream: No such file or directory in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[30-Aug-2020 00:23:14 Asia/Jakarta] PHP Fatal error:  require(): Failed opening required '/home/synf5718/public_html/wms/sys/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/synf5718/public_html/wms/sys/vendor/composer/autoload_real.php on line 69
+[03-Oct-2020 16:08:19 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Loading\LoadingController::cancel_loading() in /home/synf5718/public_html/wms/sys/app/Http/Controllers/Loading/LoadingController.php on line 727
+[03-Oct-2020 16:08:36 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Loading\LoadingController::cancel_loading() in /home/synf5718/public_html/wms/sys/app/Http/Controllers/Loading/LoadingController.php on line 727
+[03-Oct-2020 16:17:05 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Loading\LoadingController::cancel_loading() in /home/synf5718/public_html/wms/sys/app/Http/Controllers/Loading/LoadingController.php on line 727
+[06-Oct-2020 23:38:52 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'mysqli' not found in /home/synf5718/public_html/wms/test.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/synf5718/public_html/wms/test.php on line 9
+[18-Oct-2020 15:08:56 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Warehouse\WarehouseLocationController::qrcode() in /home/synf5718/public_html/wms/sys/app/Http/Controllers/Warehouse/WarehouseLocationController.php on line 226
+[27-Oct-2020 16:06:55 UTC] PHP Fatal error:  Cannot use App\Model\Item\ItemMaster as ItemMaster because the name is already in use in /home/synf5718/public_html/wms/sys/app/Http/Controllers/StockController.php on line 9
+[30-Oct-2020 14:07:56 UTC] PHP Fatal error:  Cannot use App\Model\Customer\Customeraddress as Customeraddress because the name is already in use in /home/synf5718/public_html/wms/sys/app/Http/Controllers/Customer/CustomerAddressController.php on line 12
+[06-Nov-2020 10:30:21 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'mysqli' not found in /home/synf5718/public_html/wms/test.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/synf5718/public_html/wms/test.php on line 9
+[06-Nov-2020 10:32:13 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'mysqli' not found in /home/synf5718/public_html/wms/test.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/synf5718/public_html/wms/test.php on line 9
+[06-Nov-2020 10:32:30 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'mysqli' not found in /home/synf5718/public_html/wms/test.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/synf5718/public_html/wms/test.php on line 9
+[06-Nov-2020 10:32:39 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'mysqli' not found in /home/synf5718/public_html/wms/test.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/synf5718/public_html/wms/test.php on line 9
+[13-Nov-2020 10:34:43 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\DeliveryNoteController::picking() in /home/synf5718/public_html/wms/sys/app/Http/Controllers/DeliveryNoteController.php on line 50
+[03-Jan-2021 16:31:07 UTC] PHP Fatal error:  Cannot use App\Model\picking\pickingDetail as pickingDetail because the name is already in use in /home/synf5718/public_html/wms/sys/app/Http/Controllers/IssueController.php on line 17
+[08-Jan-2021 03:28:23 UTC] PHP Fatal error:  Cannot use App\Model\Warehouse\Pallet as Pallet because the name is already in use in /home/synf5718/public_html/wms/sys/app/Http/Controllers/StockLocationController.php on line 17
+[01-Mar-2021 14:39:57 UTC] PHP Fatal error:  Cannot use App\PalletUsageHistory as PalletUsageHistory because the name is already in use in /home/synf5718/public_html/wms/sys/app/Http/Controllers/ReportController.php on line 13

@@ -1,0 +1,28 @@
+tr.checked_list td {
+    background: #91b6d6;
+}
+
+.ac-container {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: #f6f6f6;
+    overflow: auto;
+    z-index: 9;
+    box-shadow: 0px 2px 5px 1px #04040442;
+    padding: 10px 10px 0px 0px;
+}
+
+.ac{
+	background: #d0d0d0;
+	margin: 0px 2%;
+	padding: 10px 0px 10px 10px;
+	border: 1px solid #ffffff;
+}
+
+.ac:hover{
+	cursor: pointer;
+	background: #dedede;
+}

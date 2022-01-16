@@ -1,0 +1,884 @@
+<?php
+
+use App\Model\Tally\Tally;
+use App\Model\Tally\TallyDetail;
+use App\Model\Putaway\Putaway;
+use App\Model\Putaway\PutawayDetail;
+use App\Model\Picking\Picking;
+use App\Model\Picking\PickingDetail;
+use App\Model\Loading\Loading;
+use App\Model\Loading\LoadingDetail;
+use App\Model\Loading\CancelLoading;
+use App\Model\Loading\CancelLoadingDetail;
+use App\Model\Warehouse\PalletMovement;
+use App\Model\MovementHistory;
+use App\Model\Stock\MPalletStock;
+use App\Model\Warehouse\Pallet;
+use App\Model\Warehouse\Warehouselocation;
+use App\Model\Warehouse\Warehousezone;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/test2/{id}', function(){
+
+	$zone = Warehousezone::all();
+
+	dd($zone->area->wh_area_name);
+
+});
+
+
+Route::get('/hash', 'HashingController@hash');
+
+// Route::get('/resetdata', function(){
+
+// 	Pallet::whereNotNull('pallet_id')->update(['pallet_fill' => 0, 'pallet_full' => 0, 'location_id' => NULL, 'doc_type' => NULL, 'doc_number' => NULL]);
+// 	Warehouselocation::whereNotNull('location_id')->update(['pallet_id' => 0, 'location_fill' => 0]);
+
+// 	Tally::truncate();
+// 	TallyDetail::truncate();
+
+// 	Putaway::truncate();
+// 	PutawayDetail::truncate();
+
+// 	Picking::truncate();
+// 	PickingDetail::truncate();
+
+// 	Loading::truncate();
+// 	LoadingDetail::truncate();
+
+// 	CancelLoading::truncate();
+// 	CancelLoadingDetail::truncate();
+
+// 	MovementHistory::truncate();
+// 	MPalletStock::truncate();
+// 	PalletMovement::truncate();
+
+
+
+// })->name('resetdatax');
+
+Route::get('/forgotpassword', function(){
+	return view('auth.passwords.reset');
+});
+
+Route::get('/register', function(){
+	return view('auth.regitser');
+});
+
+// Middleware
+Route::group(['middlewareGroup' => ['web']], function () {
+
+	// Autentikasi
+	Auth::routes();
+
+	// Logout
+	Route::get('/logout', 'BerandaController@logout')->name('logout');
+
+		// If Success Login Below Here
+		Route::group(['middleware' => 'auth'], function () {
+
+				Route::get('/', 'BerandaController@dashboard')->name('beranda.dashboard');
+				Route::get('/home', 'BerandaController@dashboard')->name('beranda.dashboard');
+				Route::get('/dashboard', 'BerandaController@dashboard')->name('beranda.dashboard');
+
+
+				//Profile
+				Route::group(['prefix' => 'profile'], function () {
+						Route::get('/', 'ProfileController@index')->name('profile.index');
+						Route::post('/update', 'ProfileController@update')->name('profile.update');
+						Route::post('/passwordreset', 'ProfileController@passwordreset')->name('profile.passwordreset');
+				});
+
+				Route::get('/stock_item_history', 'StockItemDetailController@history')->name('stock_item_history.index');
+
+				Route::group(['prefix' => 'stock_item_detail'], function(){
+
+					Route::get('/', 'StockItemDetailController@index')->name('stock_item_detail.index');
+
+				});
+
+				Route::get('/inbound_history', 'StockItemDetailController@inbound_history')->name('inbound_history.index');
+				Route::get('/outbound_history', 'StockItemDetailController@outbound_history')->name('outbound_history.index');
+
+				/*******************
+							INBOUND
+				********************/
+				// Tally
+				Route::group(['prefix' => 'tally'], function () {
+					
+					// All Tally Data
+					Route::get('/', 'Tally\AllController@index')->name('tally.index');
+
+					// Datatables
+					Route::post('/', 'Tally\AllController@datatables')->name('tally.datatables');
+					
+					// Edit and Update data
+					Route::get('/edit/{tally}', 'Tally\AllController@edit')->name('tally.edit');
+
+					// update tally 
+					Route::post('/edit', 'Tally\AllController@update')->name('tally.update');
+					
+					// Add new Tally and save it
+					Route::get('/add', 'Tally\AllController@add')->name('tally.add');
+
+					// Save new tally
+					Route::post('/add', 'Tally\AllController@save')->name('tally.save');
+
+					// Tally Detail
+					Route::get('/detail/{tally}', 'Tally\AllController@show')->name('tally.show');
+
+					// Filter tally by date
+					Route::get('/filter', 'Tally\AllController@filter_date')->name('tally.filter_date');
+
+					// Add item to tally
+					Route::get('/add_item/{tally}', 'Tally\AllController@add_item')->name('tally.add_item');
+
+					// Save an item
+					Route::post('/save_item', 'Tally\AllController@save_item')->name('tally.save_item');
+
+					// Edit item page
+					Route::get('/edit_item/{tally}/{item}', 'Tally\AllController@edit_item')->name('tally.edit_item');
+
+					// Update an item
+					Route::post('/add_item', 'Tally\AllController@update_item')->name('tally.update_item');
+
+					// Delete an item
+					Route::post('/detail', 'Tally\AllController@delete_item')->name('tally.delete_item');
+
+					// Set status tally to 'finish_tally'
+					Route::post('/finish_tally', 'Tally\AllController@finish_tally')->name('tally.finish_tally');
+
+					//Print page
+					Route::get('/print', 'Tally\AllController@print')->name('tally.print');
+
+					// Export Excel
+					Route::get('/export', 'Tally\AllController@export')->name('tally.export');
+
+					// preview
+					Route::get('/preview/{tally}', 'Tally\AllController@preview')->name('tally.preview');
+
+					// print detail
+					Route::get('/print_detail/{tally}', 'Tally\AllController@print_detail')->name('tally.print_detail');
+
+					// Summary
+					Route::get('/summary', 'Tally\AllController@summary')->name('tally.summary');
+
+					// Summary Print
+					Route::get('/summary/print', 'Tally\AllController@summary_print')->name('tally.summary_print');
+
+					// Summary Export
+					Route::get('/summary/export', 'Tally\AllController@summary_export')->name('tally.summary_export');
+
+					// Trash
+					Route::get('/trash', 'Tally\AllController@trash')->name('tally.trash');
+
+					// Cancel
+					Route::post('/cancel', 'Tally\AllController@cancel')->name('tally.cancel');
+
+					Route::group(['prefix' => 'receipt'], function(){
+
+						Route::get('/{tally}', 'ReceiptController@index')->name('receipt.index');
+						Route::get('/{tally}/datatables', 'ReceiptController@datatables')->name('receipt.datatables');
+						Route::get('/{tally}/add', 'ReceiptController@add')->name('receipt.add');
+						Route::post('/{tally}/save', 'ReceiptController@save')->name('receipt.save');
+						Route::get('/{tally}/print', 'ReceiptController@print')->name('receipt.print');
+						Route::get('/{tally}/print_available', 'ReceiptController@print_available')->name('receipt.print_available');
+						Route::get('/{tally}/detail', 'ReceiptController@detail')->name('receipt.detail');
+
+					});
+
+				});
+
+
+
+				// Putaway
+				Route::group(['prefix' => 'putaway'], function(){
+
+					// Show all putaway
+					Route::get('/', 'Putaway\PutawayController@index')->name('putaway.index');
+
+					// putaway to Location
+					Route::get('/putaway_to_location', 'Putaway\PutawayController@putawaytolocation')->name('putaway.location');
+					Route::post('/putaway_to_location_save', 'Putaway\PutawayController@putawaytolocation_save')->name('putaway.location_save');
+					Route::get('/get_tally_items', 'Putaway\PutawayController@get_tally_items')->name('putaway.get_tally_items');
+					Route::get('/check_location', 'Putaway\PutawayController@check_location')->name('putaway.check_location');
+
+					// putaway delete
+					Route::get('/delete/{putaway_detail_id}', 'Putaway\PutawayController@delete')->name('putaway.delete');
+					
+					// Putaway Detail
+					Route::get('/putaway_detail/{putaway}/{tally}', 'Putaway\PutawayController@detail')->name('putaway.detail');
+
+					// Add new putaway page
+					Route::get('/add/{tally}', 'Putaway\PutawayController@add')->name('putaway.add');
+
+					// Save putaway
+					Route::post('/add', 'Putaway\PutawayController@save')->name('putaway.save');
+
+					// Add item / Do Putaway page
+					Route::get('/add_item/{tally_detail}/{tally}/{putaway}', 'Putaway\PutawayController@add_item')->name('putaway.add_item');
+
+					// Save
+					Route::post('/add_item', 'Putaway\PutawayController@save_item')->name('putaway.save_item');
+
+					// Edit Header
+					Route::get('/edit/{putaway}', 'Putaway\PutawayController@edit')->name('putaway.edit');
+
+					// Update Header
+					Route::post('/update/', 'Putaway\PutawayController@update')->name('putaway.update');
+
+					// Finish Putaway
+					Route::post('/finish_putaway', 'Putaway\PutawayController@finish_putaway')->name('putaway.finish_putaway');
+
+					// Filter tally by date
+					Route::get('/filter', 'Putaway\PutawayController@filter_date')->name('putaway.filter_date');
+
+					// Print
+					Route::get('/print_detail/{putaway}/{tally}', 'Putaway\PutawayController@print_detail')->name('putaway.print_detail');
+
+					// Preview
+					Route::get('/preview/{putaway}/{tally}', 'Putaway\PutawayController@preview')->name('putaway.preview');
+
+					// Export
+					Route::get('/export', 'Putaway\PutawayController@export')->name('putaway.export');
+
+					// Summary
+					Route::get('/summary', 'Putaway\PutawayController@summary')->name('putaway.summary');
+
+					// Summary Print
+					Route::get('/summary/print', 'Putaway\PutawayController@summary_print')->name('putaway.summary_print');
+
+					// Summary Export
+					Route::get('/summary/export', 'Putaway\PutawayController@summary_export')->name('putaway.summary_export');
+
+				});
+
+
+				/************
+				  INVENTORY
+				*************/ 
+				// Inventory Transfer
+				Route::group(['prefix' => 'inventory_transfer'], function(){
+
+					Route::get('/', 'InventoryTransferController@index')->name('inventory_transfer.index');
+					// Route::get('/move/{location}/{pallet}', 'InventoryTransferController@move')->name('inventory_transfer.move');
+					Route::get('/move2/{pallet}/{location}/{item_number}', 'InventoryTransferController@move2')->name('inventory_transfer.move');
+					Route::post('/move_save', 'InventoryTransferController@move_save')->name('inventory_transfer.move_save');
+					Route::get('/detail/{location}', 'InventoryTransferController@detail')->name('inventory_transfer.detail');
+
+				});
+
+				/************
+				  Stock Take
+				*************/ 
+				// Stock Take
+				Route::group(['prefix' => 'stock_take'], function(){
+
+					Route::get('/', 'StockTakeController@index')->name('stock_take.index');
+					Route::get('/add', 'StockTakeController@add')->name('stock_take.add');
+					Route::get('/detail/{StockTake}', 'StockTakeController@detail')->name('stock_take.detail');
+					Route::get('/add_item/{StockTake}', 'StockTakeController@add_item')->name('stock_take.add_item');
+					Route::post('/save_item', 'StockTakeController@save_item')->name('stock_take.save_item');
+					Route::post('/save', 'StockTakeController@save')->name('stock_take.save');
+					Route::get('/edit/{StockTake}', 'StockTakeController@edit')->name('stock_take.edit');
+					Route::post('/update', 'StockTakeController@update')->name('stock_take.update');
+					Route::get('/export', 'StockTakeController@export')->name('stock_take.export');
+
+				});
+
+
+				Route::group(['prefix' => 'stock_opname'], function(){
+
+					Route::get('/', 'StockOpnameController@index')->name('stock_opname.index');
+					Route::get('/add', 'StockOpnameController@add')->name('stock_opname.add');
+					Route::post('/save', 'StockOpnameController@save')->name('stock_opname.save');
+					Route::get('/detail/{stockopname}', 'StockOpnameController@detail')->name('stock_opname.detail');
+
+				});
+
+				/************
+				  Stock Review
+				*************/ 
+				// Stock Review
+				Route::group(['prefix' => 'stock'], function(){
+
+					Route::get('/', 'StockController@index')->name('stock.all');
+					Route::get('/detail/{item}', 'StockController@detail')->name('stock.detail');
+					Route::post('/item_detail', 'StockController@item_detail')->name('stock.item_detail');
+					Route::get('/print/{item}', 'StockController@print')->name('stock.print');
+					Route::get('/datatables', 'StockController@datatables')->name('stock.datatables');
+
+				});
+
+				/************
+				  Stock Location
+				*************/ 
+				// Stock Location
+				Route::group(['prefix' => 'stock_location'], function(){
+
+					Route::get('/', 'StockLocationController@index')->name('stocklocation.all');
+					Route::post('/', 'StockLocationController@datatables')->name('stocklocation.datatables');
+					Route::get('/detail/{item}', 'StockLocationController@detail')->name('stocklocation.detail');
+
+				});
+
+				// Pallet Item
+				Route::group(['prefix' => 'pallet_item'], function(){
+
+					Route::get('/', 'PalletItemController@index')->name('pallet_item.all');
+					Route::post('/', 'PalletItemController@datatables')->name('pallet_item.datatables');
+					Route::get('/{pallet}', 'PalletItemController@detail')->name('pallet_item.detail');
+
+				});
+
+				// Pallet Item
+				Route::group(['prefix' => 'pallet_usage'], function(){
+
+					Route::get('/', 'PalletUsageController@index')->name('pallet_usage.index');
+					Route::get('/process', 'PalletUsageController@process')->name('pallet_usage.process');
+					Route::get('/print', 'PalletUsageController@print')->name('pallet_usage.print');
+					Route::get('/{cust_id}/{from}/{to}', 'PalletUsageController@detail')->name('pallet_usage.detail');
+
+				});
+
+				// Item Transfer
+				Route::group(['prefix' => 'item_transfer'], function(){
+
+					Route::get('/', 'ItemTransferController@index')->name('item_transfer.index');
+					Route::get('/detail/{item_transfer}', 'ItemTransferController@detail')->name('item_transfer.detail');
+					Route::get('/add', 'ItemTransferController@add')->name('item_transfer.add');
+					Route::post('/save', 'ItemTransferController@save')->name('item_transfer.save');
+					Route::get('/edit/{item_transfer}', 'ItemTransferController@edit')->name('item_transfer.edit');
+					Route::post('/update', 'ItemTransferController@update')->name('item_transfer.update');
+					Route::post('/transfer_item', 'ItemTransferController@transfer_item')->name('item_transfer.transfer_item');
+
+					Route::get('/get_pallet_item_transfer/{cust_id}', 'ItemTransferController@get_pallet_item_transfer')->name('get_pallet_item_transfer');
+				});
+
+				// Item Transfer
+				Route::group(['prefix' => 'item_transfer'], function(){
+
+					Route::get('/', 'ItemTransferController@index')->name('item_transfer.index');
+					Route::get('/detail/{item_transfer}', 'ItemTransferController@detail')->name('item_transfer.detail');
+					Route::get('/add', 'ItemTransferController@add')->name('item_transfer.add');
+					Route::post('/save', 'ItemTransferController@save')->name('item_transfer.save');
+					Route::get('/edit/{item_transfer}', 'ItemTransferController@edit')->name('item_transfer.edit');
+					Route::post('/update', 'ItemTransferController@update')->name('item_transfer.update');
+					Route::post('/transfer_item', 'ItemTransferController@transfer_item')->name('item_transfer.transfer_item');
+
+					Route::get('/get_pallet_item_transfer/{cust_id}', 'ItemTransferController@get_pallet_item_transfer')->name('get_pallet_item_transfer');
+				});
+				
+				// Item Transfer
+				Route::group(['prefix' => 'location_transfer'], function(){
+
+					Route::get('/', 'LocationTransferController@index')->name('location_transfer.index');
+					Route::get('/detail/{location_transfer}', 'LocationTransferController@detail')->name('location_transfer.detail');
+					Route::get('/add', 'LocationTransferController@add')->name('location_transfer.add');
+					Route::post('/save', 'LocationTransferController@save')->name('location_transfer.save');
+					Route::get('/preview/{location_id}/{location_to}', 'LocationTransferController@preview')->name('location_transfer.preview');
+				});
+
+
+				/*******************
+				        OUTBOUND
+				********************/
+				// Picking
+				Route::group(['prefix' => 'picking'], function(){
+
+					// Show all picking
+					Route::get('/', 'Picking\PickingController@index')->name('picking.index');
+
+					// Show all picking
+					Route::get('/filter', 'Picking\PickingController@filter_date')->name('picking.filter_date');
+
+					// Add new
+					Route::get('/add', 'Picking\PickingController@add')->name('picking.add');
+
+					// Save new
+					Route::post('/add', 'Picking\PickingController@save')->name('picking.save');
+
+					// Edit
+					Route::get('/edit/{picking}', 'Picking\PickingController@edit')->name('picking.edit');
+
+					// Update
+					Route::post('/edit', 'Picking\PickingController@update')->name('picking.update');
+
+					// Detail
+					Route::get('/detail/{picking}', 'Picking\PickingController@detail')->name('picking.detail');
+
+					// Save Picking
+					Route::post('/save_item', 'Picking\PickingController@save_item')->name('picking.save_item');
+
+					// Save Picking
+					Route::post('/save_item_bulk', 'Picking\PickingController@save_item_bulk')->name('picking.save_item_bulk');
+
+					// Edit Item
+					Route::get('/edit_item/{picking_detail}', 'Picking\PickingController@edit_item')->name('picking.edit_item');
+
+					// Update Item
+					Route::post('/edit_item', 'Picking\PickingController@update_item')->name('picking.update_item');
+
+					// Delete Picking
+					Route::get('/delete/{picking_no}', 'Picking\PickingController@delete')->name('picking.delete');
+
+					// Delete Item
+					Route::post('/delete_item', 'Picking\PickingController@delete_item')->name('picking.delete_item');
+
+					// Finish Picking
+					Route::post('/finish_picking', 'Picking\PickingController@finish_picking')->name('picking.finish_picking');
+
+					// Export
+					Route::get('/export', 'Picking\PickingController@export')->name('picking.export');
+
+					// Print
+					Route::get('/print', 'Picking\PickingController@print')->name('picking.print');
+
+					// Preview
+					Route::get('/preview/{picking}', 'Picking\PickingController@preview')->name('picking.preview');
+
+					// Preview
+					Route::get('/print_detail/{picking}', 'Picking\PickingController@print_detail')->name('picking.print_detail');
+
+					// Preview
+					Route::get('/print_gi/{picking}', 'Picking\PickingController@print_gi')->name('picking.print_gi');
+
+					// Trash
+					Route::get('/trash', 'Picking\PickingController@trash')->name('picking.trash');
+
+					// Cancel Picking
+					Route::post('/cancel', 'Picking\PickingController@cancel')->name('picking.cancel');
+					
+
+					Route::group(['prefix' => 'issue'], function(){
+
+						Route::get('/{picking}', 'IssueController@index')->name('issue.index');
+						Route::get('/{picking}/datatables', 'IssueController@datatables')->name('issue.datatables');
+						Route::get('/{picking}/add', 'IssueController@add')->name('issue.add');
+						Route::post('/{picking}/save', 'IssueController@save')->name('issue.save');
+						Route::get('/{picking}/print', 'IssueController@print')->name('issue.print');
+						Route::get('/{picking}/print_available', 'IssueController@print_available')->name('issue.print_available');
+						Route::get('/{picking}/detail', 'IssueController@detail')->name('issue.detail');
+
+					});
+
+				});
+
+				// 
+				Route::get('/get_address/{id_address}', 'DeliveryNoteController@get_address')->name('get_Address');
+				Route::get('/get_loading/{cust_id}/{vehicle_id}', 'DeliveryNoteController@get_loading')->name('get_Loading');
+
+				// Delivery Note
+				Route::group(['prefix' => 'delivery_note'], function(){
+
+					Route::get('/', 'DeliveryNoteController@index')->name('delivery_note.index');
+					Route::post('/detail', 'DeliveryNoteController@detail')->name('delivery_note.detail');
+					Route::get('/add', 'DeliveryNoteController@add')->name('delivery_note.add');
+					Route::post('/save', 'DeliveryNoteController@save')->name('delivery_note.save');
+					Route::get('/create', 'DeliveryNoteController@create')->name('delivery_note.create');
+					Route::post('/', 'DeliveryNoteController@save_print')->name('delivery_note.save_print');
+					Route::get('/picking/{picking}/{customer}', 'DeliveryNoteController@picking')->name('delivery_note.picking');
+					Route::get('/{delivery_note}', 'DeliveryNoteController@print')->name('delivery_note.print');
+
+				});
+
+				// Loading
+				Route::group(['prefix' => 'loading'], function(){
+
+					// Show all
+					Route::get('/', 'Loading\LoadingController@index')->name('loading.index');
+
+					// Add page
+					Route::get('/add/{picking}', 'Loading\LoadingController@add')->name('loading.add');
+
+					// Save it
+					Route::post('/save', 'Loading\LoadingController@save')->name('loading.save');
+
+					// Loading Detail
+					Route::get('/detail/{loading}', 'Loading\LoadingController@detail')->name('loading.detail');
+
+					// Edit
+					Route::get('/edit/{loading}', 'Loading\LoadingController@edit')->name('loading.edit');
+
+					// Update
+					Route::post('/edit', 'Loading\LoadingController@update')->name('loading.update');
+
+					// Finish Loading
+					Route::post('/finish_loading', 'Loading\LoadingController@finish_loading')->name('loading.finish_loading');
+
+					// edit item
+					Route::get('/edit_item/{loading_detail}', 'Loading\LoadingController@edit_item')->name('loading.edit_item');
+
+					// update item
+					Route::post('/edit_item', 'Loading\LoadingController@update_item')->name('loading.update_item');
+
+					// loading delete
+					Route::get('/delete/{loading_no}', 'Loading\LoadingController@delete')->name('loading.delete');
+
+					// delete item
+					Route::post('/delete_item', 'Loading\LoadingController@delete_item')->name('loading.delete_item');
+					Route::get('/remove_item/{loading_detail_id}', 'Loading\LoadingController@remove_item')->name('loading.remove_item');
+
+					// Do Loading
+					Route::get('/do_loading/{picking_detail}/{loading}', 'Loading\LoadingController@do_loading')->name('loading.do_loading');
+
+					// Do loading save
+					Route::post('/do_loading', 'Loading\LoadingController@do_loading_save')->name('loading.do_loading_save');
+
+					// Export
+					Route::get('/export', 'Loading\LoadingController@export')->name('loading.export');
+
+					// Filter tally by date
+					Route::get('/filter', 'Loading\LoadingController@filter_date')->name('loading.filter_date');
+
+					// Print Detail
+					Route::get('/print_detail/{loading}', 'Loading\LoadingController@print_detail')->name('loading.print_detail');
+
+					// Preview
+					Route::get('/preview/{loading}', 'Loading\LoadingController@preview')->name('loading.preview');
+
+					// Cancel Loading
+					Route::group(['prefix' => 'cancel_loading'], function(){
+
+						// Cancel Loading
+						Route::get('/', 'Loading\CancelLoadingController@index')->name('cancel_loading.index');
+
+						// Add
+						Route::get('/add/{loading}', 'Loading\CancelLoadingController@add')->name('cancel_loading.add');
+
+						// Save
+						Route::post('/save', 'Loading\CancelLoadingController@save')->name('cancel_loading.save');
+
+						// Detail
+						Route::get('/detail/{cancel_loading}', 'Loading\CancelLoadingController@detail')->name('cancel_loading.detail');
+
+						// Add Item
+						Route::get('/add_item/{loading_no}/{id_loading_cancel}', 'Loading\CancelLoadingController@add_item')->name('cancel_loading.add_item');
+
+						// Save Item
+						Route::post('/save_item', 'Loading\CancelLoadingController@save_item')->name('cancel_loading.save_item');
+
+						// Delete Item
+						Route::post('/delete_item', 'Loading\CancelLoadingController@delete_item')->name('cancel_loading.delete_item');
+
+					});
+
+				});
+				
+				Route::group(['prefix' => 'split_loading'], function(){
+				    
+				    Route::get('/{loading}', 'SplitLoadingController@index')->name('splitloading.index');
+				    Route::post('/save', 'SplitLoadingController@save')->name('splitloading.save');
+				    
+				});
+
+				Route::group(['prefix' => 'loading_dock'], function(){
+
+					Route::get('/', 'LoadingDockController@index')->name('loading_dock.index');
+					Route::get('/add', 'LoadingDockController@add')->name('loading_dock.add');
+					Route::post('/save', 'LoadingDockController@save')->name('loading_dock.save');
+					Route::get('/edit/{loading_dock}', 'LoadingDockController@edit')->name('loading_dock.edit');
+					Route::post('/update', 'LoadingDockController@update')->name('loading_dock.update');
+					Route::post('/delete', 'LoadingDockController@delete')->name('loading_dock.delete');
+
+					Route::post('/qrcode', 'LoadingDockController@qrcode')->name('loading_dock.qrcode');
+
+				});
+				
+				Route::group(['prefix' => 'loading_dock_status'], function(){
+					Route::get('/', 'LoadingDockStatusController@index')->name('loading_dock_status.index');
+					Route::post('/detail', 'LoadingDockStatusController@detail')->name('loading_dock_status.detail');
+				});
+
+				// Vehicle Master
+				Route::group(['prefix' => 'report'], function () {
+				    
+				    Route::group(['prefix' => 'handling_report'], function () {
+    					Route::get('/', 'ReportController@handling_report')->name('handling_report.index');
+    					Route::get('/add', 'ReportController@add_handling_report')->name('handling_report.add');
+    					Route::post('/save', 'ReportController@save_handling_report')->name('handling_report.save');
+    					Route::get('/detail/{id_handling_report}', 'ReportController@detail_handling_report')->name('handling_report.detail');
+    					Route::get('/datatables', 'ReportController@datatables_handling_report')->name('handling_report.datatables');
+    					Route::get('/get_handling_price', 'ReportController@price_handling_report')->name('handling_report.get_price2');
+    				});
+				    
+				    Route::group(['prefix' => 'land_lease'], function () {
+    					Route::get('/', 'ReportController@land_lease')->name('land_lease.index');
+    					Route::get('/add', 'ReportController@add_land_lease')->name('land_lease.add');
+    					Route::post('/save', 'ReportController@save_land_lease')->name('land_lease.save');
+    					Route::get('/detail/{id_handling_report}', 'ReportController@detail_land_lease')->name('land_lease.detail');
+    					Route::get('/datatables', 'ReportController@datatables_land_lease')->name('land_lease.datatables');
+    					Route::get('/get_handling_price', 'ReportController@price_land_lease')->name('land_lease.get_price2');
+    				});
+    				
+				});
+
+
+				/*******************
+							MASTER DATA
+				********************/
+				// Customer
+				Route::group(['prefix' => 'customer'], function () {
+					// Customer Master
+					Route::group(['prefix' => 'master'], function () {
+							Route::get('/', 'Customer\CustomerMasterController@index')->name('customermaster.index');
+							Route::post('/', 'Customer\CustomerMasterController@datatables')->name('customermaster.datatables');
+							Route::get('/add', 'Customer\CustomerMasterController@add')->name('customermaster.add');
+							Route::post('/add', 'Customer\CustomerMasterController@save')->name('customermaster.save');
+
+							Route::get('/edit/{customermaster}', 'Customer\CustomerMasterController@edit')->name('customermaster.edit');
+							Route::post('/edit', 'Customer\CustomerMasterController@update')->name('customermaster.update');
+
+							Route::post('/delete', 'Customer\CustomerMasterController@delete')->name('customermaster.delete');
+
+							Route::get('/detail/{customermaster}', 'Customer\CustomerMasterController@detail')->name('customermaster.detail');
+							Route::post('/add_price/{customermaster}', 'Customer\CustomerMasterController@add_price')->name('customermaster.add_price');
+
+							// Route::get('/inventory_monitor/{customermaster}', 'Customer\CustomerMasterController@inventory_monitor')->name('customermaster.inventory_monitor');
+
+							// Customer Address
+							Route::group(['prefix' => 'address'], function(){
+								
+								Route::get('/', 'Customer\CustomerAddressController@index')->name('customeraddress.index');
+								Route::post('/', 'Customer\CustomerAddressController@datatables')->name('customeraddress.datatables');
+								Route::get('/add', 'Customer\CustomerAddressController@add')->name('customeraddress.add');
+								Route::post('/add', 'Customer\CustomerAddressController@save')->name('customeraddress.save');
+								Route::get('/edit/{customeraddress}', 'Customer\CustomerAddressController@edit')->name('customeraddress.edit');
+								Route::post('/edit', 'Customer\CustomerAddressController@update')->name('customeraddress.update');
+								Route::post('/delete', 'Customer\CustomerAddressController@delete')->name('customeraddress.delete');
+
+							});
+
+					});
+				});
+
+				// Item Master
+				Route::group(['prefix' => 'item'], function () {
+					// All Item
+					Route::get('/', 'Item\ItemMasterController@index')->name('itemmaster.index');
+					// Datatables
+					Route::post('/datatables', 'Item\ItemMasterController@datatables')->name('itemmaster.datatables');
+					// Add page
+					Route::get('/add', 'Item\ItemMasterController@add')->name('itemmaster.add');
+					// Save
+					Route::post('/add', 'Item\ItemMasterController@save')->name('itemmaster.save');
+					// Edt
+					Route::get('/edit/{item_id}', 'Item\ItemMasterController@edit')->name('itemmaster.edit');
+					// Update
+					Route::post('/edit', 'Item\ItemMasterController@update')->name('itemmaster.update');
+					// Delete
+					Route::post('/', 'Item\ItemMasterController@delete')->name('itemmaster.delete');
+					// Detail
+					Route::get('/detail/{item_id}', 'Item\ItemMasterController@detail')->name('itemmaster.detail');
+					// Export
+					Route::get('/export', 'Item\ItemMasterController@export')->name('itemmaster.export');
+
+					Route::post('/qrcode', 'Item\ItemMasterController@qrcode')->name('itemmaster.qrcode');
+
+					Route::post('/qrcode2', 'Item\ItemMasterController@qrcode2')->name('itemmaster.qrcode2');
+
+					// Item Category
+					Route::group(['prefix' => 'category'], function () {
+							Route::get('/', 'Item\ItemCategoryController@index')->name('itemcategory.index');
+							Route::post('/', 'Item\ItemCategoryController@datatables')->name('itemcategory.datatables');
+							
+							Route::get('/add', 'Item\ItemCategoryController@add')->name('itemcategory.add');
+							Route::post('/add', 'Item\ItemCategoryController@save')->name('itemcategory.save');
+
+							Route::get('/edit/{ItemCategory}', 'Item\ItemCategoryController@edit')->name('itemcategory.edit');
+							Route::post('/edit', 'Item\ItemCategoryController@update')->name('itemcategory.update');
+							Route::post('/delete', 'Item\ItemCategoryController@delete')->name('itemcategory.delete');
+					});
+
+				});
+
+				// UOM
+				Route::group(['prefix' => 'uom'], function () {
+					Route::get('/', 'Uom\UomController@index')->name('uom.index');
+					Route::post('/', 'Uom\UomController@datatables')->name('uom.datatables');
+							
+					Route::get('/add', 'Uom\UomController@add')->name('uom.add');
+					Route::post('/add', 'Uom\UomController@save')->name('uom.save');
+
+					Route::get('/edit/{uom}', 'Uom\UomController@edit')->name('uom.edit');
+					Route::post('/edit', 'Uom\UomController@update')->name('uom.update');
+					Route::post('/delete', 'Uom\UomController@delete')->name('uom.delete');
+				});
+
+				// Vehicle Master
+				Route::group(['prefix' => 'vehicle'], function () {
+					Route::get('/', 'VehicleController@index')->name('vehicle.index');
+					Route::post('/', 'VehicleController@datatables')->name('vehicle.datatables');
+					Route::get('/add', 'VehicleController@add')->name('vehicle.add');
+					Route::get('/edit/{vehicle}', 'VehicleController@edit')->name('vehicle.edit');
+					Route::post('/save', 'VehicleController@save')->name('vehicle.save');
+					Route::post('/update', 'VehicleController@update')->name('vehicle.update');
+					Route::post('/delete/{vehicle}', 'VehicleController@delete')->name('vehicle.delete');
+					Route::get('/view_qr/{vehicle}', 'VehicleController@view_qr')->name('vehicle.view_qr');
+				});
+
+				
+				// Warehouse
+				Route::group(['prefix' => 'warehouse'], function(){
+
+					// Warehouse Plant
+					Route::group(['prefix' => 'plant'], function(){
+						Route::get('/', 'Warehouse\WarehousePlantController@index')->name('warehouseplant.index');
+						Route::post('/', 'Warehouse\WarehousePlantController@datatables')->name('warehouseplant.datatables');
+						Route::get('/add', 'Warehouse\WarehousePlantController@add')->name('warehouseplant.add');
+						Route::post('/add', 'Warehouse\WarehousePlantController@save')->name('warehouseplant.save');
+						Route::get('/edit/{warehouseplant}', 'Warehouse\WarehousePlantController@edit')->name('warehouseplant.edit');
+						Route::post('/edit', 'Warehouse\WarehousePlantController@update')->name('warehouseplant.update');
+						Route::post('/delete', 'Warehouse\WarehousePlantController@delete')->name('warehouseplant.delete');
+					});
+
+					// Warehouse Zone
+					Route::group(['prefix' => 'zone'], function(){
+						Route::get('/', 'Warehouse\WarehouseZoneController@index')->name('warehousezone.index');
+						Route::post('/', 'Warehouse\WarehouseZoneController@datatables')->name('warehousezone.datatables');
+						Route::get('/add', 'Warehouse\WarehouseZoneController@add')->name('warehousezone.add');
+						Route::post('/add', 'Warehouse\WarehouseZoneController@save')->name('warehousezone.save');
+						Route::get('/edit/{warehousezone}', 'Warehouse\WarehouseZoneController@edit')->name('warehousezone.edit');
+						Route::post('/edit', 'Warehouse\WarehouseZoneController@update')->name('warehousezone.update');
+						Route::post('/delete', 'Warehouse\WarehouseZoneController@delete')->name('warehousezone.delete');
+					});
+
+					// Warehouse Row
+					Route::group(['prefix' => 'row'], function(){
+						Route::get('/', 'Warehouse\WarehouseRowController@index')->name('warehouserow.index');
+						Route::get('/add', 'Warehouse\WarehouseRowController@add')->name('warehouserow.add');
+						Route::post('/add', 'Warehouse\WarehouseRowController@save')->name('warehouserow.save');
+						Route::get('/edit/{warehouserow}', 'Warehouse\WarehouseRowController@edit')->name('warehouserow.edit');
+						Route::post('/edit', 'Warehouse\WarehouseRowController@update')->name('warehouserow.update');
+						Route::post('/', 'Warehouse\WarehouseRowController@delete')->name('warehouserow.delete');
+					});
+
+					// Warehouse Name
+					Route::group(['prefix' => 'name'], function(){
+						Route::get('/', 'Warehouse\WarehouseNameController@index')->name('warehousename.index');
+						Route::post('/', 'Warehouse\WarehouseNameController@datatables')->name('warehousename.datatables');
+						Route::get('/add', 'Warehouse\WarehouseNameController@add')->name('warehousename.add');
+						Route::post('/add', 'Warehouse\WarehouseNameController@save')->name('warehousename.save');
+						Route::get('/edit/{warehousename}', 'Warehouse\WarehouseNameController@edit')->name('warehousename.edit');
+						Route::post('/edit', 'Warehouse\WarehouseNameController@update')->name('warehousename.update');
+						Route::post('/delete', 'Warehouse\WarehouseNameController@delete')->name('warehousename.delete');
+					});
+
+					// Warehouse Bin
+					Route::group(['prefix' => 'bin'], function(){
+						Route::get('/', 'Warehouse\WarehouseBinController@index')->name('warehousebin.index');
+						Route::get('/add', 'Warehouse\WarehouseBinController@add')->name('warehousebin.add');
+						Route::post('/add', 'Warehouse\WarehouseBinController@save')->name('warehousebin.save');
+						Route::get('/edit/{warehousebin}', 'Warehouse\WarehouseBinController@edit')->name('warehousebin.edit');
+						Route::post('/edit', 'Warehouse\WarehouseBinController@update')->name('warehousebin.update');
+						Route::post('/', 'Warehouse\WarehouseBinController@delete')->name('warehousebin.delete');
+					});
+
+					// Warehouse Area
+					Route::group(['prefix' => 'area'], function(){
+						Route::get('/', 'Warehouse\WarehouseAreaController@index')->name('warehousearea.index');
+						Route::get('/add', 'Warehouse\WarehouseAreaController@add')->name('warehousearea.add');
+						Route::post('/add', 'Warehouse\WarehouseAreaController@save')->name('warehousearea.save');
+						Route::get('/edit/{warehousearea}', 'Warehouse\WarehouseAreaController@edit')->name('warehousearea.edit');
+						Route::post('/edit', 'Warehouse\WarehouseAreaController@update')->name('warehousearea.update');
+						Route::post('/', 'Warehouse\WarehouseAreaController@delete')->name('warehousearea.delete');
+					});
+					
+					// Warehouse Pallet
+					Route::group(['prefix' => 'pallet'], function(){
+						Route::get('/', 'Warehouse\PalletController@index')->name('pallet.index');
+						Route::post('/datatables', 'Warehouse\PalletController@datatables')->name('pallet.datatables');
+						Route::get('/add', 'Warehouse\PalletController@add')->name('pallet.add');
+						Route::post('/add', 'Warehouse\PalletController@save')->name('pallet.save');
+						Route::get('/edit/{pallet}', 'Warehouse\PalletController@edit')->name('pallet.edit');
+						Route::post('/edit', 'Warehouse\PalletController@update')->name('pallet.update');
+						Route::post('/', 'Warehouse\PalletController@delete')->name('pallet.delete');
+						Route::get('/view_qr/{pallet}', 'Warehouse\PalletController@view_qr')->name('pallet.view_qr');
+						Route::post('/qrcode', 'Warehouse\PalletController@qrcode')->name('pallet.qrcode');
+						Route::post('/qrcode2', 'Warehouse\PalletController@qrcode2')->name('pallet.qrcode2');
+					});
+
+					// Level
+					Route::group(['prefix' => 'level'], function(){
+						Route::get('/', 'Warehouse\LevelController@index')->name('level.index');
+						Route::get('/add', 'Warehouse\LevelController@add')->name('level.add');
+						Route::post('/save', 'Warehouse\LevelController@save')->name('level.save');
+						Route::get('/edit/{level}', 'Warehouse\LevelController@edit')->name('level.edit');
+						Route::post('/edit', 'Warehouse\LevelController@update')->name('level.update');
+						Route::post('/', 'Warehouse\LevelController@delete')->name('level.delete');
+					});
+
+					// Column
+					Route::group(['prefix' => 'column'], function(){
+						Route::get('/', 'Warehouse\ColumnController@index')->name('column.index');
+						Route::get('/add', 'Warehouse\ColumnController@add')->name('column.add');
+						Route::post('/add', 'Warehouse\ColumnController@save')->name('column.save');
+						Route::get('/edit/{column}', 'Warehouse\ColumnController@edit')->name('column.edit');
+						Route::post('/edit', 'Warehouse\ColumnController@update')->name('column.update');
+						Route::post('/', 'Warehouse\ColumnController@delete')->name('column.delete');
+					});
+
+					// Location
+					Route::group(['prefix' => 'location'], function(){
+						Route::get('/', 'Warehouse\WarehouseLocationController@index')->name('location.index');
+						Route::get('/add', 'Warehouse\WarehouseLocationController@add')->name('location.add');
+						Route::post('/add', 'Warehouse\WarehouseLocationController@save')->name('location.save');
+						Route::get('/edit/{location}', 'Warehouse\WarehouseLocationController@edit')->name('location.edit');
+						Route::post('/edit', 'Warehouse\WarehouseLocationController@update')->name('location.update');
+						Route::post('/delete', 'Warehouse\WarehouseLocationController@delete')->name('location.delete');
+
+						Route::post('/datatables', 'Warehouse\WarehouseLocationController@datatables')->name('location.datatables');
+
+						Route::post('/qrcode', 'Warehouse\WarehouseLocationController@qrcode')->name('location.qrcode');
+						Route::post('/qrcode2', 'Warehouse\WarehouseLocationController@qrcode2')->name('location.qrcode2');
+
+					});
+
+
+				});
+
+				// Setting
+				Route::group(['prefix' => 'setting'], function(){
+					
+					Route::group(['prefix' => 'periode'], function(){
+
+						Route::get('/', 'Periode\PeriodeController@index')->name('periode.index');
+						Route::get('/add', 'Periode\PeriodeController@add')->name('periode.add');
+						Route::get('/stock_review', 'Periode\PeriodeController@stock_review')->name('periode.stock_review');
+						Route::get('/view/{periode_id}', 'Periode\PeriodeController@view')->name('periode.view');
+						Route::post('/save', 'Periode\PeriodeController@save')->name('periode.save');
+					
+					});
+
+					// User
+					Route::group(['prefix' => 'user'], function(){
+
+						Route::get('/', 'UserController@index')->name('user.index');
+						Route::post('/datatables', 'UserController@datatables')->name('user.datatables');
+						
+						Route::get('/add', 'UserController@add')->name('user.add');
+						Route::post('/simpan', 'UserController@simpan')->name('user.simpan');
+
+						Route::get('/edit', 'UserController@edit')->name('user.edit');
+						Route::post('/perbarui', 'UserController@perbarui')->name('user.perbarui');
+
+						Route::get('/deactive', 'UserController@deactive')->name('user.deactive');
+						Route::get('/hapus', 'UserController@hapus')->name('user.hapus');
+
+
+					});
+
+				});
+
+		});
+
+});
