@@ -254,7 +254,22 @@
 
 
 	<div class="container">
-		<p class="light" align=""> HRIS | <?php echo date('Y')?> <span style="float:right"></span> </p>
+		<p class="light" align=""> HRIS | <?php echo date('Y')?> <span style="float:right"> <span id=tick2> </span> &nbsp;|&nbsp;
+		<?php
+			$date = new DateTime();
+			//echo $date->format('l, jS F, Y');
+			$array_hr= array(1=>"Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu");
+			$hr = $array_hr[date('N')];
+			 /* script menentukan tanggal */   
+			$tgl= date('j');
+			/* script menentukan bulan */
+			  $array_bln = array(1=>"Januari","Februari","Maret", "April", "Mei","Juni","Juli","Agustus","September","Oktober", "November","Desember");
+			  $bln = $array_bln[date('n')];
+			/* script menentukan tahun */ 
+			$thn = date('Y');
+			echo $hr . ", " . $tgl . " " . $bln . " " . $thn; 
+		?>
+		</p>
 	</div>
 
 

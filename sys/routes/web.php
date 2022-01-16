@@ -50,10 +50,22 @@ Route::group(['middlewareGroup' => ['web']], function () {
 		// If Success Login Below Here
 		Route::group(['middleware' => 'auth'], function () {
 
+				// Dashboard
 				Route::get('/', 'BerandaController@dashboard')->name('beranda.dashboard');
 				Route::get('/home', 'BerandaController@dashboard')->name('beranda.dashboard');
 				Route::get('/dashboard', 'BerandaController@dashboard')->name('beranda.dashboard');
 
+				// Employees
+				Route::group(['prefix' => 'employee'], function(){
+
+					Route::get('/', 'EmployeeController@index')->name('employee.index');
+					Route::get('/add', 'EmployeeController@add')->name('employee.add');
+					Route::post('/save', 'EmployeeController@save')->name('employee.save');
+					Route::get('/detail/{id}', 'EmployeeController@detail')->name('employee.detail');
+					Route::get('/edit', 'EmployeeController@edit')->name('employee.edit');
+					Route::post('/update', 'EmployeeController@update')->name('employee.update');
+
+				});
 
 				//Profile
 				Route::group(['prefix' => 'profile'], function () {
