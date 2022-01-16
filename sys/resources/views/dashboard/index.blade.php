@@ -195,7 +195,7 @@
                                                 <a href="../employee/emp_contract_list">
                                                     <div class="shortcut_list">
                                                         <p align=""><i class="fa fa-black-tie red_text" style="border: 1px solid rgba(1,1,1,0.1); padding: 15px;"></i> 
-                                                        <span> <?php echo @$data['a'];?> </span></p>
+                                                        <span> {{ $CountToday }} </span></p>
                                                         <hr>
                                                         <h5 align="center"> Kontrak Berakhir ( Hari Ini ) </h5>
                                                     </div>
@@ -206,7 +206,7 @@
                                                 <a href="../employee/emp_contract_list?this_month=true">
                                                     <div class="shortcut_list">
                                                         <p align=""><i class="fa fa-black-tie" style="color:orange;border: 1px solid rgba(1,1,1,0.1); padding: 15px;"></i> 
-                                                        <span> <?php echo @$data['a'];?> </span></p>
+                                                        <span> {{ $CountMonth }} </span></p>
                                                         <hr>
                                                         <h5 align="center"> Kontrak Berakhir ( Bulan Ini ) </h5>
                                                     </div>
@@ -217,7 +217,7 @@
                                                 <a href="../employee/emp_contract_list?next_month=true">
                                                     <div class="shortcut_list">
                                                         <p align=""><i class="fa fa-black-tie" style="color:green; border: 1px solid rgba(1,1,1,0.1); padding: 15px;"></i> 
-                                                        <span> <?php echo @$data['a'];?> </span></p>
+                                                        <span> {{ $CountNextMonth }} </span></p>
                                                         <hr>
                                                         <h5 align="center"> Kontrak Berakhir ( Bulan Depan ) </h5>
                                                     </div>
@@ -228,7 +228,7 @@
                                                 <a href="../employee/emp_contract_list?non_permanent=true">
                                                     <div class="shortcut_list">
                                                         <p align=""><i class="fa fa-black-tie" style="color:purple; border: 1px solid rgba(1,1,1,0.1); padding: 15px;"></i> 
-                                                        <span> <?php echo @$data['a'];?> </span></p>
+                                                        <span> {{ $CountAll }} </span></p>
                                                         <hr>
                                                         <h5 align="center"> Semua Karyawan Kontrak </h5>
                                                     </div>
@@ -262,6 +262,47 @@
 
 @section('script')
 <script>
+
+        Highcharts.chart('container2', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+    title: {
+        text: 'Gender Chart',
+        align: 'center',
+        verticalAlign: '',
+        y: 40
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            dataLabels: {
+                enabled: true,
+                distance: -50,
+                style: {
+                    fontWeight: 'bold',
+                    color: 'white'
+                }
+            },
+            startAngle: -90,
+            endAngle: 90,
+            center: ['50%', '75%']
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Employee Gender',
+        innerSize: '50%',
+        data: [
+            ['Male', {{ $CountMale }}],
+            ['Female', {{ $CountFemale }}],            
+        ]
+    }]
+});
 
     Highcharts.chart('container3', {
     chart: {
