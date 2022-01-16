@@ -14,6 +14,6 @@ class ItWifi extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [ 'id_wifi', 'wifi_name',   'wifi_password',   'wifi_location',   'wifi_user',   'input_by',    'input_date',  'edit_by', 'edit_date',   'is_delete'];
+    protected $fillable = [ 'id_wifi', 'wifi_name',   'wifi_password',   'wifi_location',   'wifi_user',   'input_by',    'input_date',  'edit_by', 'edit_date',   'is_delete '];
     
 }
