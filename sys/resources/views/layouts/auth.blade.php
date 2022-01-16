@@ -20,7 +20,7 @@
     <link rel="apple-touch-icon" href="{{ asset('images/m_icon_96.png')}}">
     <link rel="apple-touch-icon" href="{{ asset('images/m_icon_128.png')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" href="{{ asset('images/icon.png') }}">
+    <link rel="icon" href="{{ asset('images/icon2.png') }}">
 </head>
 <style type="text/css">
     .gagal_login { text-align: center; color: red; }
