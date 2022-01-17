@@ -20,7 +20,5 @@ class MasterEmploye extends Model
     {
         $this->belongsTo('App\Model\MasterDepartment', 'id_dept', 'id_dept');
     }
-
-    public function 
     
 }
