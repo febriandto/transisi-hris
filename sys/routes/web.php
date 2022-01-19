@@ -59,11 +59,17 @@ Route::group(['middlewareGroup' => ['web']], function () {
 				Route::group(['prefix' => 'employee'], function(){
 
 					Route::get('/', 'EmployeeController@index')->name('employee.index');
+					Route::get('/local', 'EmployeeController@index')->name('employee.local');
+					Route::get('/foreign', 'EmployeeController@index')->name('employee.foreign');
+					Route::get('/bod', 'EmployeeController@index')->name('employee.bod');
+					Route::get('/detail', 'EmployeeController@detail')->name('employee.detail');
+
 					Route::get('/add', 'EmployeeController@add')->name('employee.add');
 					Route::post('/save', 'EmployeeController@save')->name('employee.save');
 					Route::get('/detail/{id}', 'EmployeeController@detail')->name('employee.detail');
 					Route::get('/edit', 'EmployeeController@edit')->name('employee.edit');
 					Route::post('/update', 'EmployeeController@update')->name('employee.update');
+					Route::post('/delete', 'EmployeeController@delete')->name('employee.delete');
 
 				});
 

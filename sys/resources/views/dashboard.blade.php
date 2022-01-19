@@ -55,21 +55,21 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <a style="border-right: 1px solid rgba(1,1,1,0.1)" class="navbar-brand" href="../dashboard/dashboard"><img src="{{asset('images/icon2.png')}}" height="25"></a>
+	      <a style="border-right: 1px solid rgba(1,1,1,0.1)" class="navbar-brand" href="{{ route('beranda.dashboard') }}"><img src="{{asset('images/icon2.png')}}" height="25"></a>
 	    </div>
 
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 
-	        <li id="<?php if(@$page == 'dashboard'){echo 'active';}?>"><a href="../dashboard/dashboard"><i class="fa fa-tachometer icon_left"></i> Dashboard</a></li>
-	        <li class="dropdown" id="<?php if(@$page == 'emp'){echo 'active';}?>">
+	        <li id="<?php if(@$page == 'dashboard'){echo 'active';}?>"><a href="{{ route('beranda.dashboard') }}"><i class="fa fa-tachometer icon_left"></i> Dashboard</a></li>
+	        <li class="dropdown" id="<?php if(Request::is('employee') OR Request::is('employee/*')){echo 'active';}?>">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle-o icon_left"></i> Pelayanan HR &nbsp; <i class="fa fa-angle-down"></i></a>
 	          <ul class="dropdown-menu wide">
 	          <div class="row">
 	          <div class="col-md-6 drop_space">
 	            <h5> Umum </h5>
-	            <li style="border-right: none;"><a href="../employee/emp"><i class="fa fa-user-circle-o icon_left"></i> Data Karyawan</a></li>
+	            <li style="border-right: none;"><a href="{{ route('employee.index') }}"><i class="fa fa-user-circle-o icon_left"></i> Data Karyawan</a></li>
 	            <li style="border-right: none;"><a href="../acc_emp/acc_emp"><i class="fa fa-anchor icon_left"></i> Kecelakaan Karyawan</a></li>
 	            <li style="border-right: none;"><a href="../contract/contract"><i class="fa fa-file-archive-o icon_left"></i> Kontrak & Updates</a></li>
 	            <li style="border-right: none;"><a href="../employee/resign"><i class="fa fa fa-paw icon_left"></i> Resign</a></li>
@@ -275,12 +275,12 @@
 
 	<!-- Jquery Library -->
 	<script src="{{asset('js/hris/jquery-3.1.1.min.js')}}"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="{{asset('js/hris/bootstrap.min.js')}}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{{asset('js/hris/bootstrap.js')}}"></script>
 	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 	<script src="{{asset('js/hris/highcharts.js')}}"></script>
 	<script src="{{asset('js/hris/highcharts-more.js')}}"></script>
-	<script src="{{asset('js/hris/modules/exporting.js')}}"></script>
+{{-- 	<script src="{{asset('js/hris/modules/exporting.js')}}"></script> --}}
 	<!-- Tiny MCE Text Area -->
 	<script src="{{asset('js/hris/tinymce/tinymce.min.js')}}"></script>
 	<!-- Datatable -->
@@ -312,32 +312,9 @@
 
 	<script type="text/javascript">
 
-		@$(document).ready(function() {
-		    @$('#example').DataTable()
-		    .removeClass( 'display' )
-		    .addClass('table table-striped table-bordered');
-		    ;
-		  }
-
-		   );
-
-		  @$(document).ready(function() {
-		    @$('#example2').DataTable()
-		    .removeClass( 'display' )
-		    .addClass('table table-striped table-bordered');
-		    ;
-		  } );
-
-		  @$(document).ready(function() {
-		    @$('#example3').DataTable()
-		    .removeClass( 'display' )
-		    .addClass('table table-striped table-bordered');
-		    ;
-		  } );
-
-		@$.ajaxSetup({
+		$.ajaxSetup({
 			headers: {
-				'X-CSRF-TOKEN': @$('meta[name="csrf-token"]').attr('content')
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
 
@@ -359,45 +336,45 @@
 		});
 
 	   // For demo to fit into DataTables site builder...
-	 @$('#example')
+	 $('#example')
 	    .removeClass( 'display' )
 	    .addClass('table table-striped table-bordered');
 
 	      // For demo to fit into DataTables site builder...
-	@$('#example2')
+	$('#example2')
 		.removeClass( 'display' )
 		.addClass('table table-striped table-bordered');
 
-	var table = @$('#example2').DataTable({
+	var table = $('#example2').DataTable({
 	   lengthMenu: [ [10, 25, 100, -1], [10, 25, 100, "All"] ],
 	   pageLength: 10
 	});
 
 		// For demo to fit into DataTables site builder...
-	@$('#example3')
+	$('#example3')
 		.removeClass( 'display' )
 		.addClass('table table-striped table-bordered');
 
-	var table = @$('#example').DataTable({
+	var table = $('#example').DataTable({
 	   lengthMenu: [ [10, 25, 100, -1], [10, 25, 100, "All"] ],
 	   pageLength: 25
 	});
 
 
-	@$(document).ready(function() { 
+	$(document).ready(function() { 
 
-      @$('#calendar').fullCalendar({ 
-         draggable: true, 
-         events: "json_events.php", 
-         eventDrop: function(event, delta) { 
-            alert(event.title + ' was moved ' + delta + ' days\n' + 
-               '(should probably update your database)'); 
-         }, 
-         loading: function(bool) { 
-            if (bool) @$('#loading').show(); 
-            else @$('#loading').hide(); 
-         } 
-      }); 
+      // $('#calendar').fullCalendar({ 
+      //    draggable: true, 
+      //    events: "json_events.php", 
+      //    eventDrop: function(event, delta) { 
+      //       alert(event.title + ' was moved ' + delta + ' days\n' + 
+      //          '(should probably update your database)'); 
+      //    }, 
+      //    loading: function(bool) { 
+      //       if (bool) $('#loading').show(); 
+      //       else $('#loading').hide(); 
+      //    } 
+      // }); 
 
    });
 

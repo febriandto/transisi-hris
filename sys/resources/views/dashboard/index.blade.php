@@ -30,7 +30,7 @@
                             
                             <div class="col-md-6">
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px; ">
-                                <a href="../employee/emp">
+                                <a href="{{ route('employee.index') }}">
                                     <div class="shortcut_list" style="padding: 5px !important;">
                                         <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
                                             {{ $CountEmploye }}
@@ -42,7 +42,7 @@
                                 </div>
 
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px;">
-                                <a href="../employee/emp?bod=true">
+                                <a href="{{ route('employee.bod') }}">
                                     <div class="shortcut_list" style="padding: 5px !important">
                                         <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
                                             {{ $CountBOD }}
@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px;">
-                                <a href="../employee/emp?karyawan_lokal=true">
+                                <a href="{{ route('employee.local') }}">
                                     <div class="shortcut_list" style="padding: 5px !important">
                                         <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
                                             {{ $CountLocalEmploye }}
@@ -66,7 +66,7 @@
                                 </div>
 
                                 <div class="col-md-6 sh_link" style=" margin-bottom:20px;">
-                                <a href="../employee/emp?karyawan_asing=true">
+                                <a href="{{ route('employee.foreign') }}">
                                     <div class="shortcut_list" style="padding: 5px !important">
                                         <h1 align="center" style="font-size: 50px; font-weight: bold; color: orange;">
                                             {{ $CountForeignEmploye }}
