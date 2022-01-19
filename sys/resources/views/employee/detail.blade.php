@@ -88,19 +88,19 @@
 
 					<div class="row">
 						<div class="col-md-12">
-							<h4 class="emp_name_detail"><?php echo @$data['emp_name'];?> ( <?php echo @$data['id_emp'];?> )</h4>
+							<h4 class="emp_name_detail"><?php echo $employee->emp_name;?> ( <?php echo $employee->id_emp;?> )</h4>
 						</div>
 
 						<div class="col-md-4">
 							<br>
-							<img class="" src="../../assets/photos/<?php echo @$data['emp_photo'];?>?v=<?php echo @$data['emp_photo_v'];?>"
+							<img class="" src="{{asset('images/upload/'.$employee->emp_photo)}}?v=<?php echo $employee->emp_photo_v;?>"
 							style="width: 100%; box-shadow: 1px 1px 4px 4px rgba(1,1,1,0.1) ">
 							<a style="position: absolute; bottom: 0px; left: 15px; border-radius: 0px"
-							 href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_<?php echo @$data['id_emp'];?>">
+							 href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_<?php echo $employee->id_emp;?>">
 								<i class="fa fa-pencil icon_left"></i>Ganti Foto
 							</a>
 
-							<div id="modal_edit_<?php echo @$data['id_emp'];?>" class="modal fade" role="dialog">
+							<div id="modal_edit_<?php echo $employee->id_emp;?>" class="modal fade" role="dialog">
 		                      	<div class="modal-dialog" >
 		                        	<div class="modal-content" style="border-radius: 0px; margin-top: 250px;">
 			                          	<div class="modal-body">
@@ -112,7 +112,7 @@
 			                            			<h4 class="modal-title" style="border-bottom: 1px solid rgba(1,1,1,0.1); padding-bottom: 5px">Edit Photo Karyawan</h4>
 											        <tr>
 											        	<td width="100%">
-											        		<input type="hidden" id="no_radius" name="emp_photo_v" class="form-control" value="<?php echo @$data['emp_photo_v'];?>">
+											        		<input type="hidden" id="no_radius" name="emp_photo_v" class="form-control" value="<?php echo $employee->emp_photo_v;?>">
 
 												        	<input required="" type="file" name="emp_photo" class="form-control" id="photo">
 
@@ -174,12 +174,6 @@
 						</div>
 						<div class="col-md-8">
 							<br>
-
-							
-
-							<!-- <h5 align=""><?php echo @$data['dept_name'];?> / <?php echo @$data['grade_name'];?> / <?php echo @$data['emp_status'];?>
-							</h5> -->
-
 
 							<table class="table_emp_view">
 								<tr>
@@ -277,12 +271,14 @@
 			    		<img src="{{asset('images/icons/bos.png')}}" style="width: 100%; padding: 10px;">
 			    	</div>
 			    	
+			    	@foreach( $atasan as $at )
 			    	<div class="col-md-10">
 			    		<h5 class=""> Atasan Langsung </h5>
 			    		<h2 style="font-weight: bold"> 
-			    			<?php echo @$data['atasan']; ?> 
+			    			<?php echo $at->atasan; ?> 
 			    		</h2>
 			    	</div>
+			    	@endforeach
 
 			    </div>
 			    <hr>
@@ -306,18 +302,18 @@
 					    		</tr> -->
 					    	</thead>
 					    	<tbody>
+					    		@foreach($mutasi as $no => $mutasi)
 					    		<tr>
-					    			<td><?php echo @$i++; ?></td>
-					    			<!-- <td><?php echo @$data['emp_name'];?></td> -->
-					    			<td><?php echo @$data['mutasi_activedate'];?></td>
-					    			<td><?php echo @$data['mutasi_category'];?></td>
-					    			<td><?php echo @$data['dept_name'];?></td>
-					    			<td><?php echo @$data['dept_head'];?></td>
-					    			<!-- <td><?php echo date('d M Y', strtotime(@$data['mutasi_activedate']))?></td> -->
+					    			<td><?php echo $no+1; ?></td>
+					    			<td><?php echo $mutasi->mutasi_activedate; ?></td>
+					    			<td><?php echo $mutasi->mutasi_category; ?></td>
+					    			<td><?php echo $mutasi->dept_name; ?></td>
+					    			<td><?php echo $mutasi->dept_head; ?></td>
 					    		</tr>
-
+					    		@endforeach
 					    	</tbody>
 					    </table>
+
 			    	</div>
 			    </div>
 
@@ -328,7 +324,7 @@
 			    		<img src="{{asset('images/icons/grade.png')}}" style="width: 100%; padding: 10px;">
 			    	</div>
 			    	<div class="col-md-10">
-			    		<h5 class="">Promosi / Demosi Jabatan (<?php echo @$data['a'];?>)</h5>
+			    		<h5 class="">Promosi / Demosi Jabatan</h5>
 			    		<table id="table_emp_view2">
 					    	<thead>
 					    		<tr>
@@ -341,14 +337,14 @@
 					    		</tr>
 					    	</thead>
 					    	<tbody>
+					    		@foreach($jabatanPromosi as $no => $jp)
 					    		<tr>
-					    			<td><?php echo @$i++; ?></td>
-					    			<!-- <td><?php echo @$data['emp_name'];?></td> -->
-					    			<!-- <td><?php echo @$data['promosi_category'];?></td> -->
-					    			<td><?php echo @$data['grade_name'];?></td>
-					    			<td><?php echo @$data['grade_level'];?></td>
-					    			<td><?php echo date('d F Y', strtotime(@$data['promosi_activedate']))?></td>
+					    			<td><?php echo $no+1; ?></td>
+					    			<td><?php echo $jp->grade_name;?></td>
+					    			<td><?php echo $jp->grade_level;?></td>
+					    			<td><?php echo date('d F Y', strtotime($jp->promosi_activedate))?></td>
 					    		</tr>
+					    		@endforeach
 					    	</tbody>
 					    </table>
 			    	</div>
@@ -376,33 +372,33 @@
 					    		</tr>
 					    	</thead>
 					    	<tbody>
-                  <tr>
-                    <td><?php echo @$i++; ?></td>
-                    <!-- <td><?php echo @$data['emp_name'];?></td> -->
-                    <td><?php echo @$data['contract_status'];?></td>
-                    <td>
+					    		@foreach($kontrak as $no => $kontraks)
+				                  <tr>
+				                    <td><?php echo $no+1; ?></td>
+				                    <td><?php echo $kontraks->contract_status;?></td>
+				                    <td>
 				                    <?php
-				                      if(@$data['contract_status']=='Probation')
+				                      if($kontraks->contract_status=='Probation')
 				                        {
-				                          echo @$data['selisih_bulan'].' Months';
+				                          echo $kontraks->selisih_bulan.' Months';
 				                        }
-				                      else if(@$data['contract_status']=='Kontrak')
-				                        {echo @$data['selisih_tahun'].' Years';}
-				                      else if(@$data['contract_status']=='Karyawan Tetap')
+				                      else if($kontraks->contract_status=='Kontrak')
+				                        {echo $kontraks->selisih_tahun.' Years';}
+				                      else if($kontraks->contract_status=='Karyawan Tetap')
 				                          {echo "Permanent";}
 				                    ?>
 				                    </td>
                 
-					    			<td><?php echo date ('d M Y', strtotime(@$data['contract_start_date']))?></td>
+					    			<td><?php echo date ('d M Y', strtotime($kontraks->contract_start_date))?></td>
 					    			<td>
 					    				<?php
-						    				if(@$data['contract_status']!='Karyawan Tetap')
-						    					{}
+						    				if($kontraks->contract_status!='Karyawan Tetap')
+						    					{echo date ('d M Y', strtotime("$kontraks->contract_end_date"));}
 						    				else {echo "-";}
 					    				?>
 					    			</td>
-					    			<!-- <td><?php echo @$data['remarks'];?></td> -->
 					    		</tr>
+					    		@endforeach
 					    	</tbody>
 					    </table>
 			    	</div>
@@ -416,7 +412,7 @@
 			    	</div>
 			    	<div class="col-md-10">
 
-			    		<h5 class="">Surat Peringatan ( <?php echo @$data['a'];?> ) </h5>
+			    		<h5 class="">Surat Peringatan </h5>
 			    		
 			    		<table id="table_emp_view2">
 					    	<thead>
@@ -430,45 +426,46 @@
 					    	</thead>
 					    	<tbody>
 					    		
+					    		@foreach( $sp as $no => $sps )
 					    		<tr>
-					    			<td><?php echo @$i++; ?></td>
-					    			<td><?php echo @$data['emp_name'];?></td>
+					    			<td><?php echo $no+1; ?></td>
+					    			<td><?php echo $sps->emp_name;?></td>
 					    			<td>
 
-					                	<a href="#" data-toggle="modal" data-target="#<?php echo @$data['no_sp'];?>">
-					                	<?php echo @$data['no_sp'];?>
+					                	<a href="#" data-toggle="modal" data-target="#<?php echo $sps->no_sp;?>">
+					                	<?php echo $sps->no_sp;?>
 					                	</a>
 										<!-- Modal -->
-										<div id="<?php echo @$data['no_sp'];?>" class="modal fade" role="dialog">
+										<div id="<?php echo $sps->no_sp;?>" class="modal fade" role="dialog">
 										  <div class="modal-dialog">
 
 										    <!-- Modal content-->
 										    <div class="modal-content">
 										      <div class="modal-header">
 										        <button type="button" class="close" data-dismiss="modal">&times;</button>
-										        <h4 class="modal-title"><?php echo @$data['emp_name'];?></h4>
+										        <h4 class="modal-title"><?php echo $sps->emp_name;?></h4>
 										      </div>
 										      <div class="modal-body">
 										      	<table class="table_emp_view">
 												<tr>
 													<td width="30%"> SP Date </td><td>:</td>
-													<td><?php echo date('d F Y', strtotime(@$data['sp_date']));?></td>
+													<td><?php echo date('d F Y', strtotime($sps->sp_date));?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Title </td><td>:</td>
-													<td><?php echo @$data['sp_title'];?></td>
+													<td><?php echo $sps->sp_title;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> SP Description </td><td>:</td>
-													<td><?php echo @$data['sp_description'];?></td>
+													<td><?php echo $sps->sp_description;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Punishment </td><td>:</td>
-													<td><?php echo @$data['sp_punishment'];?></td>
+													<td><?php echo $sps->sp_punishment;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Valid Until </td><td>:</td>
-													<td><?php echo date('d F Y', strtotime(@$data['sp_valid_date']));?></td>
+													<td><?php echo date('d F Y', strtotime($sps->sp_valid_date));?></td>
 												</tr>
 
 											</table>
@@ -482,8 +479,9 @@
 										</div>
 										<!-- End Modal -->
 					    			</td>
-					    			<td><?php echo @$data['sp_title'];?></td>
+					    			<td><?php echo $sps->sp_title;?></td>
 					    		</tr>
+					    		@endforeach
 					    	</tbody>
 					    </table>
 			    	</div>
@@ -499,7 +497,7 @@
 			    	</div>
 			    	<div class="col-md-10">
 			    		
-			    		<h5 class="">Training Activity ( <?php echo @$data['a'];?> ) </h5>
+			    		<h5 class="">Training Activity </h5>
 			    		
 			    		<table id="table_emp_view2">
 					    	<thead>
@@ -513,44 +511,45 @@
 					    	</thead>
 					    	<tbody>
 					    		
+					    		@foreach($training as $no => $train)
 					    		<tr>
-					    			<td><?php echo @$i++; ?></td>
+					    			<td><?php echo @$no+1; ?></td>
 					    			<td>
 
-					                	<a href="#" data-toggle="modal" data-target="#<?php echo @$data['id_training_detail'];?>">
-					                	<?php echo @$data['training_name'];?>
+					                	<a href="#" data-toggle="modal" data-target="#<?php echo $train->id_training_detail;?>">
+					                	<?php echo $train->training_name;?>
 					                	</a>
 										<!-- Modal -->
-										<div id="<?php echo @$data['id_training_detail'];?>" class="modal fade" role="dialog">
+										<div id="<?php echo $train->id_training_detail;?>" class="modal fade" role="dialog">
 										  <div class="modal-dialog">
 
 										    <!-- Modal content-->
 										    <div class="modal-content">
 										      <div class="modal-header">
 										        <button type="button" class="close" data-dismiss="modal">&times;</button>
-										        <h4 class="modal-title"><?php echo @$data['training_name'];?></h4>
+										        <h4 class="modal-title"><?php echo $train->training_name;?></h4>
 										      </div>
 										      <div class="modal-body">
 										      	<table class="table_emp_view">
 												<tr>
 													<td width="30%"> Training Date </td><td>:</td>
-													<td><?php echo date('d F Y', strtotime(@$data['training_date']));?></td>
+													<td><?php echo date('d F Y', strtotime($train->training_date));?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Training Name </td><td>:</td>
-													<td><?php echo @$data['training_name'];?></td>
+													<td><?php echo $train->training_name;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Trainer </td><td>:</td>
-													<td><?php echo @$data['training_trainer'];?></td>
+													<td><?php echo $train->training_trainer;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Held By </td><td>:</td>
-													<td><?php echo @$data['training_helder'];?></td>
+													<td><?php echo $train->training_helder;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Location </td><td>:</td>
-													<td><?php @$data['training_location'];?></td>
+													<td><?php $train->training_location;?></td>
 												</tr>
 
 											</table>
@@ -564,9 +563,10 @@
 										</div>
 										<!-- End Modal -->
 					    			</td>
-					    			<td><?php echo @$data['training_date'];?></td>
-					    			<td><?php echo @$data['training_as'];?></td>
+					    			<td><?php echo $train->training_date;?></td>
+					    			<td><?php echo $train->training_as;?></td>
 					    		</tr>
+					    		@endforeach
 					    	</tbody>
 					    </table>
 			    	</div>
@@ -588,31 +588,31 @@
 			    	
 					<tr>
 						<td width="30%"> WhatsApp Number </td><td width="5%">:</td>
-						<td><?php echo @$data['nomor_hp_2'];?></td>
+						<td><?php echo @$personal_information->nomor_hp_2;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Mothers Name  </td><td width="5%">:</td>
-						<td><?php echo @$data['pers_mother_name'];?></td>
+						<td><?php echo @$personal_information->pers_mother_name;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> NPWP Number </td><td>:</td>
-						<td><?php echo @$data['tax_id_number'];?></td>
+						<td><?php echo @$personal_information->tax_id_number;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Bank Number </td><td>:</td>
-						<td><?php echo @$data['rekening'];?></td>
+						<td><?php echo @$personal_information->rekening;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Blood Type </td><td>:</td>
-						<td><?php echo @$data['pers_blood_type'];?></td>
+						<td><?php echo @$personal_information->pers_blood_type;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Last Education </td><td>:</td>
-						<td><?php echo @$data['pers_education'];?></td>
+						<td><?php echo @$personal_information->pers_education;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Education Major </td><td>:</td>
-						<td><?php echo @$data['pers_major'];?></td>
+						<td><?php echo @$personal_information->pers_major;?></td>
 					</tr>
 
 				</table>
@@ -622,39 +622,39 @@
 
 					<tr>
 						<td width="30%"> Marital Status </td><td>:</td>
-						<td><?php echo @$data['pers_marital'];?></td>
+						<td><?php echo @$personal_information->pers_marital;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Husband / Wife Name </td><td width="5%">:</td>
-						<td><?php echo @$data['pers_pasangan'];?></td>
+						<td><?php echo @$personal_information->pers_pasangan;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Husband / Wife Jobs </td><td>:</td>
-						<td><?php echo @$data['pers_pekerjaan_pasangan'];?></td>
+						<td><?php echo @$personal_information->pers_pekerjaan_pasangan;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Child </td><td>:</td>
-						<td><?php echo @$data['pers_child_qty'];?></td>
+						<td><?php echo @$personal_information->pers_child_qty;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Child's Name 1 </td><td>:</td>
-						<td><?php echo @$data['pers_anak1'];?></td>
+						<td><?php echo @$personal_information->pers_anak1;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Child's Name 2 </td><td>:</td>
-						<td><?php echo @$data['pers_anak2'];?></td>
+						<td><?php echo @$personal_information->pers_anak2;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Child's Name 3 </td><td>:</td>
-						<td><?php echo @$data['pers_anak3'];?></td>
+						<td><?php echo @$personal_information->pers_anak3;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Child's Name 4 </td><td>:</td>
-						<td><?php echo @$data['pers_anak4'];?></td>
+						<td><?php echo @$personal_information->pers_anak4;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Child's Name 5 </td><td>:</td>
-						<td><?php echo @$data['pers_anak5'];?></td>
+						<td><?php echo @$personal_information->pers_anak5;?></td>
 					</tr>
 
 
@@ -664,19 +664,19 @@
 
 					<tr>
 						<td width="30%"> Nama Saudara</td><td width="5%">:</td>
-						<td><?php echo @$data['nama_saudara'];?></td>
+						<td><?php echo @$personal_information->nama_saudara;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> No HP Saudara</td><td width="5%">:</td>
-						<td><?php echo @$data['phone_saudara'];?></td>
+						<td><?php echo @$personal_information->phone_saudara;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Alamat Saudara  </td><td width="5%">:</td>
-						<td><?php echo @$data['alamat_saudara'];?></td>
+						<td><?php echo @$personal_information->alamat_saudara;?></td>
 					</tr>
 					<tr>
 						<td width="30%"> Hubungan Saudara </td><td>:</td>
-						<td><?php echo @$data['hubungan_saudara'];?></td>
+						<td><?php echo @$personal_information->hubungan_saudara;?></td>
 					</tr>
 
 				</table>
@@ -703,56 +703,56 @@
 					    		</tr>
 					    	</thead>
 					    	<tbody>
-					    		
+					    		@foreach( $work_experience as $no => $we )
 					    		<tr>
-					    			<td><?php echo @$i++; ?></td>
+					    			<td><?php echo $no+1; ?></td>
 					    			<td>
-										<a href="#" data-toggle="modal" data-target="#<?php echo @$data['id_experience'];?>">
-					                	<?php echo @$data['exp_company_name'];?>
+										<a href="#" data-toggle="modal" data-target="#<?php echo $we->id_experience;?>">
+					                	<?php echo $we->exp_company_name;?>
 					                	</a>
 										<!-- Modal -->
-										<div id="<?php echo @$data['id_experience'];?>" class="modal fade" role="dialog">
+										<div id="<?php echo $we->id_experience;?>" class="modal fade" role="dialog">
 										  <div class="modal-dialog">
 
 										    <!-- Modal content-->
 										    <div class="modal-content">
 										      <div class="modal-header">
 										        <button type="button" class="close" data-dismiss="modal">&times;</button>
-										        <h4 class="modal-title"><?php echo @$data['emp_name'];?></h4>
+										        <h4 class="modal-title"><?php echo $we->emp_name;?></h4>
 										      </div>
 										      <div class="modal-body">
 										      	<table class="table_emp_view">
 												<tr>
 													<td width="30%"> Company Name </td><td>:</td>
-													<td><?php echo @$data['exp_company_name'];?></td>
+													<td><?php echo $we->exp_company_name;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Start Work </td><td>:</td>
 													<td>
-														<?php echo date('d F Y', strtotime(@$data['exp_start_date']));?>
+														<?php echo date('d F Y', strtotime($we->exp_start_date));?>
 													</td>
 												</tr>
 												<tr>
 													<td width="30%"> End Work </td><td>:</td>
 													<td>
-														<?php echo date('d F Y', strtotime(@$data['exp_end_date']));?>
+														<?php echo date('d F Y', strtotime($we->exp_end_date));?>
 													</td>
 												</tr>
 												<tr>
 													<td width="30%"> Bussiness Sector </td><td>:</td>
-													<td><?php echo @$data['exp_bussiness_type'];?></td>
+													<td><?php echo $we->exp_bussiness_type;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Location </td><td>:</td>
-													<td><?php echo @$data['exp_region'];?></td>
+													<td><?php echo $we->exp_region;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Reason of Quit </td><td>:</td>
-													<td><?php echo @$data['exp_quit_reason'];?></td>
+													<td><?php echo $we->exp_quit_reason;?></td>
 												</tr>
 												<tr>
 													<td width="30%"> Job Description </td><td>:</td>
-													<td><?php echo @$data['exp_jobdesc'];?></td>
+													<td><?php echo $we->exp_jobdesc;?></td>
 												</tr>
 
 											</table>
@@ -767,12 +767,12 @@
 										<!-- End Modal -->
 
 					    			</td>
-					    			<td><?php echo @$data['exp_start_date'];?></td>
-					    			<td><?php echo @$data['exp_end_date'];?></td>
-					    			<td><?php echo @$data['exp_last_position'];?></td>
-					    			<td><?php echo @$data['exp_bussiness_type'];?></td>
+					    			<td><?php echo $we->exp_start_date;?></td>
+					    			<td><?php echo $we->exp_end_date;?></td>
+					    			<td><?php echo $we->exp_last_position;?></td>
+					    			<td><?php echo $we->exp_bussiness_type;?></td>
 					    		</tr>
-
+					    		@endforeach
 					    	</tbody>
 					    </table>
 			    	</div>

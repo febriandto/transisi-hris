@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Model\MasterEmploye;
 use App\Model\MasterDepartment;
 use App\Model\MasterSection;
@@ -15,6 +16,7 @@ use App\Model\Contract;
 use App\Model\Users;
 use Auth;
 use DateTime;
+use DB;
 
 class EmployeeController extends Controller
 {
@@ -98,7 +100,7 @@ class EmployeeController extends Controller
         $emp->emp_contract_startdate = $request->tgl_join;
         $emp->emp_contract_end_date  = $request->emp_contract_end_date;
         $emp->emp_contract_remarks   = $request->emp_contract_remarks;
-        $emp->emp_photo              = $request->id.$file->getClientOriginalExtension();
+        $emp->emp_photo              = $request->id.".".$file->getClientOriginalExtension();
         $emp->emp_atasan             = $request->emp_atasan;
         $emp->input_by               = Auth::user()->name;
         $emp->input_date             = date('Y-m-d');
@@ -160,7 +162,147 @@ class EmployeeController extends Controller
         $interval = $date->diff($now);
         $lamaKerja =  $interval->format('%y Tahun %m Bulan %d Hari');
 
-        return view('employee.detail', compact("employee", "lamaKerja"));
+        $mutasi = DB::select("SELECT
+            `hris_m_mutasi`.`id_dept`
+            , `hris_m_mutasi`.`id_emp`
+            , `hris_m_mutasi`.`id_mutasi`
+            , `hris_m_emp`.`emp_name`
+            , `hris_m_dept`.`dept_name`
+            , `hris_m_dept`.`dept_head`
+            , `hris_m_mutasi`.`mutasi_activedate`
+            , `hris_m_mutasi`.`mutasi_category`
+        FROM
+            `hris_m_mutasi`
+            INNER JOIN `hris_m_emp` 
+                ON (`hris_m_mutasi`.`id_emp` = `hris_m_emp`.`id_emp`)
+            INNER JOIN `hris_m_dept` 
+                ON (`hris_m_mutasi`.`id_dept` = `hris_m_dept`.`id_dept`)
+        WHERE `hris_m_emp`.`id_emp` = '".$id->id_emp."'");
+
+        $jabatanPromosi = DB::select("
+            SELECT
+                `hris_promosi`.`id_grade`
+                , `hris_promosi`.`promosi_activedate`
+                , `hris_promosi`.`promosi_category`
+                , `hris_promosi`.`input_date`
+                , `hris_promosi`.`input_by`
+                , `hris_promosi`.`is_delete`
+                , `hris_m_grade`.`grade_name`
+                , `hris_m_grade`.`grade_remarks`
+                , `hris_m_grade`.`grade_level`
+                , `hris_m_emp`.`emp_name`
+            FROM
+                `hris_promosi`
+                INNER JOIN `hris_m_emp`
+                    ON (`hris_promosi`.`id_emp` = `hris_m_emp`.`id_emp`)
+                INNER JOIN `hris_m_grade`
+                    ON (`hris_promosi`.`id_grade` = `hris_m_grade`.`id_grade`)
+            WHERE `hris_promosi`.`id_emp` = '".$id->id_emp."' and promosi_category != 'first_grade'
+            ");
+
+        $kontrak = DB::select("
+                  SELECT
+                      `hris_contract`.`no_contract`
+                      , `hris_contract`.`id_emp`
+                      , `hris_m_emp`.`emp_name`
+                      , `hris_contract`.`contract_status`
+                      , `hris_contract`.`contract_start_date`
+                      , `hris_contract`.`contract_end_date`
+                      , TIMESTAMPDIFF(MONTH, contract_start_date, contract_end_date) AS 'selisih_bulan'
+                                            , TIMESTAMPDIFF(YEAR, contract_start_date, contract_end_date) AS 'selisih_tahun'
+                      , `hris_contract`.`remarks`
+                  FROM
+                      `hris_contract`
+                      INNER JOIN `hris_m_emp`
+                          ON (`hris_contract`.`id_emp` = `hris_m_emp`.`id_emp`)
+                  WHERE `hris_contract`.`id_emp` = '".$id->id_emp."'
+                  ");
+
+        $sp = DB::select("
+                SELECT
+                    `hris_m_emp`.`emp_name`
+                    , `hris_sp`.`no_sp`
+                    , `hris_sp`.`sp_date`
+                    , `hris_sp`.`id_spcat`
+                    , `hris_sp`.`sp_title`
+                    , `hris_sp`.`sp_valid_date`
+                    , `hris_sp`.`sp_description`
+                    , `hris_sp`.`sp_punishment`
+                    , `hris_sp`.`id_emp`
+                    , `hris_sp`.`input_date`
+                    , `hris_sp`.`input_by`
+                    , `hris_sp`.`edit_by`
+                    , `hris_sp`.`edit_date`
+                    , `hris_sp`.`is_delete`
+                FROM
+                    `hris_sp`
+                    INNER JOIN `hris_m_emp`
+                        ON (`hris_sp`.`id_emp` = `hris_m_emp`.`id_emp`)
+                    where `hris_sp`.`id_emp` = '".$id->id_emp."'
+                        ;
+                ");
+
+        $training = DB::select("
+                        SELECT
+                            `hris_m_emp`.`id_emp`
+                            , `hris_m_emp`.`emp_name`
+                            , `hris_training`.`training_name`
+                            , `hris_training_detail`.`training_as`
+                            , `hris_training`.`training_date`
+                            , `hris_training_detail`.`id_training_detail`
+                            , `hris_training_detail`.`id_training`
+                            , `hris_training`.`training_trainer`
+                            , `hris_training`.`training_desc`
+                            , `hris_training`.`training_helder`
+                            , `hris_training`.`training_duration`
+                            , `hris_training`.`training_location`
+                        FROM
+                            `hris_training`
+                            INNER JOIN `hris_training_detail` 
+                                ON (`hris_training`.`id_training` = `hris_training_detail`.`id_training`)
+                            INNER JOIN `hris_m_emp` 
+                                ON (`hris_training_detail`.`id_emp` = `hris_m_emp`.`id_emp`)
+                            where `hris_m_emp`.`id_emp` = '".$id->id_emp."'
+                                ;
+                        ");
+
+        $atasan = DB::select("
+                        SELECT
+                            `hris_m_emp`.`id_emp`
+                            , `hris_m_emp`.`emp_name`
+                            , `hris_m_emp_1`.`emp_name` as 'atasan'
+                        FROM
+                            `hris_m_emp`
+                            INNER JOIN `hris_m_emp` AS `hris_m_emp_1` 
+                                ON (`hris_m_emp`.`emp_atasan` = `hris_m_emp_1`.`id_emp`)
+                            WHERE hris_m_emp.id_emp = '".$id->id_emp."';
+                        ");
+
+        $personal_information = PersonalInformation::where('id_emp', $id->id_emp)->first();
+
+        $work_experience = DB::select("
+                            SELECT
+                                `hris_experience`.`id_emp`
+                                , `hris_experience`.`id_experience`
+                                , `hris_experience`.`exp_company_name`
+                                , `hris_experience`.`exp_start_date`
+                                , `hris_experience`.`exp_end_date`
+                                , `hris_experience`.`exp_bussiness_type`
+                                , `hris_experience`.`exp_company_location`
+                                , `hris_experience`.`exp_last_position`
+                                , `hris_experience`.`exp_jobdesc`
+                                , `hris_experience`.`exp_quit_reason`
+                                , `hris_experience`.`exp_region`
+                                , `hris_experience`.`input_by`
+                                , `hris_experience`.`is_delete`
+                                , `hris_m_emp`.`emp_name`
+                            FROM
+                                `hris_experience`
+                                INNER JOIN `hris_m_emp`
+                                    ON (`hris_experience`.`id_emp` = `hris_m_emp`.`id_emp`)
+                            WHERE `hris_experience`.`id_emp` = '".$id->id_emp."'");
+
+        return view('employee.detail', compact("employee", "lamaKerja", "mutasi", "jabatanPromosi", "kontrak", "sp", "training", "atasan", "personal_information", "work_experience"));
     }
 
 }
