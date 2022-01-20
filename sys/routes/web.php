@@ -67,9 +67,10 @@ Route::group(['middlewareGroup' => ['web']], function () {
 					Route::get('/add', 'EmployeeController@add')->name('employee.add');
 					Route::post('/save', 'EmployeeController@save')->name('employee.save');
 					Route::get('/detail/{id}', 'EmployeeController@detail')->name('employee.detail');
-					Route::get('/edit', 'EmployeeController@edit')->name('employee.edit');
+					Route::get('/edit/{id}', 'EmployeeController@edit')->name('employee.edit');
 					Route::post('/update', 'EmployeeController@update')->name('employee.update');
 					Route::post('/delete', 'EmployeeController@delete')->name('employee.delete');
+					Route::post('/ganti_foto', 'EmployeeController@ganti_foto')->name('employee.ganti_foto');
 
 				});
 

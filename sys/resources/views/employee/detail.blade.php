@@ -104,7 +104,9 @@
 		                      	<div class="modal-dialog" >
 		                        	<div class="modal-content" style="border-radius: 0px; margin-top: 250px;">
 			                          	<div class="modal-body">
-									  		<form method="POST" enctype="multipart/form-data">
+									  		<form method="POST" enctype="multipart/form-data" action="{{route('employee.ganti_foto')}}">
+									  			{{csrf_field()}}
+									  			<input type="hidden" name="id_emp" value="{{$employee->id_emp}}">
 										  		<table id="add_new" class="cell-border" cellspacing="" width="100%">
 						                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						                              	<span aria-hidden="true">&times;</span>

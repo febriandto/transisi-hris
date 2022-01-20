@@ -305,4 +305,38 @@ class EmployeeController extends Controller
         return view('employee.detail', compact("employee", "lamaKerja", "mutasi", "jabatanPromosi", "kontrak", "sp", "training", "atasan", "personal_information", "work_experience"));
     }
 
+    public function edit(MasterEmploye $id)
+    {
+
+        $atasan = DB::select("SELECT * FROM hris_m_emp WHERE is_delete='N' AND emp_status != 'resign' ORDER BY id_grade");
+        $department = MasterDepartment::where('is_delete', 'N')->get();
+        $grade = MasterGrade::where('is_delete', 'N')->get();
+        $section = MasterSection::where('is_delete', 'N')->get();
+
+        return view('employee.edit', compact('id', 'atasan', 'department', 'grade', 'section'));
+
+    }
+
+    protected function ganti_foto(Request $request)
+    {
+
+        // menyimpan data file yang diupload ke variabel $file
+        $file = $request->file('emp_photo');
+ 
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'images/upload';
+ 
+        // upload file
+        $file->move($tujuan_upload, $request->id_emp.".".$file->getClientOriginalExtension());
+
+        MasterEmploye::where('id_emp', $request->id_emp)->update([
+            'emp_photo'   => $request->id_emp.".".$file->getClientOriginalExtension(),
+            'emp_photo_v' => $request->emp_photo_v+1,
+            'edit_by'     => Auth::user()->name,
+            'edit_date'   => date("Y-m-d")
+        ]);
+
+        return redirect()->back();
+    }
+
 }
