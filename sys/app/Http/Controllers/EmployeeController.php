@@ -43,6 +43,10 @@ class EmployeeController extends Controller
 
             $employee = MasterEmploye::where('is_delete', 'N')->where('emp_status', '!=', 'Resign')->WhereIn('id_grade', ['1','2','3','4'])->OrderBy('id_grade', 'ASC')->get();
 
+        }else if(\Request::route()->getName() == 'employee.resign'){
+
+            $employee = MasterEmploye::where('is_delete', 'N')->where('emp_status', 'Resign')->get();
+
         }else{
 
             $employee = MasterEmploye::where('is_delete', 'N')->where('emp_status', '!=', 'Resign')->OrderBy('id_grade', 'ASC')->get();
@@ -337,6 +341,82 @@ class EmployeeController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    // EMP LIST
+    public function emp_list()
+    {
+
+        return view('employee.emp_list');
+    }
+
+    // ALL LIST
+    public function emp_list_detail(Request $request, $id)
+    {
+
+        if( $id == 'all_list' ){
+
+            $datas = DB::select("
+                        SELECT
+                            hris_m_emp.id_emp
+                            , hris_m_emp.emp_idktp
+                            , hris_m_emp.emp_name
+                            , hris_m_emp.emp_photo
+                            , hris_m_emp.emp_status
+                            , hris_m_dept.dept_name
+                            , hris_m_section.section_name
+                            , hris_m_grade.grade_name
+                        FROM
+                            hris_m_emp
+                            INNER JOIN hris_m_dept 
+                                ON (hris_m_emp.id_dept = hris_m_dept.id_dept)
+                            INNER JOIN hris_m_section 
+                                ON (hris_m_emp.id_section = hris_m_section.id_section)
+                            INNER JOIN hris_m_grade 
+                                ON (hris_m_emp.id_grade = hris_m_grade.id_grade)
+                        WHERE hris_m_emp.is_delete='N' and hris_m_emp.emp_status !='Resign' and hris_m_emp.id_emp != '00001'
+                        ORDER BY hris_m_emp.id_grade ASC ");
+        }else{
+            $datas = DB::select("
+                        SELECT
+                            hris_m_emp.emp_name
+                            , hris_m_emp.id_emp
+                            , hris_m_emp.emp_photo
+                            , hris_m_dept.dept_name
+                            , hris_m_section.section_name
+                            , hris_m_grade.grade_name
+                            , hris_m_emp.is_delete
+                            , hris_m_emp.emp_status
+                        FROM
+                            hris_m_dept
+                            INNER JOIN hris_m_emp 
+                                ON (hris_m_dept.id_dept = hris_m_emp.id_dept)
+                            left JOIN hris_m_section 
+                                ON (hris_m_section.id_section = hris_m_emp.id_section)
+                            INNER JOIN hris_m_grade 
+                                ON (hris_m_grade.id_grade = hris_m_emp.id_grade)
+                        WHERE hris_m_emp.is_delete='N' and hris_m_emp.emp_status!='Resign' and hris_m_emp.id_dept = '".$id."' and hris_m_emp.id_emp != '00001'
+                        ORDER BY hris_m_emp.id_grade ASC ");
+        }
+
+        return view('employee.emp_list_detail', compact('datas'));
+    }
+
+    // Export
+    public function export(Request $request)
+    {
+
+        $employee = DB::select("
+          SELECT * FROM hris_m_emp
+            LEFT JOIN hris_m_dept ON hris_m_emp.id_dept = hris_m_dept.id_dept
+            LEFT JOIN hris_m_grade ON hris_m_emp.id_grade = hris_m_grade.id_grade
+            LEFT JOIN hris_m_section ON hris_m_emp.id_section = hris_m_section.id_section
+          WHERE hris_m_emp.is_delete='N' and emp_status != 'Resign' 
+          ORDER BY hris_m_emp.id_grade asc
+        ");
+
+        return view('employee.export', compact('employee'));
+
     }
 
 }

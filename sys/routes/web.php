@@ -62,6 +62,7 @@ Route::group(['middlewareGroup' => ['web']], function () {
 					Route::get('/local', 'EmployeeController@index')->name('employee.local');
 					Route::get('/foreign', 'EmployeeController@index')->name('employee.foreign');
 					Route::get('/bod', 'EmployeeController@index')->name('employee.bod');
+					Route::get('/resign', 'EmployeeController@index')->name('employee.resign');
 					Route::get('/detail', 'EmployeeController@detail')->name('employee.detail');
 
 					Route::get('/add', 'EmployeeController@add')->name('employee.add');
@@ -71,6 +72,24 @@ Route::group(['middlewareGroup' => ['web']], function () {
 					Route::post('/update', 'EmployeeController@update')->name('employee.update');
 					Route::post('/delete', 'EmployeeController@delete')->name('employee.delete');
 					Route::post('/ganti_foto', 'EmployeeController@ganti_foto')->name('employee.ganti_foto');
+
+					Route::get('/export', 'EmployeeController@export')->name('employee.export');
+
+					Route::group(['prefix' => 'emp_list'], function(){
+						Route::get('/', 'EmployeeController@emp_list')->name('emp_list.index');
+						Route::get('/detail/{id}', 'EmployeeController@emp_list_detail')->name('emp_list.detail');
+					});
+
+				});
+
+				// accident employee
+				Route::group(['prefix' => 'accident_employee'], function(){
+
+					Route::get('/', 'AccidentEmployeeController@index')->name('accident.index');
+					Route::get('/add', 'AccidentEmployeeController@add')->name('accident.add');
+					Route::post('/save', 'AccidentEmployeeController@save')->name('accident.save');
+					Route::get('/edit/{accident}', 'AccidentEmployeeController@edit')->name('accident.edit');
+					Route::post('/update', 'AccidentEmployeeController@update')->name('accident.update');
 
 				});
 

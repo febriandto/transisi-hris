@@ -70,7 +70,7 @@
 	          <div class="col-md-6 drop_space">
 	            <h5> Umum </h5>
 	            <li style="border-right: none;"><a href="{{ route('employee.index') }}"><i class="fa fa-user-circle-o icon_left"></i> Data Karyawan</a></li>
-	            <li style="border-right: none;"><a href="../acc_emp/acc_emp"><i class="fa fa-anchor icon_left"></i> Kecelakaan Karyawan</a></li>
+	            <li style="border-right: none;"><a href="{{ route('accident.index') }}"><i class="fa fa-anchor icon_left"></i> Kecelakaan Karyawan</a></li>
 	            <li style="border-right: none;"><a href="../contract/contract"><i class="fa fa-file-archive-o icon_left"></i> Kontrak & Updates</a></li>
 	            <li style="border-right: none;"><a href="../employee/resign"><i class="fa fa fa-paw icon_left"></i> Resign</a></li>
 	            <li style="border-right: none;"><a href="../team/team_view"><i class="fa fa fa-users icon_left"></i> Tim Karyawan</a></li>

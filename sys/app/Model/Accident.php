@@ -14,6 +14,8 @@ class Accident extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['id_accident', 'acc_date', 'id_acc_cat', 'id_emp', 'acc_desc', 'acc_recovery_desc', 'acc_status', 'input_by', 'input_date', 'edit_by', 'edit_date', 'is_delete'];
+    protected $keyType = 'string';
+
+    protected $fillable = ['id_accident', 'acc_date', 'acc_time', 'acc_condition', 'id_acc_cat', 'id_emp', 'acc_desc', 'acc_recovery_desc', 'acc_status', 'input_by', 'input_date', 'edit_by', 'edit_date', 'is_delete'];
     
 }
