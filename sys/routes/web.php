@@ -99,6 +99,31 @@ Route::group(['middlewareGroup' => ['web']], function () {
 						Route::post('/update', 'ProfileController@update')->name('profile.update');
 						Route::post('/passwordreset', 'ProfileController@passwordreset')->name('profile.passwordreset');
 				});
+
+				// Contract
+				Route::group(['prefix' => 'contract'], function () {
+
+					Route::get('/', 'ContractController@index')->name('contract.index');
+
+				});
+
+				// Resign
+				Route::group(['prefix' => 'resign'], function () {
+
+					Route::get('/', 'ResignController@index')->name('resign.index');
+
+				});
+
+				// Team
+				Route::group(['prefix' => 'team'], function () {
+
+					Route::get('/', 'TeamController@index')->name('team.index');
+					Route::get('/add', 'TeamController@add')->name('team.add');
+					Route::get('/view/{team}', 'TeamController@view')->name('team.view');
+
+
+				});
+
 				
 
 		});

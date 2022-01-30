@@ -63,17 +63,29 @@
 	      <ul class="nav navbar-nav">
 
 	        <li id="<?php if(@$page == 'dashboard'){echo 'active';}?>"><a href="{{ route('beranda.dashboard') }}"><i class="fa fa-tachometer icon_left"></i> Dashboard</a></li>
-	        <li class="dropdown" id="<?php if(Request::is('employee') OR Request::is('employee/*')){echo 'active';}?>">
+
+	        <li class="dropdown" id="<?php if(Request::is('employee') OR Request::is('employee/*')){echo 'active';}?><?php if(Request::is('accident_employee') OR Request::is('accident_employee/*')){echo 'active';}?><?php if(Request::is('contract') OR Request::is('contract/*')){echo 'active';}?><?php if(Request::is('resign') OR Request::is('resign/*')){echo 'active';}?>">
+
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle-o icon_left"></i> Pelayanan HR &nbsp; <i class="fa fa-angle-down"></i></a>
 	          <ul class="dropdown-menu wide">
 	          <div class="row">
 	          <div class="col-md-6 drop_space">
 	            <h5> Umum </h5>
-	            <li style="border-right: none;"><a href="{{ route('employee.index') }}"><i class="fa fa-user-circle-o icon_left"></i> Data Karyawan</a></li>
-	            <li style="border-right: none;"><a href="{{ route('accident.index') }}"><i class="fa fa-anchor icon_left"></i> Kecelakaan Karyawan</a></li>
-	            <li style="border-right: none;"><a href="../contract/contract"><i class="fa fa-file-archive-o icon_left"></i> Kontrak & Updates</a></li>
-	            <li style="border-right: none;"><a href="../employee/resign"><i class="fa fa fa-paw icon_left"></i> Resign</a></li>
-	            <li style="border-right: none;"><a href="../team/team_view"><i class="fa fa fa-users icon_left"></i> Tim Karyawan</a></li>
+	            <li style="border-right: none;" id="<?php if(Request::is('employee') OR Request::is('employee/*')){echo 'active';}?>">
+	            	<a href="{{ route('employee.index') }}"><i class="fa fa-user-circle-o icon_left"></i> Data Karyawan</a>
+	            </li>
+	            <li style="border-right: none;" id="<?php if(Request::is('accident_employee') OR Request::is('accident_employee/*')){echo 'active';}?>">
+	            	<a href="{{ route('accident.index') }}"><i class="fa fa-anchor icon_left"></i> Kecelakaan Karyawan</a>
+	            </li>
+	            <li style="border-right: none;" id="<?php if(Request::is('contract') OR Request::is('contract/*')){echo 'active';}?>">
+	            	<a href="{{ route('contract.index') }}"><i class="fa fa-file-archive-o icon_left"></i> Kontrak & Updates</a>
+	            </li>
+	            <li style="border-right: none;" id="<?php if(Request::is('resign') OR Request::is('resign/*')){echo 'active';}?>">
+	            	<a href="{{ route('resign.index') }}"><i class="fa fa fa-paw icon_left"></i> Resign</a>
+	            </li>
+	            <li style="border-right: none;" id="<?php if(Request::is('resign') OR Request::is('resign/*')){echo 'active';}?>">
+	            	<a href="{{ route('team.index') }}"><i class="fa fa fa-users icon_left"></i> Tim Karyawan</a>
+	            </li>
 
 	            <br>
 	            <h5> BPJS Area </h5>

@@ -27,7 +27,7 @@
 			<div class="col-md-9">
 			<div class="content">
 				<!-- <table id="tabel_howto" width="100%"> -->
-				<table id="example" class="cell-border" cellspacing="0" width="100%">
+				<table id="example" class="cell-border table-hover table table-striped table-bordered" cellspacing="0" width="100%">
 			        <thead>
 			            <tr>
 			                <th width="5%">No</th>
