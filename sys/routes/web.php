@@ -129,6 +129,18 @@ Route::group(['middlewareGroup' => ['web']], function () {
 
 				});
 
+				// Sp
+				Route::group(['prefix' => 'sp'], function(){
+
+					Route::get('/', 'SpController@index')->name('sp.index');
+					Route::get('/add', 'SpController@add')->name('sp.add');
+					Route::post('/save', 'SpController@save')->name('sp.save');
+					Route::get('/edit/{sp}', 'SpController@edit')->name('sp.edit');
+					Route::post('/update', 'SpController@update')->name('sp.update');
+					Route::get('/delete', 'SpController@delete')->name('sp.delete');
+
+				});
+
 				
 
 		});
