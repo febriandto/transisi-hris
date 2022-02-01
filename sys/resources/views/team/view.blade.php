@@ -63,10 +63,10 @@
 				            <?php } ?>
 				        </div>
 						<div class="top_menu_list">
-							<a class="btn btn-sm btn-success" id="no_radius" href=""> 
+							<a class="btn btn-sm btn-success" id="no_radius" href="{{ route('team.add_team', $team_id) }}"> 
 								<i class="fa fa-plus icon_left" title="Tambah Data Baru"></i> Tambah Anggota 
 							</a>
-							<a class="btn btn-sm btn-primary" id="no_radius" href="team_view"> 
+							<a class="btn btn-sm btn-primary" id="no_radius" href="{{ route('team.index') }}"> 
 								<i class="fa fa-check icon_left"></i> Selesai
 							</a>
 							<!-- <a href="emp_export" target="_blank" class="btn btn-primary flat btn-sm" id="no_radius">
@@ -102,7 +102,7 @@
 					                	EDIT</a>
 					                	| -->
 					                	<a class="btn_link"
-					                	id="no_radius" href="?del_team_detail=true&team_id=<?php echo $data->team_id;?>&team_detail_id=<?php echo $data->team_detail_id;?>" onclick="return confirm('Hapus data?')">
+					                	id="no_radius" href="{{ route('team.delete_team', ['team_id' => $data->team_id, 'team_detail_id' => $data->team_detail_id]) }}" onclick="return confirm('Hapus data?')">
 					                	DELETE</a>
 					                </td>
 					            </tr>

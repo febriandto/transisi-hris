@@ -100,7 +100,7 @@
 			                	VIEW</a>
 			                	|
 			                	<a class="btn_link"
-			                	id="no_radius" href="?del_team=true&team_id=<?php echo $data->team_id;?>" onclick="return confirm('Hapus data?')">
+			                	id="no_radius" href="{{ route('team.delete', ['team_id' => $data->team_id]) }}" onclick="return confirm('Hapus data?')">
 			                	DELETE</a>
 			                </td>
 			            </tr>

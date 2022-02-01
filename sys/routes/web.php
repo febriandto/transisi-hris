@@ -119,7 +119,12 @@ Route::group(['middlewareGroup' => ['web']], function () {
 
 					Route::get('/', 'TeamController@index')->name('team.index');
 					Route::get('/add', 'TeamController@add')->name('team.add');
+					Route::post('/save', 'TeamController@save')->name('team.save');
 					Route::get('/view/{team}', 'TeamController@view')->name('team.view');
+					Route::get('/view/{team}/add_team', 'TeamController@add_team')->name('team.add_team');
+					Route::post('/save_team', 'TeamController@save_team')->name('team.save_team');
+					Route::get('/delete', 'TeamController@delete')->name('team.delete');
+					Route::get('/delete_team', 'TeamController@delete_team')->name('team.delete_team');
 
 
 				});
