@@ -12,6 +12,8 @@ class Sp extends Model
 
     protected $primaryKey = 'no_sp';
 
+    protected $keyType = 'string';
+
     public $timestamps = false;
 
     protected $fillable = ['no_sp','sp_date','id_spcat','sp_title','sp_description','sp_punishment','sp_valid_date','sp_status','id_emp','input_date','input_by','edit_by','edit_date','is_delete'];

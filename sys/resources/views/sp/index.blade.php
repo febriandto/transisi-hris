@@ -55,11 +55,11 @@
 			                <td><?php echo $data->sp_status;?></td>
 			                <td align="center">
 			                	<a class="btn_link"
-			                	id="no_radius" href="?edit=true&no_sp=<?php echo $data->no_sp;?>">
+			                	id="no_radius" href="{{ route('sp.edit', $data->no_sp) }}">
 			                	<i class="fa fa-pencil"></i></a>
 
 			                	<a class="btn_link"
-			                	id="no_radius" href="?del=true&no_sp=<?php echo $data->no_sp;?>" onclick="return confirm('Hapus data?')">
+			                	id="no_radius" href="{{ route('sp.delete', ['no_sp' => $data->no_sp ]) }}" onclick="return confirm('Hapus data?')">
 			                	<i class="fa fa-close"></i></a>
 			                </td>
 			            </tr>

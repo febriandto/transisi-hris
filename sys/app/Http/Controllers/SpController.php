@@ -64,4 +64,51 @@ class SpController extends Controller
         return redirect(route('sp.index'));
 
     }
+
+    public function edit(Sp $sp)
+    {
+
+        $emp = DB::select("SELECT * from hris_m_emp WHERE is_delete='N'");
+
+        $sp_cat = DB::select("select * from hris_spcat where is_delete = 'N' ");
+
+        return view('sp.edit', compact('sp', 'sp_cat', 'emp'));
+
+    }
+
+    protected function update(Request $request)
+    {
+
+        Sp::where('no_sp', $request->no_sp)->update([
+
+            'no_sp'          => $request->no_sp, 
+            'sp_date'        => $request->sp_date, 
+            'id_spcat'       => $request->id_spcat,
+            'sp_title'       => $request->sp_title,
+            'sp_description' => $request->sp_description,
+            'sp_punishment'  => $request->sp_punishment,
+            'sp_valid_date'  => $request->sp_valid_date,
+            'id_emp'         => $request->id_emp,
+            'edit_date'     => Auth::user()->name,
+            'edit_by'       => date('Y-m-d'),
+
+        ]);
+
+        return redirect(route('sp.index'));
+
+    }
+
+    protected function delete(Request $request)
+    {
+
+        Sp::where('no_sp', $request->no_sp)->update([
+
+            'is_delete' => 'Y',
+            'edit_date' => date('Y-m-d'),
+
+        ]);
+
+        return redirect(route('sp.index'));
+
+    }
 }
