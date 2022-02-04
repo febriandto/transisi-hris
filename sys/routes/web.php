@@ -150,6 +150,14 @@ Route::group(['middlewareGroup' => ['web']], function () {
 
 				});
 
+				Route::group(['prefix' => 'promosi'], function(){
+
+					Route::get('/', 'PromosiController@index')->name('promosi.index');
+					Route::get('/add', 'PromosiController@add')->name('promosi.add');
+					Route::post('/save', 'PromosiController@save')->name('promosi.save');
+
+				});
+
 				
 
 		});
