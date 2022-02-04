@@ -47,7 +47,7 @@
 			        	@foreach( $sp as $no => $data )
 			            <tr>
 			                <td align="center"><?php echo $no+1; ?></td>
-			                <td><a href="?view&no_sp=<?php echo $data->no_sp;?>"><?php echo $data->no_sp;?></a></td>
+			                <td><?php echo $data->no_sp;?></td>
 			                <td><?php echo date('d F Y', strtotime($data->sp_date)); ?></td>
 			                <td><?php echo $data->sp_title;?></td>
 			                <td><?php echo $data->emp_name;?></td>

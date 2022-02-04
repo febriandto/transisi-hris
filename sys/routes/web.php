@@ -141,6 +141,15 @@ Route::group(['middlewareGroup' => ['web']], function () {
 
 				});
 
+
+				Route::group(['prefix' => 'mutasi'], function(){
+
+					Route::get('/', 'MutasiController@index')->name('mutasi.index');
+					Route::get('/add', 'MutasiController@add')->name('mutasi.add');
+					Route::post('/save', 'MutasiController@save')->name('mutasi.save');
+
+				});
+
 				
 
 		});
