@@ -158,6 +158,18 @@ Route::group(['middlewareGroup' => ['web']], function () {
 
 				});
 
+				Route::group(['prefix' => 'post'], function(){
+
+					Route::get('/', 'PostController@index')->name('post.index');
+					Route::get('/add', 'PostController@add')->name('post.add');
+					Route::post('/save', 'PostController@save')->name('post.save');
+					Route::get('/edit/{post}', 'PostController@edit')->name('post.edit');
+					Route::post('/update', 'PostController@update')->name('post.update');
+					Route::get('/delete/{post}', 'PostController@delete')->name('post.delete');
+					Route::post('ganti_gambar', 'PostController@ganti_gambar')->name('post.ganti_gambar');
+
+				});
+
 				
 
 		});

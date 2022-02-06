@@ -64,7 +64,7 @@
 
 	        <li id="<?php if(@$page == 'dashboard'){echo 'active';}?>"><a href="{{ route('beranda.dashboard') }}"><i class="fa fa-tachometer icon_left"></i> Dashboard</a></li>
 
-	        <li class="dropdown" id="<?php if(Request::is('employee') OR Request::is('employee/*')){echo 'active';}?><?php if(Request::is('accident_employee') OR Request::is('accident_employee/*')){echo 'active';}?><?php if(Request::is('contract') OR Request::is('contract/*')){echo 'active';}?><?php if(Request::is('resign') OR Request::is('resign/*')){echo 'active';}?><?php if(Request::is('team') OR Request::is('team/*')){echo 'active';}?><?php if(Request::is('sp') OR Request::is('sp/*')){echo 'active';}?><?php if(Request::is('mutasi') OR Request::is('mutasi/*')){echo 'active';}?><?php if(Request::is('promosi') OR Request::is('promosi/*')){echo 'active';}?>">
+	        <li class="dropdown" id="<?php if(Request::is('employee') OR Request::is('employee/*')){echo 'active';}?><?php if(Request::is('accident_employee') OR Request::is('accident_employee/*')){echo 'active';}?><?php if(Request::is('contract') OR Request::is('contract/*')){echo 'active';}?><?php if(Request::is('resign') OR Request::is('resign/*')){echo 'active';}?><?php if(Request::is('team') OR Request::is('team/*')){echo 'active';}?><?php if(Request::is('sp') OR Request::is('sp/*')){echo 'active';}?><?php if(Request::is('mutasi') OR Request::is('mutasi/*')){echo 'active';}?><?php if(Request::is('promosi') OR Request::is('promosi/*')){echo 'active';}?><?php if(Request::is('post') OR Request::is('post/*')){echo 'active';}?>">
 
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle-o icon_left"></i> Pelayanan HR &nbsp; <i class="fa fa-angle-down"></i></a>
 	          <ul class="dropdown-menu wide">
@@ -104,7 +104,9 @@
 	            <li style="border-right: none;" id="<?php if(Request::is('promosi') OR Request::is('promosi/*')){echo 'active';}?>">
 	            	<a href="{{ route('promosi.index') }}"><i class="fa fa-chevron-right icon_left"></i> Promosi / Demosi</a>
 	            </li>  
-	            <li style="border-right: none;"><a href="../post/post"><i class="fa fa-chevron-right icon_left"></i> Post Update</a></li>     
+	            <li style="border-right: none;" id="<?php if(Request::is('post') OR Request::is('post/*')){echo 'active';}?>">
+	            	<a href="{{ route('post.index') }}"><i class="fa fa-chevron-right icon_left"></i> Post Update</a>
+	            </li>     
 	            <br>
 	            
 
